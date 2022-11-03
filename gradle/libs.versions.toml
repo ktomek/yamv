@@ -1,0 +1,112 @@
+[versions]
+#android config
+accompanistNavigationAnimation = "0.28.0"
+autoService = "1.0"
+compose = "1.7.5"
+coreKtx = "1.15.0"
+hilt = "2.51.1"
+compose-hilt = "1.2.0"
+javapoet = "1.13.0"
+javaxAnnotationApi = "1.3.2"
+javaxInject = "1"
+kotlinFlowExtensions = "0.0.14"
+kotlinpoetKsp = "1.18.1"
+#plugins
+android = "8.7.2"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.25"
+detekt = "1.23.7"
+detekt-compose = "0.4.16"
+coroutines = "1.9.0"
+
+# AndroidX libraries
+junit = "4.13.2"
+junit5 = "5.10.2"
+lifecycleRuntimeKtx = "2.8.7"
+lifecycleViewmodelCompose = "2.8.0"
+mockk = "1.13.10"
+timber = "5.0.1"
+turbine-version = "1.1.0"
+
+#plugin dependency version
+[plugins]
+application = { id = "com.android.application", version.ref = "android" }
+library = { id = "com.android.library", version.ref = "android" }
+kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+[libraries]
+# Kotlin standard library
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanistNavigationAnimation" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+androidx-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "compose" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
+auto-service = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
+javax-annotation-api = { module = "javax.annotation:javax.annotation-api", version.ref = "javaxAnnotationApi" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
+kotlin-flow-extensions = { module = "com.github.akarnokd:kotlin-flow-extensions", version.ref = "kotlinFlowExtensions" }
+kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoetKsp" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+
+#compose
+androidx-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+androidx-compose-meterial = { module = "androidx.compose.material:material", version.ref = "compose" }
+androidx-compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+androidx-compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.8.3" }
+androidx-compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "compose-hilt" }
+
+# Dependency Injection lib
+dagger-hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "hilt" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-compose" }
+
+ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+
+# Unit testing
+kotlin-corutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.9.0" }
+lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine-version" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+junit = { module = "junit:junit", version.ref = "junit" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit5" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit5" }
+junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit5" }
+truth = { module = "com.google.truth:truth", version = "1.4.2" }
+
+[bundles]
+compose = [
+    "androidx-compose-animation",
+    "androidx-compose-ui",
+    "androidx-compose-meterial",
+    "androidx-compose-preview",
+    "androidx-compose-navigation",
+    "androidx-compose-hilt",
+    "androidx-lifecycle-viewmodel-compose",
+]
+
+testing-unit = [
+    "junit",
+    "junit-jupiter",
+    "junit-jupiter-api",
+    "junit-jupiter-params",
+    "kotlin-corutines-test",
+    "kotlin-test",
+    "turbine",
+    "mockk",
+    "truth",
+]

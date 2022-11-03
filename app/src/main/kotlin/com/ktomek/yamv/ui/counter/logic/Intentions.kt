@@ -1,0 +1,9 @@
+package com.ktomek.yamv.ui.counter.logic
+
+data object IncreaseCounterIntention
+data object DecreaseCounterIntention
+
+data object AutoDecreaseCounterIntention
+data object StopAutoDecreaseCounterIntention
+data object AutoIncreaseCounterIntention
+data object StopAutoIncreaseCounterIntention
