@@ -35,7 +35,7 @@ internal interface IFeature : Closeable {
     fun <T> getTag(key: String?): T?
 }
 
-class DefaultFeature : IFeature {
+internal class DefaultFeature : IFeature {
     private val bagOfTags: MutableMap<String?, Any> = mutableMapOf()
     private val closeables: MutableSet<Closeable> = mutableSetOf()
     private var cleared = false

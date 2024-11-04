@@ -41,6 +41,7 @@ abstract class StateContainer<S : State, R : Outcome<S>, E : EffectOutcome<S>>(
     abstract val stateType: Class<S>
 
     init {
+        intentionDispatcher
         @Suppress("LeakingThis")
         store.register(this)
         scope.launch(Dispatchers.Default) {

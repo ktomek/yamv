@@ -4,17 +4,23 @@ import kotlinx.coroutines.flow.SharedFlow
 import java.io.Closeable
 
 /**
- * MVI dispatcher responsible for process intention and [Result] production.
+ * MVI dispatcher responsible for processing intentions and producing results.
+ *
+ * @param Result The type of the result produced by the dispatcher.
  */
 interface IntentionDispatcher<Result> : Closeable {
 
     /**
-     * Listening for intention from upstream and processing them.
+     * Listens for intentions from upstream and processes them.
+     *
+     * @return A [SharedFlow] emitting the results produced by the dispatcher.
      */
     fun observeResults(): SharedFlow<Result>
 
     /**
-     * Process single intention
+     * Processes a single intention.
+     *
+     * @param intention The intention to be processed.
      */
     suspend fun dispatchIntention(intention: Any)
 }
