@@ -8,7 +8,7 @@ import com.ktomek.yamv.core.State
  *
  * @param S The type of the state.
  */
-interface OutcomeWithReducer<S : State> : Outcome<S> {
+fun interface OutcomeWithReducer<S : State> : Outcome<S> {
 
     /**
      * Reduces the previous state to produce a new state.
