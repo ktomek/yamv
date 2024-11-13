@@ -1,5 +1,7 @@
 package com.ktomek.yamv.feature
 
+import com.ktomek.yamv.core.Outcome
+import com.ktomek.yamv.core.State
 import com.ktomek.yamv.state.Store
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -16,9 +18,9 @@ val Feature<*>.featureScope: CoroutineScope
 /**
  * Abstract class representing a feature that processes intentions and produces outcomes.
  *
- * @param OUTCOME The type of the outcome produced by the feature.
+ * @param S The type of the outcome produced by the feature.
  */
-abstract class Feature<OUTCOME> : IFeature by DefaultFeature() {
+abstract class Feature<S : State> : IFeature by DefaultFeature() {
 
     /**
      * Receives an intention and produces an outcome.
@@ -27,7 +29,7 @@ abstract class Feature<OUTCOME> : IFeature by DefaultFeature() {
      * @param store The store to be used in the feature function.
      * @return The outcome produced by the feature function.
      */
-    abstract suspend operator fun invoke(intention: Any, store: Store): OUTCOME
+    abstract suspend operator fun invoke(intention: Any, store: Store): Outcome<S>
 
     /**
      * Gets the coroutine dispatcher for the feature.

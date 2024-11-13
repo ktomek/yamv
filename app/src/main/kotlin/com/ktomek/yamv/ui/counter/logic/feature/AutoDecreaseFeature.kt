@@ -26,7 +26,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @AutoFeature
 class AutoDecreaseFeature
-@Inject constructor() : FeatureFlow<CounterOutcome>() {
+@Inject constructor() : FeatureFlow<CounterState>() {
 
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     override suspend fun invoke(intentions: Flow<Any>, store: Store): Flow<CounterOutcome> =

@@ -2,9 +2,8 @@ package com.ktomek.yamv.state
 
 import com.ktomek.yamv.core.EffectOutcome
 import com.ktomek.yamv.core.IntentionOutcome
-import com.ktomek.yamv.core.Outcome
-import com.ktomek.yamv.core.Reducer
 import com.ktomek.yamv.core.State
+import com.ktomek.yamv.core.StateOutcome
 import com.ktomek.yamv.intention.DefaultIntentionDispatcher
 import com.ktomek.yamv.intention.GlobalIntention
 import kotlinx.coroutines.CoroutineScope
@@ -20,15 +19,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.Closeable
 
-abstract class StateContainer<S : State, R : Outcome<S>, E : EffectOutcome<S>>(
-    private val intentionDispatcher: DefaultIntentionDispatcher<R>,
-    private val reducer: Reducer<S, R>,
+abstract class StateContainer<S : State>(
+    private val intentionDispatcher: DefaultIntentionDispatcher<S>,
     private val store: DefaultStore,
     private val scope: CoroutineScope
 ) : Closeable {
 
-    private val effectsFlow: MutableSharedFlow<E> = MutableSharedFlow()
-    val effects: Flow<E>
+    private val effectsFlow: MutableSharedFlow<EffectOutcome<S>> = MutableSharedFlow()
+    val effects: Flow<EffectOutcome<S>>
         get() = effectsFlow
 
     @Suppress("LeakingThis")
@@ -46,25 +44,23 @@ abstract class StateContainer<S : State, R : Outcome<S>, E : EffectOutcome<S>>(
         store.register(this)
         scope.launch(Dispatchers.Default) {
             intentionDispatcher
-                .observeResults()
-                .scan(defaultState, reducer::reduce)
+                .observeOutcomes()
+                .filterIsInstance<StateOutcome<S>>()
+                .scan(defaultState) { state, outcome -> outcome.reduce(state) }
                 .drop(1)
                 .collect { state -> stateFlow.update { state } }
         }
 
         scope.launch(Dispatchers.Default) {
             intentionDispatcher
-                .observeResults()
+                .observeOutcomes()
                 .filterIsInstance<EffectOutcome<S>>()
-                .collect {
-                    @Suppress("UNCHECKED_CAST")
-                    effectsFlow.emit(it as E)
-                }
+                .collect(effectsFlow::emit)
         }
 
         scope.launch(Dispatchers.Default) {
             intentionDispatcher
-                .observeResults()
+                .observeOutcomes()
                 .filterIsInstance<IntentionOutcome<S>>()
                 .collect {
                     if (it.intention is GlobalIntention) {

@@ -45,9 +45,8 @@ android {
 
 dependencies {
     implementation project(":core")
-    implementation project(':yamv')
-    implementation project(':annotations')
     ksp project(':processor')
+    implementation project(':yamv')
 
 
     implementation libs.androidx.core.ktx

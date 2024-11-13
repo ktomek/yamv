@@ -1,21 +1,23 @@
 package com.ktomek.yamv.intention
 
+import com.ktomek.yamv.core.Outcome
+import com.ktomek.yamv.core.State
 import kotlinx.coroutines.flow.SharedFlow
 import java.io.Closeable
 
 /**
- * MVI dispatcher responsible for processing intentions and producing results.
+ * MVI dispatcher responsible for processing intentions and producing outcomes.
  *
- * @param Result The type of the result produced by the dispatcher.
+ * @param S The type of the outcome produced by the dispatcher.
  */
-interface IntentionDispatcher<Result> : Closeable {
+interface IntentionDispatcher<S : State> : Closeable {
 
     /**
      * Listens for intentions from upstream and processes them.
      *
-     * @return A [SharedFlow] emitting the results produced by the dispatcher.
+     * @return A [SharedFlow] emitting the outcomes produced by the dispatcher.
      */
-    fun observeResults(): SharedFlow<Result>
+    fun observeOutcomes(): SharedFlow<Outcome<S>>
 
     /**
      * Processes a single intention.

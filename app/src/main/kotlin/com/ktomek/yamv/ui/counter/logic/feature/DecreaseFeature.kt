@@ -6,13 +6,14 @@ import com.ktomek.yamv.state.Store
 import com.ktomek.yamv.ui.counter.logic.DecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.outcome.CounterOutcome
 import com.ktomek.yamv.ui.counter.logic.outcome.DecreaseCounterOutcome
+import com.ktomek.yamv.ui.counter.logic.state.CounterState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AutoFeature
 class DecreaseFeature @Inject constructor() :
-    TypedFeature<CounterOutcome, DecreaseCounterIntention>() {
+    TypedFeature<CounterState, DecreaseCounterIntention>() {
     override suspend fun invoke(intention: DecreaseCounterIntention, store: Store): CounterOutcome =
         withContext(Dispatchers.Default) { DecreaseCounterOutcome }
 }

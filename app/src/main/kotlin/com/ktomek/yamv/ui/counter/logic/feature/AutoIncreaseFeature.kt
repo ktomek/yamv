@@ -8,9 +8,12 @@ import com.ktomek.yamv.ui.counter.logic.StopAutoIncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.outcome.AutoIncreaseOutcome
 import com.ktomek.yamv.ui.counter.logic.outcome.ChangeCounterOutcome
 import com.ktomek.yamv.ui.counter.logic.outcome.CounterOutcome
+import com.ktomek.yamv.ui.counter.logic.state.CounterState
 import hu.akarnokd.kotlin.flow.takeUntil
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
@@ -25,10 +28,11 @@ import kotlin.time.Duration.Companion.seconds
 
 @AutoFeature
 class AutoIncreaseFeature
-@Inject constructor() : FeatureFlow<CounterOutcome>() {
+@Inject constructor() : FeatureFlow<CounterState>() {
     override val dispatcher: CoroutineDispatcher
         get() = Dispatchers.Default
 
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     override suspend fun invoke(intentions: Flow<Any>, store: Store): Flow<CounterOutcome> =
         intentions
             .filter { it is AutoIncreaseCounterIntention }

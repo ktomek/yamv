@@ -5,4 +5,4 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ktomek.yamv.state.ViewModelStateStore
 
 @Composable
-inline fun <reified C : ViewModelStateStore<*, *, *>> hiltStateStore(): C = hiltViewModel()
+inline fun <reified C : ViewModelStateStore<*>> hiltStateStore(): C = hiltViewModel()

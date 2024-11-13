@@ -1,5 +1,7 @@
 package com.ktomek.yamv.intention
 
+import com.ktomek.yamv.core.Outcome
+import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.FeatureFlow
 import com.ktomek.yamv.feature.featureScope
@@ -20,15 +22,15 @@ import javax.inject.Inject
 /**
  * Base MVI dispatcher which is taking intentions and sending them to actions.
  */
-class DefaultIntentionDispatcher<OUTCOME>
+class DefaultIntentionDispatcher<S : State>
 @Inject constructor(
-    private val flowFeatures: Set<@JvmSuppressWildcards FeatureFlow<OUTCOME>>,
-    private val features: Set<@JvmSuppressWildcards Feature<OUTCOME>>,
+    private val flowFeatures: Set<@JvmSuppressWildcards FeatureFlow<S>>,
+    private val features: Set<@JvmSuppressWildcards Feature<S>>,
     store: DefaultStore
-) : IntentionDispatcher<OUTCOME> {
+) : IntentionDispatcher<S> {
 
-    private val resultFlow = MutableSharedFlow<OUTCOME>()
-    private val intentionFlows = mutableListOf<Pair<FeatureFlow<OUTCOME>, MutableSharedFlow<Any>>>()
+    private val outcomeFlow = MutableSharedFlow<Outcome<S>>()
+    private val intentionFlows = mutableListOf<Pair<FeatureFlow<S>, MutableSharedFlow<Any>>>()
 
     init {
         flowFeatures
@@ -41,11 +43,11 @@ class DefaultIntentionDispatcher<OUTCOME>
                         featureScope.launch(dispatcher) {
                             featureFlow(intentions, store)
                                 .flowOn(dispatcher)
-                                .collect(resultFlow::emit)
+                                .collect(outcomeFlow::emit)
                         }
                     } ?: featureScope.launch {
                         featureFlow(intentions, store)
-                            .collect(resultFlow::emit)
+                            .collect(outcomeFlow::emit)
                     }
                 }
                 intentionFlows.add(featureFlow to intentions)
@@ -67,11 +69,11 @@ class DefaultIntentionDispatcher<OUTCOME>
         features.forEach(Closeable::close)
     }
 
-    override fun observeResults(): SharedFlow<OUTCOME> = resultFlow.asSharedFlow()
+    override fun observeOutcomes(): SharedFlow<Outcome<S>> = outcomeFlow.asSharedFlow()
 
-    private fun Feature<OUTCOME>.wrap(): FeatureFlow<OUTCOME> =
-        object : FeatureFlow<OUTCOME>() {
-            override suspend operator fun invoke(intentions: Flow<Any>, store: Store): Flow<OUTCOME> =
+    private fun Feature<S>.wrap(): FeatureFlow<S> =
+        object : FeatureFlow<S>() {
+            override suspend operator fun invoke(intentions: Flow<Any>, store: Store): Flow<Outcome<S>> =
                 channelFlow {
                     this@wrap.dispatcher?.invoke {
                         intentions

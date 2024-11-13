@@ -3,7 +3,6 @@ package com.ktomek.yamv.state
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ktomek.yamv.core.EffectOutcome
-import com.ktomek.yamv.core.Outcome
 import com.ktomek.yamv.core.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,11 +15,11 @@ import kotlinx.coroutines.flow.StateFlow
  * @param E The type of the effect outcome.
  * @param stateContainerFactory The factory to create the state container.
  */
-abstract class ViewModelStateStore<S : State, O : Outcome<S>, E : EffectOutcome<S>>(
-    stateContainerFactory: StateContainerFactory<S, O, E>,
-) : ViewModel(), StateStore<S, E> {
+abstract class ViewModelStateStore<S : State>(
+    stateContainerFactory: StateContainerFactory<S>,
+) : ViewModel(), StateStore<S, EffectOutcome<S>> {
 
-    private val stateContainer: StateContainer<S, O, E> =
+    private val stateContainer: StateContainer<S> =
         stateContainerFactory.create(viewModelScope)
 
     /**
@@ -32,7 +31,7 @@ abstract class ViewModelStateStore<S : State, O : Outcome<S>, E : EffectOutcome<
     /**
      * The effects as a [Flow].
      */
-    override val effects: Flow<E> = stateContainer.effects
+    override val effects: Flow<EffectOutcome<S>> = stateContainer.effects
 
     /**
      * Dispatches an intention.

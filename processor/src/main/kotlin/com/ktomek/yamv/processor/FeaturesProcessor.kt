@@ -1,11 +1,9 @@
-
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.validate
-import com.ktomek.yamv.annotations.AutoBaseOutcome
 import com.ktomek.yamv.annotations.AutoFeature
 import com.ktomek.yamv.processor.YamvProcessor
 import com.squareup.kotlinpoet.AnnotationSpec
@@ -20,11 +18,11 @@ import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 
-internal fun YamvProcessor.processFeatures(resolver: Resolver): List<KSDeclaration> {
+internal fun YamvProcessor.processFeatures(
+    resolver: Resolver,
+    autoStateClasses: Sequence<KSClassDeclaration>
+): List<KSDeclaration> {
     val featureClasses = getFeatureClasses(resolver)
-    val resultsClasses = resolver
-        .getSymbolsWithAnnotation(AutoBaseOutcome::class.qualifiedName.toString())
-        .filterIsInstance<KSClassDeclaration>()
 
     if (featureClasses.any { !it.validate() }) {
         return featureClasses
@@ -34,46 +32,41 @@ internal fun YamvProcessor.processFeatures(resolver: Resolver): List<KSDeclarati
         return emptyList()
     }
 
-    resultsClasses.forEach { resultClass ->
-        if (featureClasses.isEmpty()) return@forEach
-        val packageName = resultClass.packageName.asString()
-        val resultName = resultClass.simpleName.asString()
-        val relevantFeatureClasses = featureClasses
-            .filter { featureClass ->
-                val isOk = when (featureClass) {
-                    is KSClassDeclaration -> {
-                        featureClass.superTypes.any { superType ->
-                            val typeArgument =
-                                superType.resolve()
-                                    .arguments
-                                    .firstOrNull()
-                                    ?.type
-                                    ?.resolve()
-                                    ?.declaration
-                            (typeArgument as? KSClassDeclaration)?.simpleName?.asString() == resultName
-                        }
-                    }
+    autoStateClasses.forEach { stateClass ->
+        val stateType = stateClass.toClassName()
 
-                    is KSPropertyDeclaration -> {
-                        val typeArgument =
-                            featureClass.type.resolve()
+        val relevantFeatureClasses = featureClasses
+            .filter { feature ->
+                val isOk = when (feature) {
+                    is KSClassDeclaration -> {
+                        feature.superTypes.any { superType ->
+                            superType.resolve()
                                 .arguments
                                 .firstOrNull()
                                 ?.type
                                 ?.resolve()
                                 ?.declaration
-                        (typeArgument as? KSClassDeclaration)?.simpleName?.asString() == resultName
+                                ?.simpleName
+                                ?.asString() == stateType.simpleName
+                        }
+                    }
+
+                    is KSPropertyDeclaration -> {
+                        feature.type.resolve()
+                            .arguments
+                            .firstOrNull()
+                            ?.type
+                            ?.resolve()
+                            ?.declaration
+                            ?.simpleName
+                            ?.asString() == stateType.simpleName
                     }
 
                     else -> false
                 }
-                featureClass.validate() && isOk
+                feature.validate() && isOk
             }
-        generateFeaturesModule(
-            resultName,
-            packageName,
-            relevantFeatureClasses
-        )
+        generateFeaturesModule(stateType.simpleName, stateType.packageName, relevantFeatureClasses)
     }
     return featureClasses.filter { !it.validate() }
 }
@@ -81,10 +74,10 @@ internal fun YamvProcessor.processFeatures(resolver: Resolver): List<KSDeclarati
 fun YamvProcessor.getFeatureClasses(resolver: Resolver) =
     resolver.getSymbolsWithAnnotation(AutoFeature::class.qualifiedName.toString())
         .filterIsInstance<KSDeclaration>()
-        .filter { featureClass ->
-            when (featureClass) {
+        .filter { feature ->
+            when (feature) {
                 is KSClassDeclaration -> {
-                    featureClass.superTypes.any { superType ->
+                    feature.superTypes.any { superType ->
                         val superTypeDecl = superType.resolve().declaration
                         val qualifiedName = superTypeDecl.qualifiedName?.asString()
                         val isFeatureOrFeatureFlow = qualifiedName in listOf(
@@ -92,13 +85,12 @@ fun YamvProcessor.getFeatureClasses(resolver: Resolver) =
                             "com.ktomek.yamv.feature.FeatureFlow",
                             "com.ktomek.yamv.feature.TypedFeature"
                         )
-
                         isFeatureOrFeatureFlow
                     }
                 }
 
                 is KSPropertyDeclaration -> {
-                    val superTypeDecl = featureClass.type.resolve().declaration
+                    val superTypeDecl = feature.type.resolve().declaration
                     val qualifiedName = superTypeDecl.qualifiedName?.asString()
                     val isFeatureOrFeatureFlow = qualifiedName in listOf(
                         "com.ktomek.yamv.feature.TypedFeature",
@@ -112,11 +104,11 @@ fun YamvProcessor.getFeatureClasses(resolver: Resolver) =
         .toList()
 
 private fun YamvProcessor.generateFeaturesModule(
-    resultName: String,
+    stateName: String,
     packageName: String,
     featureClasses: List<KSDeclaration>
 ) {
-    val moduleName = "${resultName}FeaturesModule"
+    val moduleName = "${stateName}FeaturesModule"
     val fileBuilder = FileSpec.builder(packageName, moduleName)
 
     val moduleBuilder = TypeSpec.interfaceBuilder(moduleName)
@@ -141,7 +133,7 @@ private fun YamvProcessor.generateFeaturesModule(
                         ClassName(
                             "com.ktomek.yamv.feature",
                             "FeatureFlow"
-                        ).parameterizedBy(ClassName(packageName, resultName))
+                        ).parameterizedBy(ClassName(packageName, stateName))
                     )
                 )
                 .addStatement("return emptySet()")
@@ -149,11 +141,10 @@ private fun YamvProcessor.generateFeaturesModule(
         )
 
     featureClasses.forEach { featureClass ->
-        logger.warn("Generating module bind/provider for feature class: $featureClass")
         when (featureClass) {
             is KSClassDeclaration -> {
                 val featureClassName = featureClass.toClassName()
-                val returnType = determineFeatureType(featureClass, packageName, resultName)
+                val returnType = determineFeatureType(featureClass, packageName, stateName)
 
                 val superTypeDeclaration = featureClass.superTypes.first().resolve().declaration
                 val superTypeName = superTypeDeclaration.qualifiedName?.asString() ?: ""
@@ -199,7 +190,7 @@ private fun YamvProcessor.generateFeaturesModule(
             }
 
             is KSPropertyDeclaration -> {
-                val returnType = determinePropertyFeatureType(featureClass, packageName, resultName)
+                val returnType = determinePropertyFeatureType(featureClass, packageName, stateName)
 
                 val bindFunction = FunSpec.builder("provides$featureClass")
                     .addAnnotation(ClassName("dagger", "Provides"))
@@ -226,7 +217,7 @@ private fun YamvProcessor.generateFeaturesModule(
 private fun determineFeatureType(
     featureClass: KSClassDeclaration,
     packageName: String,
-    resultName: String
+    stateName: String
 ): TypeName {
     // Iterate over the superinterfaces to determine whether it's Feature or FeatureFlow
     featureClass.superTypes.forEach { superType ->
@@ -237,28 +228,28 @@ private fun determineFeatureType(
         when (superTypeName) {
             "com.ktomek.yamv.feature.Feature" ->
                 return ClassName("com.ktomek.yamv.feature", "Feature")
-                    .parameterizedBy(ClassName(packageName, resultName))
+                    .parameterizedBy(ClassName(packageName, stateName))
 
             "com.ktomek.yamv.feature.FeatureFlow" ->
                 return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
-                    .parameterizedBy(ClassName(packageName, resultName))
+                    .parameterizedBy(ClassName(packageName, stateName))
 
             "com.ktomek.yamv.feature.TypedFeature" -> {
                 return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
-                    .parameterizedBy(ClassName(packageName, resultName))
+                    .parameterizedBy(ClassName(packageName, stateName))
             }
         }
     }
 
     // Default to FeatureFlow if no matching superinterface is found (or adjust as necessary)
     return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
-        .parameterizedBy(ClassName(packageName, resultName))
+        .parameterizedBy(ClassName(packageName, stateName))
 }
 
 private fun determinePropertyFeatureType(
     featureProperty: KSPropertyDeclaration,
     packageName: String,
-    resultName: String
+    stateName: String
 ): TypeName {
     // Iterate over the superinterfaces to determine whether it's Feature or FeatureFlow
     val superType = featureProperty.type
@@ -269,19 +260,19 @@ private fun determinePropertyFeatureType(
     when (superTypeName) {
         "com.ktomek.yamv.feature.Feature" ->
             return ClassName("com.ktomek.yamv.feature", "Feature")
-                .parameterizedBy(ClassName(packageName, resultName))
+                .parameterizedBy(ClassName(packageName, stateName))
 
         "com.ktomek.yamv.feature.FeatureFlow" ->
             return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
-                .parameterizedBy(ClassName(packageName, resultName))
+                .parameterizedBy(ClassName(packageName, stateName))
 
         "com.ktomek.yamv.feature.TypedFeature" -> {
             return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
-                .parameterizedBy(ClassName(packageName, resultName))
+                .parameterizedBy(ClassName(packageName, stateName))
         }
     }
 
     // Default to FeatureFlow if no matching superinterface is found (or adjust as necessary)
     return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
-        .parameterizedBy(ClassName(packageName, resultName))
+        .parameterizedBy(ClassName(packageName, stateName))
 }

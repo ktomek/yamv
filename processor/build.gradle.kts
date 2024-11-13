@@ -19,25 +19,8 @@ kotlin {
     }
 }
 
-// jar {
-//    from sourceSets.main.output
-//    manifest {
-//        attributes(
-//                'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' '),
-//                'AutoService': 'com.ktomek.yamv.processor.ReducerProcessor'
-//        )
-//    }
-// Include all your processor's classes and resources in the JAR
-//    from {
-//        (configurations.runtimeClasspath).collect {
-//            it.isDirectory() ? it : zipTree(it)
-//        }
-//    }
-// }
-
 dependencies {
     implementation(project(":core"))
-    implementation(project(":annotations"))
     implementation(libs.ksp.api)
 
     annotationProcessor(libs.auto.service)

@@ -62,14 +62,14 @@ internal interface InternalStore : Store {
      *
      * @param stateContainer The state container to be registered.
      */
-    fun register(stateContainer: StateContainer<*, *, *>)
+    fun register(stateContainer: StateContainer<*>)
 
     /**
      * Unregisters a state container.
      *
      * @param stateContainer The state container to be unregistered.
      */
-    fun unregister(stateContainer: StateContainer<*, *, *>)
+    fun unregister(stateContainer: StateContainer<*>)
 
     /**
      * Invokes the store with an intention.
@@ -94,14 +94,14 @@ internal interface InternalStore : Store {
 @Singleton
 class DefaultStore @Inject constructor() : InternalStore {
 
-    private val mvs = mutableMapOf<Class<out State>, StateContainer<*, *, *>>()
+    private val mvs = mutableMapOf<Class<out State>, StateContainer<*>>()
 
     /**
      * Registers a state container.
      *
      * @param stateContainer The state container to be registered.
      */
-    override fun register(stateContainer: StateContainer<*, *, *>) {
+    override fun register(stateContainer: StateContainer<*>) {
         mvs[stateContainer.stateType] = stateContainer
     }
 
@@ -110,7 +110,7 @@ class DefaultStore @Inject constructor() : InternalStore {
      *
      * @param stateContainer The state container to be unregistered.
      */
-    override fun unregister(stateContainer: StateContainer<*, *, *>) {
+    override fun unregister(stateContainer: StateContainer<*>) {
         mvs.remove(stateContainer.stateType)
     }
 

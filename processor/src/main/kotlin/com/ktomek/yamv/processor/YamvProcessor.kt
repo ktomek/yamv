@@ -12,9 +12,6 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.validate
-import com.ktomek.yamv.annotations.AutoBaseOutcome
-import com.ktomek.yamv.annotations.AutoOutcome
-import com.ktomek.yamv.annotations.AutoReducer
 import com.ktomek.yamv.annotations.AutoState
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -28,7 +25,6 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
-import getFeatureClasses
 import processFeatures
 
 class YamvProcessor(
@@ -37,65 +33,17 @@ class YamvProcessor(
 ) : SymbolProcessor {
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-//        val allFiles = resolver.getAllFiles().toList()
-//        val dirtyFiles = resolver.getNewFiles().toList()
-//        logger.warn("ktomek dirtyFiles: ${dirtyFiles.size} allFiles: ${allFiles.size}")
-//        logger.warn("ktomek dirtyFiles: ${dirtyFiles.joinToString(",")}")
-
         val autoStateClasses =
             resolver.getSymbolsWithAnnotation(AutoState::class.qualifiedName.toString())
                 .filterIsInstance<KSClassDeclaration>()
 
+        processFeatures(resolver, autoStateClasses)
         if (autoStateClasses.toList().isNotEmpty()) {
-            autoStateClasses.forEach { autoStateClass ->
-                if (!autoStateClass.validate()) {
-                    return@forEach
-                }
-
-                val packageName = autoStateClass.packageName.asString()
-                val stateName = autoStateClass.simpleName.asString()
-                val stateOutcomeName = "${stateName.replace("State", "")}Outcome"
-                val effectOutcomeName = "${stateName.replace("State", "")}EffectOutcome"
-                val intentionOutcomeName = "${stateName.replace("State", "")}IntentionOutcome"
-
-                val stateOutcomeClassQualifiedName = "$packageName.$stateOutcomeName"
-
-                // Check if the Outcome interface already exists.
-                val existingOutcomeClass = resolver.getClassDeclarationByName(
-                    resolver.getKSNameFromString(stateOutcomeClassQualifiedName)
-                )
-                if (existingOutcomeClass == null) {
-                    generateOutcomeInterface(
-                        packageName,
-                        stateName,
-                        stateOutcomeName,
-                        listOf<KSDeclaration>(autoStateClass)
-                    )
-                    generateEffectOutcomeInterface(
-                        packageName,
-                        stateName,
-                        stateOutcomeName,
-                        effectOutcomeName,
-                        listOf<KSDeclaration>(autoStateClass)
-                    )
-                }
-            }
-
             autoStateClasses.forEach { autoStateClass ->
                 if (!autoStateClass.validate()) return@forEach
 
                 val packageName = autoStateClass.packageName.asString()
                 val stateName = autoStateClass.simpleName.asString()
-                val stateOutcomeName = "${stateName.replace("State", "")}Outcome"
-                val effectOutcomeName = "${stateName.replace("State", "")}EffectOutcome"
-
-                val stateOutcomeClassQualifiedName =
-                    "${autoStateClass.packageName.asString()}.$stateOutcomeName"
-
-                // Check if the Outcome interface already exists.
-                val existingOutcomeClass = resolver.getClassDeclarationByName(
-                    resolver.getKSNameFromString(stateOutcomeClassQualifiedName)
-                )
 
                 val annotation = autoStateClass
                     .annotations
@@ -105,58 +53,24 @@ class YamvProcessor(
                     .firstOrNull { it.name?.asString() == "defaultState" }
                     ?.value as? KSType
 
-                if (existingOutcomeClass == null) {
-                    generateStoreClass(stateName, stateOutcomeName, effectOutcomeName, packageName)
-                    generateStateContainerClass(
-                        stateName,
-                        stateOutcomeName,
-                        effectOutcomeName,
-                        packageName,
-                        defaultState
-                    )
-                    generateFactoryInterface(
-                        stateName,
-                        stateOutcomeName,
-                        effectOutcomeName,
-                        packageName
-                    )
-                    generateDaggerModule(stateName, stateOutcomeName, packageName)
-                }
-            }
-            val reducerClasses = resolver
-                .getSymbolsWithAnnotation(AutoReducer::class.qualifiedName.toString())
-                .filterIsInstance<KSDeclaration>()
-            val autoOutcomeClasses = resolver
-                .getSymbolsWithAnnotation(AutoOutcome::class.qualifiedName.toString())
-                .filterIsInstance<KSDeclaration>()
-            val defferClasses = getFeatureClasses(resolver) + reducerClasses.toList() +
-                autoOutcomeClasses.toList()
-            return defferClasses
-        } else {
-            val resultsClasses = resolver
-                .getSymbolsWithAnnotation(AutoBaseOutcome::class.qualifiedName.toString())
-                .filterIsInstance<KSClassDeclaration>()
-
-            if (resultsClasses.toList().isNotEmpty()) {
-                processFeatures(resolver)
-                processReducers(resolver)
-                return resolver
-                    .getSymbolsWithAnnotation(AutoReducer::class.qualifiedName.toString())
-                    .filterIsInstance<KSDeclaration>()
-                    .toList() +
-                    resolver
-                        .getSymbolsWithAnnotation(AutoOutcome::class.qualifiedName.toString())
-                        .filterIsInstance<KSDeclaration>()
-                        .toList()
+                generateStoreClass(stateName, packageName)
+                generateStateContainerClass(
+                    stateName,
+                    packageName,
+                    defaultState
+                )
+                generateFactoryInterface(
+                    stateName,
+                    packageName
+                )
+                generateDaggerModule(stateName, packageName)
             }
         }
-        return processReducer(resolver)
+        return emptyList()
     }
 
     private fun generateStoreClass(
         stateName: String,
-        resultName: String,
-        resultEffectName: String,
         packageName: String
     ) {
         val className = "${stateName}Store"
@@ -179,8 +93,6 @@ class YamvProcessor(
             .superclass(
                 ClassName("com.ktomek.yamv.state", "ViewModelStateStore").parameterizedBy(
                     ClassName(packageName, stateName),
-                    ClassName(packageName.replace("state", "outcome"), resultName),
-                    ClassName(packageName.replace("state", "outcome"), resultEffectName)
                 )
             )
             .addSuperclassConstructorParameter("factory")
@@ -191,8 +103,6 @@ class YamvProcessor(
 
     private fun generateStateContainerClass(
         stateName: String,
-        resultName: String,
-        resultEffectName: String,
         packageName: String,
         defaultState: KSType?
     ) {
@@ -211,17 +121,7 @@ class YamvProcessor(
                             "com.ktomek.yamv.intention",
                             "DefaultIntentionDispatcher"
                         ).parameterizedBy(
-                            ClassName(packageName.replace("state", "outcome"), resultName)
-                        )
-                    )
-                    .addParameter(
-                        "reducer",
-                        ClassName("com.ktomek.yamv.core", "Reducer").parameterizedBy(
-                            ClassName(
-                                packageName,
-                                stateName
-                            ),
-                            ClassName(packageName.replace("state", "outcome"), resultName)
+                            ClassName(packageName, stateName)
                         )
                     )
                     .addParameter(
@@ -244,12 +144,10 @@ class YamvProcessor(
                         ClassName(
                             packageName,
                             stateName
-                        ),
-                        ClassName(packageName.replace(".state", ".outcome"), resultName),
-                        ClassName(packageName.replace(".state", ".outcome"), resultEffectName),
+                        )
                     )
             )
-            .addSuperclassConstructorParameter("intentionDispatcher, reducer, store, scope")
+            .addSuperclassConstructorParameter("intentionDispatcher, store, scope")
             .addProperty(
                 PropertySpec.builder(
                     "defaultState",
@@ -299,8 +197,6 @@ class YamvProcessor(
 
     private fun generateFactoryInterface(
         stateName: String,
-        resultName: String,
-        resultEffectName: String,
         packageName: String
     ) {
         val interfaceName = "${stateName}ContainerFactory"
@@ -309,9 +205,7 @@ class YamvProcessor(
             .addSuperinterface(
                 ClassName("com.ktomek.yamv.state", "StateContainerFactory")
                     .parameterizedBy(
-                        ClassName(packageName, stateName),
-                        ClassName(packageName.replace(".state", ".outcome"), resultName),
-                        ClassName(packageName.replace(".state", ".outcome"), resultEffectName)
+                        ClassName(packageName, stateName)
                     )
             )
             .addAnnotation(ClassName("dagger.assisted", "AssistedFactory"))
@@ -329,12 +223,10 @@ class YamvProcessor(
 
     private fun generateDaggerModule(
         stateName: String,
-        outcomeName: String,
         packageName: String
     ) {
         val moduleName = "${stateName}Module"
         val fileBuilder = FileSpec.builder(packageName, moduleName)
-        val outcomePackage = packageName.replace(".state", ".outcome")
         val moduleBuilder = TypeSpec.interfaceBuilder(moduleName)
             .addAnnotation(ClassName("dagger", "Module"))
             .addAnnotation(
@@ -354,12 +246,10 @@ class YamvProcessor(
                     .addAnnotation(ClassName("dagger.hilt.android.scopes", "ViewModelScoped"))
                     .returns(
                         Set::class.asClassName().parameterizedBy(
-//                            WildcardTypeName.producerOf(
                             ClassName(
                                 "com.ktomek.yamv.feature",
                                 "Feature"
-                            ).parameterizedBy(ClassName(outcomePackage, outcomeName))
-//                            )
+                            ).parameterizedBy(ClassName(packageName, stateName))
                         )
                     )
                     .addStatement("return emptySet()")
@@ -372,7 +262,7 @@ class YamvProcessor(
             .addAnnotation(ClassName("dagger.hilt.android.scopes", "ViewModelScoped"))
             .returns(
                 ClassName("com.ktomek.yamv.intention", "IntentionDispatcher").parameterizedBy(
-                    ClassName(outcomePackage, outcomeName)
+                    ClassName(packageName, stateName)
                 )
             )
             .addParameter(
@@ -380,36 +270,13 @@ class YamvProcessor(
                 ClassName(
                     "com.ktomek.yamv.intention",
                     "DefaultIntentionDispatcher"
-                ).parameterizedBy(ClassName(outcomePackage, outcomeName))
-            )
-            .addModifiers(KModifier.ABSTRACT)
-            .build()
-
-        val bindsReducer = FunSpec.builder("binds${stateName}Reducer")
-            .addAnnotation(ClassName("dagger", "Binds"))
-            .addAnnotation(ClassName("dagger.hilt.android.scopes", "ViewModelScoped"))
-            .returns(
-                ClassName("com.ktomek.yamv.core", "Reducer").parameterizedBy(
-                    ClassName(packageName, stateName),
-                    ClassName(outcomePackage, outcomeName)
-                )
-            )
-            .addParameter(
-                "it",
-                ClassName(
-                    "com.ktomek.yamv.reducer",
-                    "DefaultReducer"
-                ).parameterizedBy(
-                    ClassName(packageName, stateName),
-                    ClassName(outcomePackage, outcomeName)
-                )
+                ).parameterizedBy(ClassName(packageName, stateName))
             )
             .addModifiers(KModifier.ABSTRACT)
             .build()
 
         moduleBuilder.addType(companion)
         moduleBuilder.addFunction(bindsIntentionDispatcher)
-        moduleBuilder.addFunction(bindsReducer)
 
         fileBuilder.addType(moduleBuilder.build()).build()
             .writeTo(codeGenerator, Dependencies(false))

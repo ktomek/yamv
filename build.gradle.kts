@@ -99,9 +99,9 @@ tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
     exclude(resourceFiles, buildFiles)
 
     reports {
-        html.enabled = true
-        xml.enabled = false
-        txt.enabled = false
+        html.required = true
+        xml.required = false
+        txt.required = false
     }
 }
 

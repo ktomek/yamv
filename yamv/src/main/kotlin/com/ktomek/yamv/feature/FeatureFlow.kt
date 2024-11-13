@@ -1,5 +1,7 @@
 package com.ktomek.yamv.feature
 
+import com.ktomek.yamv.core.Outcome
+import com.ktomek.yamv.core.State
 import com.ktomek.yamv.state.Store
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -17,9 +19,9 @@ val FeatureFlow<*>.featureScope: CoroutineScope
 /**
  * Abstract class representing a feature flow that processes a stream of intentions and produces outcomes.
  *
- * @param OUTCOME The type of the outcome produced by the feature flow.
+ * @param S The type of the outcome produced by the feature flow.
  */
-abstract class FeatureFlow<OUTCOME> : IFeature by DefaultFeature() {
+abstract class FeatureFlow<S : State> : IFeature by DefaultFeature() {
 
     /**
      * Observes a stream of intentions and produces a stream of outcomes.
@@ -28,7 +30,7 @@ abstract class FeatureFlow<OUTCOME> : IFeature by DefaultFeature() {
      * @param store The store to be used in the feature function.
      * @return The stream of outcomes produced by the feature function.
      */
-    abstract suspend operator fun invoke(intentions: Flow<Any>, store: Store): Flow<OUTCOME>
+    abstract suspend operator fun invoke(intentions: Flow<Any>, store: Store): Flow<Outcome<S>>
 
     /**
      * Gets the coroutine dispatcher for the feature flow.

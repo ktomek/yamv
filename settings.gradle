@@ -17,7 +17,6 @@ dependencyResolutionManagement {
 rootProject.name = "yamv"
 
 include ':app'
-include ':yamv'
-include ':processor'
-include ':annotations'
 include ':core'
+include ':processor'
+include ':yamv'
