@@ -11,7 +11,3 @@ val increaseFeature = typedFeature<CounterState, IncreaseCounterIntention> { _, 
     StateOutcome { it.copy(count = it.count + 1) }
 }
 
-@AutoFeature
-val increaseFeatureV2 = typedFeature<CounterState, IncreaseCounterIntention> { _, _ ->
-    StateOutcome { it.copy(count = it.count + 1) }
-}

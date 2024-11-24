@@ -6,6 +6,7 @@ import com.ktomek.yamv.ui.counter.logic.state.CounterState
 
 typealias CounterOutcome = Outcome<CounterState>
 typealias CounterOutcomeWithReducer = StateOutcome<CounterState>
+object EmptyCounterOutcome: Outcome<CounterState>
 
 data class ChangeCounterOutcome(val value: Int) : StateOutcome<CounterState> {
     override fun reduce(prevState: CounterState): CounterState =
