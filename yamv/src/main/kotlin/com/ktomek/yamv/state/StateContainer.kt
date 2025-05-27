@@ -4,7 +4,6 @@ import com.ktomek.yamv.core.EffectOutcome
 import com.ktomek.yamv.core.IntentionOutcome
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.core.StateOutcome
-import com.ktomek.yamv.intention.GlobalIntention
 import com.ktomek.yamv.intention.IntentionDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.update
