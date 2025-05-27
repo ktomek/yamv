@@ -1,6 +1,7 @@
 package com.ktomek.yamv.ui.counter.logic.feature
 
 import com.ktomek.yamv.annotations.AutoFeature
+import com.ktomek.yamv.feature.FunctionTypedFeature
 import com.ktomek.yamv.feature.TypedFeature
 import com.ktomek.yamv.state.Store
 import com.ktomek.yamv.ui.counter.logic.DecreaseCounterIntention
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @AutoFeature
 class DecreaseFeature @Inject constructor() :
-    TypedFeature<CounterState, DecreaseCounterIntention>() {
-    override suspend fun invoke(intention: DecreaseCounterIntention, store: Store): CounterOutcome =
+    FunctionTypedFeature<CounterState, DecreaseCounterIntention> {
+    override suspend fun invoke(intention: DecreaseCounterIntention): CounterOutcome =
         withContext(Dispatchers.Default) { DecreaseCounterOutcome }
 }

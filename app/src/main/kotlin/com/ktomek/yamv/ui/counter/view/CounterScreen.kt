@@ -19,11 +19,12 @@ import com.ktomek.yamv.ui.counter.logic.IncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoIncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.state.CounterState
-import com.ktomek.yamv.ui.counter.logic.state.CounterStateStore
+import com.ktomek.yamv.ui.counter.logic.state.CounterStateContainerHost
+
 
 @Composable
 fun CounterScreen(
-    store: CounterStateStore = hiltStateStore()
+    store: CounterStateContainerHost = hiltStateStore()
 ) {
     val state: CounterState by store.state.collectAsState(initial = CounterState(0))
 

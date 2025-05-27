@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ktomek.yamv.core.EffectOutcome
 import com.ktomek.yamv.core.State
+import com.ktomek.yamv.feature.Feature
+import com.ktomek.yamv.intention.DefaultIntentionDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -11,16 +15,23 @@ import kotlinx.coroutines.flow.StateFlow
  * Abstract class representing a ViewModel-based state store.
  *
  * @param S The type of the state.
- * @param O The type of the outcome that produces the new state.
- * @param E The type of the effect outcome.
  * @param stateContainerFactory The factory to create the state container.
  */
-abstract class ViewModelStateStore<S : State>(
-    stateContainerFactory: StateContainerFactory<S>,
-) : ViewModel(), StateStore<S, EffectOutcome<S>> {
+open class StateContainerHost<S : State>(
+    private val features: Set<Feature<S>>,
+    private val defaultState: S,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
+) : ViewModel(), StateStore<S> {
 
-    private val stateContainer: StateContainer<S> =
-        stateContainerFactory.create(viewModelScope)
+    private val stateContainer: StateContainer<S> = StateContainer(
+        intentionDispatcher = DefaultIntentionDispatcher<S>(
+            features = features,
+            scope = viewModelScope,
+            dispatcher = dispatcher
+        ),
+        scope = viewModelScope,
+        defaultState = defaultState
+    )
 
     /**
      * The current state as a [StateFlow].
@@ -40,15 +51,6 @@ abstract class ViewModelStateStore<S : State>(
      */
     override fun dispatch(intention: Any) {
         stateContainer.dispatchIntention(intention)
-    }
-
-    /**
-     * Invokes the store with an intention.
-     *
-     * @param intention The intention to be invoked.
-     */
-    override operator fun invoke(intention: Any) {
-        dispatch(intention)
     }
 
     /**

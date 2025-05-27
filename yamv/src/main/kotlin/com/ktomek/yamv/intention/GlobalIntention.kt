@@ -1,3 +1,3 @@
 package com.ktomek.yamv.intention
 
-interface GlobalIntention
+internal interface GlobalIntention

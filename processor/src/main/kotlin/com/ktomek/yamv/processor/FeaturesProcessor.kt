@@ -81,9 +81,8 @@ fun YamvProcessor.getFeatureClasses(resolver: Resolver) =
                         val superTypeDecl = superType.resolve().declaration
                         val qualifiedName = superTypeDecl.qualifiedName?.asString()
                         val isFeatureOrFeatureFlow = qualifiedName in listOf(
-                            "com.ktomek.yamv.feature.Feature",
-                            "com.ktomek.yamv.feature.FeatureFlow",
-                            "com.ktomek.yamv.feature.TypedFeature"
+                            "com.ktomek.yamv.feature.Feature.FlowFeature",
+                            "com.ktomek.yamv.feature.FunctionTypedFeature"
                         )
                         isFeatureOrFeatureFlow
                     }
@@ -93,7 +92,7 @@ fun YamvProcessor.getFeatureClasses(resolver: Resolver) =
                     val superTypeDecl = feature.type.resolve().declaration
                     val qualifiedName = superTypeDecl.qualifiedName?.asString()
                     val isFeatureOrFeatureFlow = qualifiedName in listOf(
-                        "com.ktomek.yamv.feature.TypedFeature",
+                        "com.ktomek.yamv.feature.FunctionTypedFeature",
                     )
                     isFeatureOrFeatureFlow
                 }
@@ -132,7 +131,7 @@ private fun YamvProcessor.generateFeaturesModule(
                     Set::class.asClassName().parameterizedBy(
                         ClassName(
                             "com.ktomek.yamv.feature",
-                            "FeatureFlow"
+                            "Feature"
                         ).parameterizedBy(ClassName(packageName, stateName))
                     )
                 )
@@ -150,7 +149,7 @@ private fun YamvProcessor.generateFeaturesModule(
                 val superTypeName = superTypeDeclaration.qualifiedName?.asString() ?: ""
 
                 when (superTypeName) {
-                    "com.ktomek.yamv.feature.TypedFeature" -> {
+                    "com.ktomek.yamv.feature.FunctionTypedFeature" -> {
                         val bindFunction = FunSpec.builder("provides$featureClass")
                             .addAnnotation(ClassName("dagger", "Provides"))
                             .addAnnotation(ClassName("dagger.multibindings", "IntoSet"))
@@ -226,23 +225,19 @@ private fun determineFeatureType(
 
         // Check if the superinterface is Feature or FeatureFlow
         when (superTypeName) {
-            "com.ktomek.yamv.feature.Feature" ->
+            "com.ktomek.yamv.feature.Feature.FeatureFlow" ->
                 return ClassName("com.ktomek.yamv.feature", "Feature")
                     .parameterizedBy(ClassName(packageName, stateName))
 
-            "com.ktomek.yamv.feature.FeatureFlow" ->
-                return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
-                    .parameterizedBy(ClassName(packageName, stateName))
-
-            "com.ktomek.yamv.feature.TypedFeature" -> {
-                return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
+            "com.ktomek.yamv.feature.FunctionTypedFeature" -> {
+                return ClassName("com.ktomek.yamv.feature", "Feature")
                     .parameterizedBy(ClassName(packageName, stateName))
             }
         }
     }
 
     // Default to FeatureFlow if no matching superinterface is found (or adjust as necessary)
-    return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
+    return ClassName("com.ktomek.yamv.feature", "Feature")
         .parameterizedBy(ClassName(packageName, stateName))
 }
 
@@ -258,21 +253,21 @@ private fun determinePropertyFeatureType(
 
     // Check if the superinterface is Feature or FeatureFlow
     when (superTypeName) {
-        "com.ktomek.yamv.feature.Feature" ->
+//        "com.ktomek.yamv.feature.Feature" ->
+//            return ClassName("com.ktomek.yamv.feature", "Feature")
+//                .parameterizedBy(ClassName(packageName, stateName))
+
+        "com.ktomek.yamv.feature.Feature.FlowFeature" ->
             return ClassName("com.ktomek.yamv.feature", "Feature")
                 .parameterizedBy(ClassName(packageName, stateName))
 
-        "com.ktomek.yamv.feature.FeatureFlow" ->
-            return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
-                .parameterizedBy(ClassName(packageName, stateName))
-
         "com.ktomek.yamv.feature.TypedFeature" -> {
-            return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
+            return ClassName("com.ktomek.yamv.feature", "Feature")
                 .parameterizedBy(ClassName(packageName, stateName))
         }
     }
 
     // Default to FeatureFlow if no matching superinterface is found (or adjust as necessary)
-    return ClassName("com.ktomek.yamv.feature", "FeatureFlow")
+    return ClassName("com.ktomek.yamv.feature", "Feature")
         .parameterizedBy(ClassName(packageName, stateName))
 }

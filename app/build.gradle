@@ -53,8 +53,6 @@ dependencies {
 
     implementation libs.bundles.compose
 
-    implementation libs.androidx.material.icons.core
-    implementation libs.androidx.material.icons.extended
     implementation libs.accompanist.navigation.animation
     implementation libs.androidx.lifecycle.runtime.ktx
 

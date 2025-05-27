@@ -4,8 +4,6 @@ import com.ktomek.yamv.core.EffectOutcome
 import com.ktomek.yamv.core.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Interface representing a store that can observe states.
@@ -27,7 +25,7 @@ interface Store {
  * @param S The type of the state.
  * @param E The type of the effect outcome.
  */
-interface StateStore<S : State, E : EffectOutcome<S>> {
+interface StateStore<S : State> {
     /**
      * The current state as a [StateFlow].
      */
@@ -36,7 +34,7 @@ interface StateStore<S : State, E : EffectOutcome<S>> {
     /**
      * The effects as a [Flow].
      */
-    val effects: Flow<E>
+    val effects: Flow<EffectOutcome<S>>
 
     /**
      * Dispatches an intention.
@@ -44,13 +42,6 @@ interface StateStore<S : State, E : EffectOutcome<S>> {
      * @param intention The intention to be dispatched.
      */
     fun dispatch(intention: Any)
-
-    /**
-     * Invokes the store with an intention.
-     *
-     * @param intention The intention to be invoked.
-     */
-    operator fun invoke(intention: Any)
 }
 
 /**
@@ -91,8 +82,7 @@ internal interface InternalStore : Store {
  *
  * @constructor Creates an instance of [DefaultStore].
  */
-@Singleton
-class DefaultStore @Inject constructor() : InternalStore {
+class DefaultStore : InternalStore {
 
     private val mvs = mutableMapOf<Class<out State>, StateContainer<*>>()
 
@@ -102,7 +92,7 @@ class DefaultStore @Inject constructor() : InternalStore {
      * @param stateContainer The state container to be registered.
      */
     override fun register(stateContainer: StateContainer<*>) {
-        mvs[stateContainer.stateType] = stateContainer
+        mvs[stateContainer.defaultState.javaClass] = stateContainer
     }
 
     /**
@@ -111,7 +101,7 @@ class DefaultStore @Inject constructor() : InternalStore {
      * @param stateContainer The state container to be unregistered.
      */
     override fun unregister(stateContainer: StateContainer<*>) {
-        mvs.remove(stateContainer.stateType)
+        mvs.remove(stateContainer.defaultState.javaClass)
     }
 
     /**

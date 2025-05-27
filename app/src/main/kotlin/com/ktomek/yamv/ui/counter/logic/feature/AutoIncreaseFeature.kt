@@ -1,7 +1,8 @@
 package com.ktomek.yamv.ui.counter.logic.feature
 
 import com.ktomek.yamv.annotations.AutoFeature
-import com.ktomek.yamv.feature.FeatureFlow
+import com.ktomek.yamv.feature.Feature
+import com.ktomek.yamv.feature.Feature.FlowFeature
 import com.ktomek.yamv.state.Store
 import com.ktomek.yamv.ui.counter.logic.AutoIncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoIncreaseCounterIntention
@@ -10,8 +11,6 @@ import com.ktomek.yamv.ui.counter.logic.outcome.ChangeCounterOutcome
 import com.ktomek.yamv.ui.counter.logic.outcome.CounterOutcome
 import com.ktomek.yamv.ui.counter.logic.state.CounterState
 import hu.akarnokd.kotlin.flow.takeUntil
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
@@ -28,12 +27,9 @@ import kotlin.time.Duration.Companion.seconds
 
 @AutoFeature
 class AutoIncreaseFeature
-@Inject constructor() : FeatureFlow<CounterState>() {
-    override val dispatcher: CoroutineDispatcher
-        get() = Dispatchers.Default
+@Inject constructor() : FlowFeature<CounterState> {
 
-    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-    override suspend fun invoke(intentions: Flow<Any>, store: Store): Flow<CounterOutcome> =
+    override fun invoke(intentions: Flow<Any>): Flow<CounterOutcome> =
         intentions
             .filter { it is AutoIncreaseCounterIntention }
             .flatMapMerge {
