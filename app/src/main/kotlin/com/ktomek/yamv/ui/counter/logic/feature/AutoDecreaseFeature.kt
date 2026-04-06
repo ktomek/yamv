@@ -1,8 +1,7 @@
 package com.ktomek.yamv.ui.counter.logic.feature
 
 import com.ktomek.yamv.annotations.AutoFeature
-import com.ktomek.yamv.feature.FeatureFlow
-import com.ktomek.yamv.state.Store
+import com.ktomek.yamv.feature.Feature.FlowFeature
 import com.ktomek.yamv.ui.counter.logic.AutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.outcome.AutoDecreaseCounterOutcome
@@ -16,7 +15,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onCompletion
@@ -26,17 +24,13 @@ import kotlin.time.Duration.Companion.seconds
 
 @AutoFeature
 class AutoDecreaseFeature
-@Inject constructor() : FeatureFlow<CounterState>() {
+@Inject constructor() : FlowFeature<CounterState> {
 
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-    override suspend fun invoke(intentions: Flow<Any>, store: Store): Flow<CounterOutcome> =
+    override fun invoke(intentions: Flow<Any>): Flow<CounterOutcome> =
         intentions
             .filterIsInstance<AutoDecreaseCounterIntention>()
             .flatMapMerge {
-                store
-                    .observeStates(CounterState::class.java)
-                    .first()
-
                 autoDecreaseFlow()
                     .takeUntil(intentions.filter { it is StopAutoDecreaseCounterIntention })
                     .onStart { emit(AutoDecreaseCounterOutcome(true)) }

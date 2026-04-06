@@ -11,7 +11,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.ktomek.yamv.core.ui.hiltStateStore
 import com.ktomek.yamv.ui.counter.logic.AutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.AutoIncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.DecreaseCounterIntention
@@ -20,12 +19,13 @@ import com.ktomek.yamv.ui.counter.logic.StopAutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoIncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.state.CounterState
 import com.ktomek.yamv.ui.counter.logic.state.CounterStateStore
+import com.ktomek.yamv.viewmodel.hiltMviStore
 
 @Composable
 fun CounterScreen(
-    store: CounterStateStore = hiltStateStore()
+    store: CounterStateStore = hiltMviStore<CounterStateStore>()
 ) {
-    val state: CounterState by store.state.collectAsState(initial = CounterState(0))
+    val state: CounterState by store.state.collectAsState()
 
     Counter(
         counter = state.count,

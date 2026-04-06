@@ -18,5 +18,7 @@ rootProject.name = "yamv"
 
 include ':app'
 include ':core'
-include ':processor'
+include ':processor-core'
+include ':processor-hilt'
 include ':yamv'
+include ':yamv-viewmodel'

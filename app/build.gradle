@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.ktomek.yamv"
@@ -31,9 +31,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17" // Match Kotlin target to Java version
-    }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -43,18 +40,23 @@ android {
     namespace 'com.ktomek.yamv'
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
 dependencies {
     implementation project(":core")
-    ksp project(':processor')
+    ksp project(':processor-hilt')
     implementation project(':yamv')
+    implementation project(':yamv-viewmodel')
 
 
     implementation libs.androidx.core.ktx
 
     implementation libs.bundles.compose
 
-    implementation libs.androidx.material.icons.core
-    implementation libs.androidx.material.icons.extended
     implementation libs.accompanist.navigation.animation
     implementation libs.androidx.lifecycle.runtime.ktx
 

@@ -2,9 +2,7 @@ package com.ktomek.yamv.feature
 
 import com.ktomek.yamv.core.Outcome
 import com.ktomek.yamv.core.State
-import com.ktomek.yamv.state.Store
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Abstract class representing a typed feature that processes intentions and produces outcomes.
@@ -12,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
  * @param S The type of the outcome produced by the feature.
  * @param INTENTION The type of the intention processed by the feature.
  */
-abstract class TypedFeature<S : State, INTENTION> : IFeature by DefaultFeature() {
+fun interface TypedFeature<S : State, INTENTION> {
     /**
      * Receives an intention and produces an outcome.
      *
@@ -20,21 +18,13 @@ abstract class TypedFeature<S : State, INTENTION> : IFeature by DefaultFeature()
      * @param store The store to be used in the feature function.
      * @return The outcome produced by the feature function.
      */
-    abstract suspend operator fun invoke(intention: INTENTION, store: Store): Outcome<S>
+    operator fun invoke(intention: Flow<INTENTION>): Flow<Outcome<S>>
+}
 
-    /**
-     * Gets the coroutine scope for the feature.
-     *
-     * @return The coroutine scope used internally by the feature.
-     */
-    val featureScope: CoroutineScope
-        get() = internalFeatureScope
+interface TypedFeatureHolder<S : State> : Feature.FlowFeature<S> {
+    val feature: Any
+}
 
-    /**
-     * Gets the coroutine dispatcher for the feature.
-     *
-     * @return The coroutine dispatcher used by the feature, or null if not specified.
-     */
-    open val dispatcher: CoroutineDispatcher?
-        get() = null
+interface TypedUnitFeatureHolder<S : State> : Feature.FlowFeature<S> {
+    val feature: Any
 }
