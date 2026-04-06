@@ -2,8 +2,6 @@ package com.ktomek.yamv.ui.counter.logic.feature
 
 import com.ktomek.yamv.annotations.AutoFeature
 import com.ktomek.yamv.feature.FunctionTypedFeature
-import com.ktomek.yamv.feature.TypedFeature
-import com.ktomek.yamv.state.Store
 import com.ktomek.yamv.ui.counter.logic.DecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.outcome.CounterOutcome
 import com.ktomek.yamv.ui.counter.logic.outcome.DecreaseCounterOutcome
