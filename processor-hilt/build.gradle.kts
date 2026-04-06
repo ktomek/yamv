@@ -21,6 +21,7 @@ kotlin {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":processor-core"))
     implementation(libs.ksp.api)
 
     annotationProcessor(libs.auto.service)
