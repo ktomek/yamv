@@ -6,7 +6,7 @@ import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.Feature.FlowFeature
 import com.ktomek.yamv.feature.Feature.FlowUnitFeature
 import com.ktomek.yamv.feature.TypedFeatureHolder
-import com.ktomek.yamv.state.YamvDispatcherProvider
+import com.ktomek.yamv.state.CoroutineDispatcherConfig
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -20,11 +20,11 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * Base MVI dispatcher which is taking intentions and sending them to features.
+ * Base MVI router which is taking intentions and sending them to features.
  */
-class DefaultIntentionDispatcher<S : State>(
+internal class FeatureRouter<S : State>(
     private val features: Set<Feature<S>>,
-) : IntentionDispatcher<S> {
+) : IntentionRouter<S> {
 
     private lateinit var featureJobs: List<Job>
     private val outcomeFlow = MutableSharedFlow<Outcome<S>>()
@@ -37,33 +37,33 @@ class DefaultIntentionDispatcher<S : State>(
     private val remainingToSubscribe = AtomicInteger(features.size)
 
     override suspend fun dispatchIntention(intention: Any) {
-        if (isDisposed.get()) error("Dispatcher has been disposed")
-        if (!isInitialized.get()) error("Dispatcher has not been initialized")
+        if (isDisposed.get()) error("Router has been disposed")
+        if (!isInitialized.get()) error("Router has not been initialized")
         subscribed.await()
         intentionFlow.emit(intention)
     }
 
-    override fun initialize(scope: CoroutineScope, dispatcher: YamvDispatcherProvider) {
+    override fun initialize(scope: CoroutineScope, dispatcherConfig: CoroutineDispatcherConfig) {
         check(!isInitialized.getAndSet(true)) {
-            "Dispatcher has already been initialized"
+            "Router has already been initialized"
         }
 
         if (features.isEmpty()) {
             subscribed.complete(Unit)
             return
         }
-        
+
         featureJobs = features.map { feature ->
             val f = (feature as? TypedFeatureHolder)?.feature ?: feature
-            scope.launch(dispatcher.provideFeatureDispatcher(f)) {
+            scope.launch(dispatcherConfig.provideFeatureDispatcher(f)) {
                 processFeature(feature)
             }
         }
     }
 
     override fun observeOutcomes(): SharedFlow<Outcome<S>> {
-        if (isDisposed.get()) error("Dispatcher has been disposed")
-        if (!isInitialized.get()) error("Dispatcher has not been initialized")
+        if (isDisposed.get()) error("Router has been disposed")
+        if (!isInitialized.get()) error("Router has not been initialized")
         return outcomeFlow.asSharedFlow()
     }
 
@@ -74,10 +74,10 @@ class DefaultIntentionDispatcher<S : State>(
                 .filterNotNull()
                 .collect(outcomeFlow::emit)
 
-                is FlowUnitFeature<S> -> feature(intentionFlow)
-                    .onStart { markSubscribed() }
-                    .collect { }
-            }
+            is FlowUnitFeature<S> -> feature(intentionFlow)
+                .onStart { markSubscribed() }
+                .collect { }
+        }
     }
 
     private fun markSubscribed() {
@@ -88,7 +88,7 @@ class DefaultIntentionDispatcher<S : State>(
 
     fun shutdown() {
         if (isDisposed.getAndSet(true)) return
-        
+
         featureJobs.forEach { job ->
             try {
                 // Cancel the job properly using the Job's cancel method

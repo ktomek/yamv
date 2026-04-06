@@ -3,18 +3,17 @@ package com.ktomek.yamv.state
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 
-data class StateContainerConfig<S : State>(
+data class MviRuntimeConfig<S : State>(
     internal val features: Set<Feature<S>>,
     internal val dispatcher: CoroutineDispatcher,
     internal val defaultState: S,
 )
 
 /**
- * Builder for StateContainerConfig to enable DSL-style construction.
+ * Builder for MviRuntimeConfig to enable DSL-style construction.
  */
-class StateContainerBuilder<S : State> {
+class MviRuntimeBuilder<S : State> {
     private val features = mutableSetOf<Feature<S>>()
     private lateinit var dispatcher: CoroutineDispatcher
     private lateinit var defaultState: S
@@ -40,9 +39,9 @@ class StateContainerBuilder<S : State> {
     fun defaultState(state: S) = apply { defaultState = state }
 
     /**
-     * Build the final StateContainerConfig.
+     * Build the final MviRuntimeConfig.
      */
-    fun build(): StateContainerConfig<S> = StateContainerConfig(
+    fun build(): MviRuntimeConfig<S> = MviRuntimeConfig(
         features = features,
         dispatcher = dispatcher,
         defaultState = defaultState
@@ -50,7 +49,7 @@ class StateContainerBuilder<S : State> {
 }
 
 /**
- * DSL entry point for creating StateContainerConfig.
+ * DSL entry point for creating MviRuntimeConfig.
  */
-fun <S : State> stateContainerConfig(block: StateContainerBuilder<S>.() -> Unit): StateContainerConfig<S> =
-    StateContainerBuilder<S>().apply(block).build()
+fun <S : State> mviRuntimeConfig(block: MviRuntimeBuilder<S>.() -> Unit): MviRuntimeConfig<S> =
+    MviRuntimeBuilder<S>().apply(block).build()

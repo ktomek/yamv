@@ -37,4 +37,3 @@ inline fun <reified S : State, reified INTENTION> FunctionTypedFeature<S, INTENT
 inline fun <reified S : State, reified INTENTION> functionTypedFeature(
     crossinline feature: suspend (INTENTION) -> Outcome<S>
 ): Feature<S> = FunctionTypedFeature<S, INTENTION> { feature(it) }.wrap()
-

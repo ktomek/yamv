@@ -26,8 +26,6 @@ dependencies {
     implementation(project(":core"))
     implementation(kotlin("stdlib"))
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.javax.inject)
     testImplementation(libs.bundles.testing.unit)
 }
 
