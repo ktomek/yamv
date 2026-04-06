@@ -6,9 +6,11 @@ import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.Feature.FlowFeature
 import com.ktomek.yamv.feature.Feature.FlowUnitFeature
+import com.ktomek.yamv.state.CoroutineDispatcherConfig
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -18,39 +20,44 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
-
 // Stub State type for testing
 private interface TestState : State
 
 // Alias for outcome type
 private typealias TestOutcome = Outcome<TestState>
 
-class DefaultIntentionDispatcherTest {
+private fun testDispatcherConfig(dispatcher: CoroutineDispatcher) = object : CoroutineDispatcherConfig {
+    override fun provideIntentionDispatcher(intention: Any?) = dispatcher
+    override fun provideReducerDispatcher() = dispatcher
+    override fun provideFeatureDispatcher(feature: Any) = dispatcher
+}
+
+class FeatureRouterTest {
 
     @Test
-    fun `GIVEN a dispatcher with no features WHEN dispatching intentions THEN no outcomes are emitted`() =
+    fun `GIVEN a router with no features WHEN dispatching intentions THEN no outcomes are emitted`() =
         runTest {
-            // Arrange — create a dispatcher tied to this test scheduler
+            // Arrange — create a router tied to this test scheduler
             val testDispatcher = StandardTestDispatcher(testScheduler)
-            val dispatcher = DefaultIntentionDispatcher<TestState>(
+            val router = FeatureRouter<TestState>(
                 features = emptySet()
             )
 
-            dispatcher.initialize(this, testDispatcher)
+            router.initialize(this, testDispatcherConfig(testDispatcher))
 
             // When / Then
-            dispatcher.observeOutcomes().test {
+            router.observeOutcomes().test {
                 expectNoEvents()
             }
-            dispatcher.dispatchIntention("any")
+            router.dispatchIntention("any")
             testDispatcher.scheduler.advanceUntilIdle()
-            dispatcher.observeOutcomes().test {
+            router.observeOutcomes().test {
                 expectNoEvents()
             }
         }
 
     @Test
-    fun `GIVEN a dispatcher with one feature WHEN dispatching an intention THEN the feature processes it and emits an outcome`() =
+    fun `GIVEN a router with one feature WHEN dispatching an intention THEN the feature processes it and emits an outcome`() =
         runTest {
             // Arrange
             val testDispatcher = StandardTestDispatcher(testScheduler)
@@ -60,23 +67,23 @@ class DefaultIntentionDispatcherTest {
                     firstArg<Flow<Any>>().map { outcome }
                 }
             }
-            val dispatcher = DefaultIntentionDispatcher(
+            val router = FeatureRouter(
                 features = setOf<Feature<TestState>>(feature)
             )
 
-            dispatcher.initialize(this, testDispatcher)
+            router.initialize(this, testDispatcherConfig(testDispatcher))
             testDispatcher.scheduler.advanceUntilIdle()
 
             // When & Then
-            dispatcher.observeOutcomes().test {
-                dispatcher.dispatchIntention("first")
+            router.observeOutcomes().test {
+                router.dispatchIntention("first")
                 testDispatcher.scheduler.advanceUntilIdle()
                 assertEquals(outcome, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
             verify(exactly = 1) { feature.invoke(any()) }
-            // Cancel feature coroutines launched by dispatcher to avoid leaked coroutines after runTest
-            dispatcher.shutdown()
+            // Cancel feature coroutines launched by router to avoid leaked coroutines after runTest
+            router.shutdown()
         }
 
     @Test
@@ -90,20 +97,20 @@ class DefaultIntentionDispatcherTest {
                     firstArg<Flow<Any>>().map { outcome }
                 }
             }
-            val dispatcher = DefaultIntentionDispatcher(
+            val router = FeatureRouter(
                 features = setOf<Feature<TestState>>(feature)
             )
 
-            dispatcher.initialize(this, testDispatcher)
+            router.initialize(this, testDispatcherConfig(testDispatcher))
 
             // When
-            dispatcher.dispatchIntention("first")
-            dispatcher.dispatchIntention("second")
+            router.dispatchIntention("first")
+            router.dispatchIntention("second")
             testDispatcher.scheduler.advanceUntilIdle()
 
             // Then
             verify(exactly = 1) { feature.invoke(any()) }
-            dispatcher.shutdown()
+            router.shutdown()
         }
 
     @Test
@@ -117,32 +124,32 @@ class DefaultIntentionDispatcherTest {
                     firstArg<Flow<Any>>().map { outcome }
                 }
             }
-            val dispatcher = DefaultIntentionDispatcher(
+            val router = FeatureRouter(
                 features = setOf<Feature<TestState>>(feature)
             )
 
-            dispatcher.initialize(this, testDispatcher)
+            router.initialize(this, testDispatcherConfig(testDispatcher))
 
             // When & Then
-            dispatcher.observeOutcomes().test {
-                dispatcher.dispatchIntention("something")
+            router.observeOutcomes().test {
+                router.dispatchIntention("something")
                 testDispatcher.scheduler.advanceUntilIdle()
                 assertEquals(outcome, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
             verify(exactly = 1) { feature.invoke(any()) }
-            dispatcher.shutdown()
+            router.shutdown()
         }
 
     @Test
     fun `GIVEN dispatchIntention called before initialize WHEN dispatching THEN throws`() =
         runTest {
             // Arrange
-            val dispatcher = DefaultIntentionDispatcher<TestState>(features = emptySet())
+            val router = FeatureRouter<TestState>(features = emptySet())
 
             // Act / Assert
             try {
-                dispatcher.dispatchIntention("x")
+                router.dispatchIntention("x")
                 fail("Expected IllegalStateException when dispatching before initialize")
             } catch (e: IllegalStateException) {
                 // expected
@@ -153,11 +160,11 @@ class DefaultIntentionDispatcherTest {
     fun `GIVEN observeOutcomes called before initialize WHEN observing THEN throws`() =
         runTest {
             // Arrange
-            val dispatcher = DefaultIntentionDispatcher<TestState>(features = emptySet())
+            val router = FeatureRouter<TestState>(features = emptySet())
 
             // Act / Assert
             try {
-                dispatcher.observeOutcomes()
+                router.observeOutcomes()
                 fail("Expected IllegalStateException when observing before initialize")
             } catch (e: IllegalStateException) {
                 // expected
@@ -167,13 +174,13 @@ class DefaultIntentionDispatcherTest {
     @Test
     fun `GIVEN initialize called twice WHEN second initialize THEN throws`() =
         runTest {
-            val dispatcher = DefaultIntentionDispatcher<TestState>(features = emptySet())
             val testDispatcher = StandardTestDispatcher(testScheduler)
+            val router = FeatureRouter<TestState>(features = emptySet())
 
-            dispatcher.initialize(this, testDispatcher)
+            router.initialize(this, testDispatcherConfig(testDispatcher))
 
             try {
-                dispatcher.initialize(this, testDispatcher)
+                router.initialize(this, testDispatcherConfig(testDispatcher))
                 fail("Expected IllegalStateException when initializing twice")
             } catch (e: IllegalStateException) {
                 // expected
@@ -190,19 +197,19 @@ class DefaultIntentionDispatcherTest {
                     firstArg<Flow<Any>>().map { Unit }
                 }
             }
-            val dispatcher = DefaultIntentionDispatcher(features = setOf(unitFeature))
+            val router = FeatureRouter(features = setOf(unitFeature))
 
-            dispatcher.initialize(this, testDispatcher)
+            router.initialize(this, testDispatcherConfig(testDispatcher))
 
             // When / Then
-            dispatcher.observeOutcomes().test {
-                dispatcher.dispatchIntention("intent")
+            router.observeOutcomes().test {
+                router.dispatchIntention("intent")
                 testDispatcher.scheduler.advanceUntilIdle()
                 expectNoEvents()
             }
 
             verify(exactly = 1) { unitFeature.invoke(any()) }
-            dispatcher.shutdown()
+            router.shutdown()
         }
 
     @Test
@@ -222,13 +229,13 @@ class DefaultIntentionDispatcherTest {
                     firstArg<Flow<Any>>().map { outcome2 }
                 }
             }
-            val dispatcher = DefaultIntentionDispatcher<TestState>(features = setOf(feature1, feature2))
+            val router = FeatureRouter<TestState>(features = setOf(feature1, feature2))
 
-            dispatcher.initialize(this, testDispatcher)
+            router.initialize(this, testDispatcherConfig(testDispatcher))
 
             // When / Then
-            dispatcher.observeOutcomes().test {
-                dispatcher.dispatchIntention("i")
+            router.observeOutcomes().test {
+                router.dispatchIntention("i")
                 testDispatcher.scheduler.advanceUntilIdle()
                 // Collect two outcomes in any order
                 val items = listOf(awaitItem(), awaitItem())
@@ -237,7 +244,7 @@ class DefaultIntentionDispatcherTest {
             }
             verify(exactly = 1) { feature1.invoke(any()) }
             verify(exactly = 1) { feature2.invoke(any()) }
-            dispatcher.shutdown()
+            router.shutdown()
         }
 
     @Test
@@ -251,19 +258,19 @@ class DefaultIntentionDispatcherTest {
                     firstArg<Flow<Any>>().map { outcome }
                 }
             }
-            val dispatcher = DefaultIntentionDispatcher(features = setOf(feature))
+            val router = FeatureRouter(features = setOf(feature))
 
-            dispatcher.initialize(this, testDispatcher)
+            router.initialize(this, testDispatcherConfig(testDispatcher))
 
             // Start two concurrent collectors
             val job1 = launch {
-                dispatcher.observeOutcomes().test {
+                router.observeOutcomes().test {
                     assertEquals(outcome, awaitItem())
                     cancelAndIgnoreRemainingEvents()
                 }
             }
             val job2 = launch {
-                dispatcher.observeOutcomes().test {
+                router.observeOutcomes().test {
                     assertEquals(outcome, awaitItem())
                     cancelAndIgnoreRemainingEvents()
                 }
@@ -273,13 +280,13 @@ class DefaultIntentionDispatcherTest {
             testDispatcher.scheduler.advanceUntilIdle()
 
             // When
-            dispatcher.dispatchIntention("i")
+            router.dispatchIntention("i")
             testDispatcher.scheduler.advanceUntilIdle()
 
             job1.join()
             job2.join()
 
             verify(exactly = 1) { feature.invoke(any()) }
-            dispatcher.shutdown()
+            router.shutdown()
         }
- }
+}
