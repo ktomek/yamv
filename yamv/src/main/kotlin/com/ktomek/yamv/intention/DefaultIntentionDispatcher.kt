@@ -13,6 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
@@ -22,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * Base MVI dispatcher which is taking intentions and sending them to features.
  */
 class DefaultIntentionDispatcher<S : State>(
-    private val features: Set<@JvmSuppressWildcards Feature<S>>,
+    private val features: Set<Feature<S>>,
 ) : IntentionDispatcher<S> {
 
     private lateinit var featureJobs: List<Job>
@@ -30,11 +31,13 @@ class DefaultIntentionDispatcher<S : State>(
     private val intentionFlow = MutableSharedFlow<Any>(extraBufferCapacity = 64)
 
     private val isInitialized: AtomicBoolean = AtomicBoolean(false)
+    private val isDisposed: AtomicBoolean = AtomicBoolean(false)
 
     private val subscribed = CompletableDeferred<Unit>()
     private val remainingToSubscribe = AtomicInteger(features.size)
 
     override suspend fun dispatchIntention(intention: Any) {
+        if (isDisposed.get()) error("Dispatcher has been disposed")
         if (!isInitialized.get()) error("Dispatcher has not been initialized")
         subscribed.await()
         intentionFlow.emit(intention)
@@ -49,6 +52,7 @@ class DefaultIntentionDispatcher<S : State>(
             subscribed.complete(Unit)
             return
         }
+        
         featureJobs = features.map { feature ->
             val f = (feature as? TypedFeatureHolder)?.feature ?: feature
             scope.launch(dispatcher.provideFeatureDispatcher(f)) {
@@ -58,6 +62,7 @@ class DefaultIntentionDispatcher<S : State>(
     }
 
     override fun observeOutcomes(): SharedFlow<Outcome<S>> {
+        if (isDisposed.get()) error("Dispatcher has been disposed")
         if (!isInitialized.get()) error("Dispatcher has not been initialized")
         return outcomeFlow.asSharedFlow()
     }
@@ -66,12 +71,13 @@ class DefaultIntentionDispatcher<S : State>(
         when (feature) {
             is FlowFeature<S> -> feature(intentionFlow)
                 .onStart { markSubscribed() }
+                .filterNotNull()
                 .collect(outcomeFlow::emit)
 
-            is FlowUnitFeature<S> -> feature(intentionFlow)
-                .onStart { markSubscribed() }
-                .collect { }
-        }
+                is FlowUnitFeature<S> -> feature(intentionFlow)
+                    .onStart { markSubscribed() }
+                    .collect { }
+            }
     }
 
     private fun markSubscribed() {
@@ -81,6 +87,18 @@ class DefaultIntentionDispatcher<S : State>(
     }
 
     fun shutdown() {
-        featureJobs.forEach { it.cancel() }
+        if (isDisposed.getAndSet(true)) return
+        
+        featureJobs.forEach { job ->
+            try {
+                // Cancel the job properly using the Job's cancel method
+                job.cancel()
+            } catch (e: Exception) {
+                // Log error but don't let it prevent other jobs from being cancelled
+                println("Error cancelling feature job: ${e.message}")
+            }
+        }
     }
+
+    fun isDisposed(): Boolean = isDisposed.get()
 }
