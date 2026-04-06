@@ -5,4 +5,4 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ktomek.yamv.state.StateContainerHost
 
 @Composable
-inline fun <reified C : StateContainerHost<*>> hiltStateContainer(): C = hiltViewModel()
+inline fun <reified C : StateContainerHost<*, *>> hiltStateContainer(): C = hiltViewModel()

@@ -20,3 +20,11 @@ fun interface TypedFeature<S : State, INTENTION> {
      */
     operator fun invoke(intention: Flow<INTENTION>): Flow<Outcome<S>>
 }
+
+interface TypedFeatureHolder<S : State> : Feature.FlowFeature<S> {
+    val feature: Any
+}
+
+interface TypedUnitFeatureHolder<S : State> : Feature.FlowFeature<S> {
+    val feature: Any
+}

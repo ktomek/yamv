@@ -17,19 +17,15 @@ import kotlinx.coroutines.flow.StateFlow
  * @param S The type of the state.
  * @param stateContainerFactory The factory to create the state container.
  */
-open class StateContainerHost<S : State>(
+open class StateContainerHost<S : State, I : Any>(
     private val features: Set<Feature<S>>,
     private val defaultState: S,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
-) : ViewModel(), StateStore<S> {
+    dispatcher: YamvDispatcherProvider,
+) : ViewModel(), StateStore<S, I> {
 
     private val stateContainer: StateContainer<S> = StateContainer(
-        intentionDispatcher = DefaultIntentionDispatcher<S>(
-            features = features,
-            scope = viewModelScope,
-            dispatcher = dispatcher
-        ),
-        scope = viewModelScope,
+        intentionDispatcher = DefaultIntentionDispatcher(features = features),
+        dispatcherProvider = dispatcher,
         defaultState = defaultState
     )
 
@@ -49,7 +45,7 @@ open class StateContainerHost<S : State>(
      *
      * @param intention The intention to be dispatched.
      */
-    override fun dispatch(intention: Any) {
+    override fun dispatch(intention: I) {
         stateContainer.dispatchIntention(intention)
     }
 

@@ -12,7 +12,7 @@ javaxInject = "1"
 kotlinFlowExtensions = "0.0.14"
 kotlinpoetKsp = "1.18.1"
 #plugins
-android = "8.10.0"
+android = "8.13.2"
 kotlin = "2.1.20"
 ksp = "2.1.20-1.0.32"
 detekt = "1.23.8"

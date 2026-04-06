@@ -2,20 +2,22 @@ package com.ktomek.yamv.feature
 
 import com.ktomek.yamv.core.Outcome
 import com.ktomek.yamv.core.State
-import com.ktomek.yamv.state.Store
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 
 inline fun <reified S : State, reified INTENTION> FunctionTypedFeature<S, INTENTION>.wrap(): Feature<S> =
-    Feature.FlowFeature<S> { intentions ->
-        channelFlow {
-            intentions
-                .filterIsInstance<INTENTION>()
-                .map(this@wrap::invoke)
-                .collect(::send)
-        }
+    object : TypedFeatureHolder<S> {
+        override val feature: Any = this@wrap
+
+        override fun invoke(intentions: Flow<Any>): Flow<Outcome<S>> =
+            channelFlow {
+                intentions
+                    .filterIsInstance<INTENTION>()
+                    .map(this@wrap::invoke)
+                    .collect(::send)
+            }
     }
 
 /**
