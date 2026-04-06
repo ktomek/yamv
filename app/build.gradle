@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.ktomek.yamv"
@@ -45,8 +45,9 @@ android {
 
 dependencies {
     implementation project(":core")
-    ksp project(':processor')
+    ksp project(':processor-hilt')
     implementation project(':yamv')
+    implementation project(':yamv-viewmodel')
 
 
     implementation libs.androidx.core.ktx
