@@ -50,7 +50,7 @@ dependencies {
     implementation project(":core")
     ksp project(':processor-hilt')
     implementation project(':yamv')
-    implementation project(':yamv-viewmodel')
+    implementation project(':yamv-hilt')
 
 
     implementation libs.androidx.core.ktx
