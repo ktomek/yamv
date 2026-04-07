@@ -50,7 +50,7 @@ class MviRegistryTest {
         registry.register(runtime)
 
         // Assert
-        val observedState = registry.observeStates(TestState1Impl::class.java)
+        val observedState = registry.observeStates(TestState1Impl::class)
         assertEquals(defaultState, observedState.value)
     }
 
@@ -70,7 +70,7 @@ class MviRegistryTest {
         // Act & Assert
         registry.unregister(runtime)
         assertFailsWith<IllegalStateException> {
-            registry.observeStates(TestState1Impl::class.java)
+            registry.observeStates(TestState1Impl::class)
         }
     }
 
@@ -81,12 +81,10 @@ class MviRegistryTest {
         val defaultState = TestState1Impl(value = "initial")
         var dispatchedIntention: Any? = null
 
-        val feature = object : FlowFeature<TestState1> {
-            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState1>> {
-                return intentions.map { intention ->
-                    dispatchedIntention = intention
-                    StateOutcome { prev -> prev }
-                }
+        val feature = FlowFeature<TestState1> { intentions ->
+            intentions.map { intention ->
+                dispatchedIntention = intention
+                StateOutcome { prev -> prev }
             }
         }
 
