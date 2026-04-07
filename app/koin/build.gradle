@@ -1,0 +1,46 @@
+plugins {
+    alias libs.plugins.application
+    alias libs.plugins.kotlin
+    alias libs.plugins.compose.compiler
+}
+
+android {
+    compileSdk 36
+    defaultConfig {
+        applicationId "com.ktomek.yamv.koin"
+        minSdk 24
+        versionCode 1
+        versionName "1.0"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += 'META-INF/LICENSE.md'
+        }
+    }
+    namespace 'com.ktomek.yamv.koin'
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
+dependencies {
+    implementation project(':app:common')
+    implementation project(':core')
+    implementation project(':yamv')
+
+    implementation libs.androidx.core.ktx
+    implementation libs.bundles.compose
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.koin.android
+    implementation libs.koin.compose
+    implementation libs.timber
+    implementation libs.kotlin.flow.extensions
+}

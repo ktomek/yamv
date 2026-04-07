@@ -53,7 +53,10 @@ internal class StoreGenerator(private val codeGenerator: CodeGenerator) {
     ): ClassName {
         val defaultStateType = stateClass.findAutoStateDefaultType()
         return if (defaultStateType != null && !defaultStateType.declaration.isNoDefaultState()) {
-            ClassName(packageName, "$stateName.${defaultStateType.declaration.simpleName.asString()}")
+            ClassName(
+                packageName,
+                "$stateName.${defaultStateType.declaration.simpleName.asString()}",
+            )
         } else {
             ClassName(packageName, stateName)
         }
@@ -64,9 +67,8 @@ internal class StoreGenerator(private val codeGenerator: CodeGenerator) {
         stateClass: ClassName,
         defaultStateClass: ClassName,
     ): TypeSpec {
-        val featuresType = ClassName("kotlin.collections", "Set").parameterizedBy(
-            YamvKoinClassNames.Feature.parameterizedBy(stateClass)
-        )
+        val featuresType = ClassName("kotlin.collections", "Set")
+            .parameterizedBy(YamvKoinClassNames.Feature.parameterizedBy(stateClass))
         val featuresParam = ParameterSpec.builder("features", featuresType).build()
         val featuresProp = PropertySpec.builder("features", featuresType)
             .addModifiers(KModifier.PRIVATE)
@@ -84,7 +86,10 @@ internal class StoreGenerator(private val codeGenerator: CodeGenerator) {
             .build()
     }
 
-    private fun buildStoreProperty(stateClass: ClassName, defaultStateClass: ClassName): PropertySpec =
+    private fun buildStoreProperty(
+        stateClass: ClassName,
+        defaultStateClass: ClassName
+    ): PropertySpec =
         PropertySpec.builder(
             "store",
             YamvKoinClassNames.MviStore.parameterizedBy(stateClass, ClassName("kotlin", "Any"))

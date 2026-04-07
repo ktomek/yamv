@@ -5,6 +5,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.ktomek.yamv.processor.koin.KoinFeatureFqns.FUNCTION_TYPED_FEATURE
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
@@ -112,7 +113,10 @@ internal class KoinModuleGenerator(private val codeGenerator: CodeGenerator) {
             .addImport("org.koin.dsl", "module")
 
         if (wrapFeatures.isNotEmpty() || propertyFeatures.isNotEmpty()) {
-            fileBuilder.addImport(YamvKoinClassNames.WrapImportPackage, YamvKoinClassNames.WrapImportName)
+            fileBuilder.addImport(
+                YamvKoinClassNames.WrapImportPackage,
+                YamvKoinClassNames.WrapImportName
+            )
         }
 
         fileBuilder
@@ -126,6 +130,6 @@ internal class KoinModuleGenerator(private val codeGenerator: CodeGenerator) {
     }
 
     /** Returns true if this class feature needs `.wrap()` (i.e. it is a FunctionTypedFeature). */
-    private fun KSClassDeclaration.requiresWrap(): Boolean =
-        superTypes.any { it.resolve().declaration.qualifiedName?.asString() == KoinFeatureFqns.FUNCTION_TYPED_FEATURE }
+    private fun KSClassDeclaration.requiresWrap(): Boolean = superTypes
+        .any { it.resolve().declaration.qualifiedName?.asString() == FUNCTION_TYPED_FEATURE }
 }
