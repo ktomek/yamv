@@ -25,7 +25,7 @@ kotlin {
     }
 
     compilerOptions {
-        apiVersion.set(KotlinVersion.KOTLIN_2_1)
+        apiVersion.set(KotlinVersion.KOTLIN_2_0)
     }
 }
 
