@@ -1,7 +1,8 @@
-package com.ktomek.yamv.viewmodel
+package com.ktomek.yamv.hilt
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ktomek.yamv.viewmodel.MviViewModel
 
 /**
  * Returns a Hilt-provided [MviViewModel] instance scoped to the current backstack entry.

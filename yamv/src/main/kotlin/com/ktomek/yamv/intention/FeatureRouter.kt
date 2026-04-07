@@ -16,8 +16,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.atomicfu.AtomicBoolean
+import kotlinx.atomicfu.AtomicInt
+import kotlinx.atomicfu.atomic
 
 /**
  * Base MVI router which is taking intentions and sending them to features.
@@ -30,15 +31,15 @@ internal class FeatureRouter<S : State>(
     private val outcomeFlow = MutableSharedFlow<Outcome<S>>()
     private val intentionFlow = MutableSharedFlow<Any>(extraBufferCapacity = 64)
 
-    private val isInitialized: AtomicBoolean = AtomicBoolean(false)
-    private val isDisposed: AtomicBoolean = AtomicBoolean(false)
+    private val isInitialized: AtomicBoolean = atomic(false)
+    private val isDisposed: AtomicBoolean = atomic(false)
 
     private val subscribed = CompletableDeferred<Unit>()
-    private val remainingToSubscribe = AtomicInteger(features.size)
+    private val remainingToSubscribe: AtomicInt = atomic(features.size)
 
     override suspend fun dispatchIntention(intention: Any) {
-        if (isDisposed.get()) error("Router has been disposed")
-        if (!isInitialized.get()) error("Router has not been initialized")
+        if (isDisposed.value) error("Router has been disposed")
+        if (!isInitialized.value) error("Router has not been initialized")
         subscribed.await()
         intentionFlow.emit(intention)
     }
@@ -62,12 +63,12 @@ internal class FeatureRouter<S : State>(
     }
 
     override fun observeOutcomes(): SharedFlow<Outcome<S>> {
-        if (isDisposed.get()) error("Router has been disposed")
-        if (!isInitialized.get()) error("Router has not been initialized")
+        if (isDisposed.value) error("Router has been disposed")
+        if (!isInitialized.value) error("Router has not been initialized")
         return outcomeFlow.asSharedFlow()
     }
 
-    private suspend fun processFeature(feature: @JvmSuppressWildcards Feature<S>) {
+    private suspend fun processFeature(feature: Feature<S>) {
         when (feature) {
             is FlowFeature<S> -> feature(intentionFlow)
                 .onStart { markSubscribed() }
@@ -100,5 +101,5 @@ internal class FeatureRouter<S : State>(
         }
     }
 
-    fun isDisposed(): Boolean = isDisposed.get()
+    fun isDisposed(): Boolean = isDisposed.value
 }

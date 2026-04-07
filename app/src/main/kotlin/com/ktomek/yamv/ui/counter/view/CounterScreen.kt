@@ -19,7 +19,7 @@ import com.ktomek.yamv.ui.counter.logic.StopAutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoIncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.state.CounterState
 import com.ktomek.yamv.ui.counter.logic.state.CounterStateStore
-import com.ktomek.yamv.viewmodel.hiltMviStore
+import com.ktomek.yamv.hilt.hiltMviStore
 
 @Composable
 fun CounterScreen(
