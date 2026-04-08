@@ -25,6 +25,7 @@ internal object YamvClassNames {
 }
 
 internal object FeatureFqns {
+    const val FEATURE = "com.ktomek.yamv.feature.Feature"
     const val FLOW_FEATURE = "com.ktomek.yamv.feature.Feature.FlowFeature"
     const val FUNCTION_TYPED_FEATURE = "com.ktomek.yamv.feature.FunctionTypedFeature"
     const val TYPED_FEATURE = "com.ktomek.yamv.feature.TypedFeature"

@@ -120,13 +120,18 @@ internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator)
             .addStatement("return emptySet()")
             .build()
 
-    private fun buildPropertyBinding(property: KSPropertyDeclaration, stateClass: ClassName): FunSpec =
-        buildProvidesWithWrap(
+    private fun buildPropertyBinding(property: KSPropertyDeclaration, stateClass: ClassName): FunSpec {
+        val fqn = property.type.resolve().declaration.qualifiedName?.asString()
+        val alreadyWrapped = fqn == FeatureFqns.FEATURE
+        val ref = "${property.packageName.asString()}.${property.simpleName.asString()}"
+        val statement = if (alreadyWrapped) "return $ref" else "return $ref.wrap()"
+        return buildProvidesWithWrap(
             name = "provides${property.simpleName.asString().replaceFirstChar { it.uppercaseChar() }}",
             paramType = null,
             returnType = YamvClassNames.Feature.parameterizedBy(stateClass),
-            statement = "return ${property.packageName.asString()}.${property.simpleName.asString()}.wrap()",
+            statement = statement,
         )
+    }
 
     private fun buildAbstractBinds(name: String, paramType: ClassName, returnType: com.squareup.kotlinpoet.TypeName): FunSpec =
         FunSpec.builder(name)

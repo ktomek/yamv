@@ -53,6 +53,7 @@ internal class FeatureFilter(private val resolver: Resolver) {
         )
         private val KNOWN_PROPERTY_FEATURE_FQNS = setOf(
             FeatureFqns.FUNCTION_TYPED_FEATURE,
+            FeatureFqns.FEATURE,
         )
     }
 }

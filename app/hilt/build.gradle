@@ -62,6 +62,8 @@ dependencies {
     implementation libs.androidx.compose.hilt
     ksp libs.dagger.hilt.compiler
     ksp libs.dagger.hilt.android.compiler
+    ksp project(':processor-core')
+    ksp project(':processor-hilt')
 
     implementation libs.timber
 

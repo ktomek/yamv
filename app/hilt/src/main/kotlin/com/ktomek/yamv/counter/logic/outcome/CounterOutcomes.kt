@@ -1,8 +1,8 @@
-package com.ktomek.yamv.ui.counter.logic.outcome
+package com.ktomek.yamv.counter.logic.outcome
 
 import com.ktomek.yamv.core.Outcome
 import com.ktomek.yamv.core.StateOutcome
-import com.ktomek.yamv.ui.counter.logic.state.CounterState
+import com.ktomek.yamv.counter.logic.state.CounterState
 
 typealias CounterOutcome = Outcome<CounterState>
 typealias CounterOutcomeWithReducer = StateOutcome<CounterState>

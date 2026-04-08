@@ -1,4 +1,4 @@
-package com.ktomek.yamv.ui.counter.logic.state
+package com.ktomek.yamv.counter.logic.state
 
 import com.ktomek.yamv.annotations.AutoState
 import com.ktomek.yamv.core.State

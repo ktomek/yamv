@@ -1,13 +1,13 @@
-package com.ktomek.yamv.ui.counter.logic.feature
+package com.ktomek.yamv.counter.logic.feature
 
 import com.ktomek.yamv.annotations.AutoFeature
 import com.ktomek.yamv.feature.Feature.FlowFeature
+import com.ktomek.yamv.counter.logic.outcome.AutoDecreaseCounterOutcome
+import com.ktomek.yamv.counter.logic.outcome.CounterOutcome
+import com.ktomek.yamv.counter.logic.outcome.DecreaseCounterOutcome
+import com.ktomek.yamv.counter.logic.state.CounterState
 import com.ktomek.yamv.ui.counter.logic.AutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoDecreaseCounterIntention
-import com.ktomek.yamv.ui.counter.logic.outcome.AutoDecreaseCounterOutcome
-import com.ktomek.yamv.ui.counter.logic.outcome.CounterOutcome
-import com.ktomek.yamv.ui.counter.logic.outcome.DecreaseCounterOutcome
-import com.ktomek.yamv.ui.counter.logic.state.CounterState
 import hu.akarnokd.kotlin.flow.takeUntil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
