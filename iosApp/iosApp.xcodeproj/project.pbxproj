@@ -9,10 +9,8 @@
 /* Begin PBXBuildFile section */
 		AA000011 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001 /* iOSApp.swift */; };
 		AA000012 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002 /* ContentView.swift */; };
-		AA000013 /* CounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000003 /* CounterViewModel.swift */; };
-		AA000014 /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000004 /* CounterView.swift */; };
-		AA000015 /* Yamv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA000005 /* Yamv.framework */; };
-		AA000016 /* Yamv.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA000005 /* Yamv.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AA000015 /* Counter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA000005 /* Counter.framework */; };
+		AA000016 /* Counter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA000005 /* Counter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,7 +20,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AA000016 /* Yamv.framework in Embed Frameworks */,
+				AA000016 /* Counter.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -32,9 +30,7 @@
 /* Begin PBXFileReference section */
 		AA000001 /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		AA000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		AA000003 /* CounterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterViewModel.swift; sourceTree = "<group>"; };
-		AA000004 /* CounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterView.swift; sourceTree = "<group>"; };
-		AA000005 /* Yamv.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Yamv.framework; path = "../yamv/build/bin/iosSimulatorArm64/debugFramework/Yamv.framework"; sourceTree = "<group>"; };
+		AA000005 /* Counter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Counter.framework; path = "../app/koin/build/bin/iosSimulatorArm64/debugFramework/Counter.framework"; sourceTree = "<group>"; };
 		AA000006 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA000015 /* Yamv.framework in Frameworks */,
+				AA000015 /* Counter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,18 +58,9 @@
 		AA000041 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AA000005 /* Yamv.framework */,
+				AA000005 /* Counter.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AA000042 /* counter */ = {
-			isa = PBXGroup;
-			children = (
-				AA000003 /* CounterViewModel.swift */,
-				AA000004 /* CounterView.swift */,
-			);
-			path = counter;
 			sourceTree = "<group>";
 		};
 		AA000043 /* iosApp */ = {
@@ -81,7 +68,6 @@
 			children = (
 				AA000001 /* iOSApp.swift */,
 				AA000002 /* ContentView.swift */,
-				AA000042 /* counter */,
 				AA000007 /* Info.plist */,
 			);
 			path = iosApp;
@@ -103,7 +89,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AA000060 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
-				AA000070 /* Run Script - Build Yamv Framework */,
+				AA000070 /* Run Script - Build Counter Framework */,
 				AA000031 /* Sources */,
 				AA000030 /* Frameworks */,
 				AA000032 /* Resources */,
@@ -162,7 +148,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		AA000070 /* Run Script - Build Yamv Framework */ = {
+		AA000070 /* Run Script - Build Counter Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -172,14 +158,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Run Script - Build Yamv Framework";
+			name = "Run Script - Build Counter Framework";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\" && ./gradlew :yamv:linkDebugFrameworkIosSimulatorArm64\n";
+			shellScript = "cd \"$SRCROOT/..\" && ./gradlew :app:koin:linkDebugFrameworkIosSimulatorArm64\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -190,8 +176,6 @@
 			files = (
 				AA000011 /* iOSApp.swift in Sources */,
 				AA000012 /* ContentView.swift in Sources */,
-				AA000013 /* CounterViewModel.swift in Sources */,
-				AA000014 /* CounterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,7 +309,7 @@
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../yamv/build/bin/iosSimulatorArm64/debugFramework",
+					"$(SRCROOT)/../app/koin/build/bin/iosSimulatorArm64/debugFramework",
 				);
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = iosApp/Info.plist;
@@ -354,7 +338,7 @@
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../yamv/build/bin/iosSimulatorArm64/releaseFramework",
+					"$(SRCROOT)/../app/koin/build/bin/iosSimulatorArm64/releaseFramework",
 				);
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = iosApp/Info.plist;
