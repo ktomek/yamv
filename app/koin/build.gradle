@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias libs.plugins.application
     alias libs.plugins.kotlin
@@ -27,7 +29,7 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
@@ -35,6 +37,7 @@ dependencies {
     implementation project(':app:common')
     implementation project(':core')
     implementation project(':yamv')
+    implementation project(':yamv-koin')
 
     implementation libs.androidx.core.ktx
     implementation libs.bundles.compose
@@ -43,4 +46,5 @@ dependencies {
     implementation libs.koin.compose
     implementation libs.timber
     implementation libs.kotlin.flow.extensions
+
 }
