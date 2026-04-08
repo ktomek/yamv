@@ -16,10 +16,13 @@ dependencyResolutionManagement {
 }
 rootProject.name = "yamv"
 
-include ':app'
+include ':app:common'
+include ':app:hilt'
+include ':app:koin'
 include ':core'
 include ':processor-core'
 include ':processor-hilt'
 include ':yamv'
 include ':yamv-viewmodel'
 include ':yamv-hilt'
+include ':yamv-koin'

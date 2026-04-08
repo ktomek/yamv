@@ -1,0 +1,30 @@
+plugins {
+    alias libs.plugins.library
+    alias libs.plugins.kotlin
+    alias libs.plugins.compose.compiler
+}
+
+android {
+    namespace 'com.ktomek.yamv.common'
+    compileSdk 36
+    defaultConfig { minSdk 24 }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
+dependencies {
+    api project(':core')
+    api project(':yamv')
+    implementation libs.bundles.compose
+    implementation libs.kotlin.flow.extensions
+    implementation libs.timber
+    implementation libs.javax.inject
+}
