@@ -5,6 +5,7 @@ import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.Feature.FlowFeature
 import com.ktomek.yamv.feature.Feature.FlowUnitFeature
+import com.ktomek.yamv.feature.HasFeatureScope
 import com.ktomek.yamv.feature.TypedFeatureHolder
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
@@ -12,6 +13,7 @@ import com.ktomek.yamv.state.CoroutineDispatcherConfig
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -60,6 +62,13 @@ internal class FeatureRouter<S : State>(
             return
         }
 
+        scope.coroutineContext[Job]?.invokeOnCompletion {
+            features.forEach { feature ->
+                val f = (feature as? TypedFeatureHolder)?.feature ?: feature
+                (f as? HasFeatureScope)?.featureScope?.cancel()
+            }
+        }
+
         featureJobs = features.map { feature ->
             val f = (feature as? TypedFeatureHolder)?.feature ?: feature
             scope.launch(dispatcherConfig.provideFeatureDispatcher(f)) {
@@ -99,6 +108,11 @@ internal class FeatureRouter<S : State>(
     fun shutdown() {
         if (isDisposed.getAndSet(true)) return
         Yamv.log(YamvLogLevel.INFO, TAG, "Shutting down FeatureRouter")
+
+        features.forEach { feature ->
+            val f = (feature as? TypedFeatureHolder)?.feature ?: feature
+            (f as? HasFeatureScope)?.featureScope?.cancel()
+        }
 
         featureJobs.forEach { job ->
             try {
