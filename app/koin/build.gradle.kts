@@ -45,8 +45,9 @@ kotlin {
             implementation(project(":app:common"))
             implementation(project(":yamv-koin"))
             implementation(libs.koin.core)
+            implementation(libs.koin.compose)
             implementation(libs.kotlinx.coroutines.core)
-            implementation(compose.runtime)
+//            implementation(compose.runtime)
         }
         androidMain.dependencies {
             implementation(compose.material3)
