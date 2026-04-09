@@ -46,6 +46,7 @@ kotlin {
             implementation(project(":yamv-koin"))
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(compose.runtime)
         }
         androidMain.dependencies {
             implementation(compose.material3)
@@ -53,8 +54,7 @@ kotlin {
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.lifecycle.runtime.ktx)
             implementation(libs.timber)
-            implementation(libs.androidx.compose.ui)
-            implementation(libs.androidx.compose.preview)
+
             implementation(libs.accompanist.navigation.animation)
             implementation(libs.androidx.compose.tooling)
             implementation(libs.androidx.ui.test.manifest)
