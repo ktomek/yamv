@@ -5,7 +5,7 @@ import com.ktomek.yamv.core.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 inline fun <reified S : State, reified INTENTION> FunctionTypedFeature<S, INTENTION>.wrap(): Feature<S> =
     object : TypedFeatureHolder<S> {
@@ -15,8 +15,11 @@ inline fun <reified S : State, reified INTENTION> FunctionTypedFeature<S, INTENT
             channelFlow {
                 intentions
                     .filterIsInstance<INTENTION>()
-                    .map(this@wrap::invoke)
-                    .collect(::send)
+                    .collect { intention ->
+                        launch {
+                            send(this@wrap.invoke(intention))
+                        }
+                    }
             }
     }
 
