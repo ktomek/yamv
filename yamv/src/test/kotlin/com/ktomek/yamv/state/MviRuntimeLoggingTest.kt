@@ -2,6 +2,7 @@ package com.ktomek.yamv.state
 
 import com.google.common.truth.Truth.assertThat
 import com.ktomek.yamv.core.State
+import com.ktomek.yamv.core.StateOutcome
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
 import com.ktomek.yamv.logging.YamvLogger
@@ -55,6 +56,30 @@ class MviRuntimeLoggingTest {
 
         assertThat(logs.size).isGreaterThan(logsBefore)
         assertThat(logs.last().first).isEqualTo(YamvLogLevel.INFO)
+    }
+
+    @Test
+    fun `state update is logged at VERBOSE level`() = runTest(dispatcher) {
+        val logs = mutableListOf<Pair<YamvLogLevel, String>>()
+        Yamv.logLevel = YamvLogLevel.VERBOSE
+        Yamv.logger = YamvLogger { level, _, message -> logs.add(level to message) }
+
+        val feature = com.ktomek.yamv.feature.functionTypedFeature<LogTestState, String> { _ ->
+            StateOutcome { state -> state.copy(x = state.x + 1) }
+        }
+
+        val runtime = MviRuntime(
+            features = setOf(feature),
+            defaultState = LogTestState(),
+            dispatcherConfig = DefaultCoroutineDispatcherConfig(dispatcher, dispatcher),
+        )
+        testScheduler.advanceUntilIdle()
+
+        runtime.dispatch("trigger")
+        testScheduler.advanceUntilIdle()
+
+        assertThat(logs.any { it.first == YamvLogLevel.VERBOSE && it.second.contains("State updated") }).isTrue()
+        runtime.clear()
     }
 
     @Test

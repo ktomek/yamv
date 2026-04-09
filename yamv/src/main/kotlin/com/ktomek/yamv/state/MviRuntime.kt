@@ -47,14 +47,20 @@ class MviRuntime<S : State>(
                 .observeOutcomes()
                 .filterIsInstance<Reducer<S>>()
                 .scan(defaultState) { state, reducer -> reducer.reduce(state) }
-                .collect { newState -> stateFlow.update { newState } }
+                .collect { newState ->
+                    Yamv.log(YamvLogLevel.VERBOSE, TAG, "State updated: $newState")
+                    stateFlow.update { newState }
+                }
         }
 
         scope.launch(dispatcherConfig.provideReducerDispatcher()) {
             intentionRouter
                 .observeOutcomes()
                 .filterIsInstance<EffectOutcome<S>>()
-                .collect(effectsFlow::emit)
+                .collect { effect ->
+                    Yamv.log(YamvLogLevel.DEBUG, TAG, "Effect emitted: $effect")
+                    effectsFlow.emit(effect)
+                }
         }
 
         scope.launch(dispatcherConfig.provideIntentionDispatcher(null)) {

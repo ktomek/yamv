@@ -1,9 +1,15 @@
 package com.ktomek.yamv.logging
 
 import com.google.common.truth.Truth.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class YamvLoggerTest {
+
+    @AfterEach
+    fun tearDown() {
+        Yamv.reset()
+    }
 
     @Test
     fun `log levels are ordered from verbose to none`() {
@@ -25,13 +31,11 @@ class YamvLoggerTest {
 
     @Test
     fun `default log level is NONE`() {
-        Yamv.reset()
         assertThat(Yamv.logLevel).isEqualTo(YamvLogLevel.NONE)
     }
 
     @Test
     fun `logger is not called when level is below configured threshold`() {
-        Yamv.reset()
         Yamv.logLevel = YamvLogLevel.WARN
         val received = mutableListOf<String>()
         Yamv.logger = YamvLogger { _, _, message -> received.add(message) }
@@ -44,7 +48,6 @@ class YamvLoggerTest {
 
     @Test
     fun `logger is called when level meets configured threshold`() {
-        Yamv.reset()
         Yamv.logLevel = YamvLogLevel.WARN
         val received = mutableListOf<String>()
         Yamv.logger = YamvLogger { _, _, message -> received.add(message) }
@@ -57,7 +60,6 @@ class YamvLoggerTest {
 
     @Test
     fun `logger receives correct level tag and message`() {
-        Yamv.reset()
         Yamv.logLevel = YamvLogLevel.VERBOSE
         val calls = mutableListOf<Triple<YamvLogLevel, String, String>>()
         Yamv.logger = YamvLogger { level, tag, message -> calls.add(Triple(level, tag, message)) }
@@ -72,7 +74,6 @@ class YamvLoggerTest {
 
     @Test
     fun `NONE level never logs`() {
-        Yamv.reset()
         Yamv.logLevel = YamvLogLevel.VERBOSE
         val received = mutableListOf<String>()
         Yamv.logger = YamvLogger { _, _, message -> received.add(message) }
