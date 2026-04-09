@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.application")
     kotlin("multiplatform")
+    id("com.android.library")
     id("org.jetbrains.compose")
     alias(libs.plugins.compose.compiler)
 }
@@ -11,19 +11,11 @@ android {
     namespace = "com.ktomek.yamv.koin"
     compileSdk = 36
     defaultConfig {
-        applicationId = "com.ktomek.yamv.koin"
         minSdk = 24
-        versionCode = 1
-        versionName = "1.0"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    packagingOptions {
-        resources {
-            excludes += setOf("/META-INF/{AL2.0,LGPL2.1}", "META-INF/LICENSE.md")
-        }
     }
 }
 
@@ -47,7 +39,6 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.coroutines.core)
-//            implementation(compose.runtime)
         }
         androidMain.dependencies {
             implementation(compose.material3)
@@ -55,8 +46,6 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.lifecycle.runtime.ktx)
-            implementation(libs.timber)
-
             implementation(libs.accompanist.navigation.animation)
             implementation(libs.androidx.compose.tooling)
             implementation(libs.androidx.ui.test.manifest)
