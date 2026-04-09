@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
 import kotlin.invoke
 
-inline fun <reified S : State, reified INTENTION> ActionTypedFeature<S, INTENTION>.wrap(): Feature<S> =
+inline fun <S : State, reified INTENTION> ActionTypedFeature<S, INTENTION>.wrap(): Feature<S> =
     object : TypedUnitFeatureHolder<S> {
         override val feature: Any = this@wrap
 

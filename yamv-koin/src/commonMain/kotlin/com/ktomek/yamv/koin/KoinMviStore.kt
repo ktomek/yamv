@@ -11,7 +11,6 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.qualifier.named
-import org.koin.core.scope.Scope
 
 /**
  * Generic ViewModel that drives any [State] type through the MVI runtime.
@@ -40,26 +39,30 @@ inline fun <reified S : State> stateQualifier(): Qualifier = named(S::class.simp
 /**
  * Registers a [KoinMviStore] for state type [S] as a Koin ViewModel, qualified by [stateQualifier].
  *
- * Call this inside a `module { }` block. The [features] lambda runs in [Scope] so `get<T>()`
- * is available for retrieving feature instances registered elsewhere in the module.
+ * Call this inside a `module { }` block. The [features] lambda receives a [FeatureRegistrar]
+ * so `add(feature)` and `get<T>()` are available without calling `.wrap()` manually.
  *
  * Usage:
  * ```kotlin
  * val counterModule = module {
  *     factory { AutoDecreaseFeature() }
+ *     factory { DecreaseFeature() }
  *
  *     mviStore(defaultState = CounterState()) {
- *         setOf(get<AutoDecreaseFeature>(), ...)
+ *         add(get<AutoDecreaseFeature>())   // FlowFeature — passed through
+ *         add(get<DecreaseFeature>())       // FunctionTypedFeature — wrapped automatically
  *     }
  * }
  * ```
  */
 inline fun <reified S : State> Module.mviStore(
     defaultState: S,
-    noinline features: Scope.() -> Set<Feature<S>>,
+    crossinline features: FeatureRegistrar<S>.() -> Unit,
 ) {
     viewModel(stateQualifier<S>()) {
-        KoinMviStore(features = features(), defaultState = defaultState)
+        val registrar = FeatureRegistrar<S>(this)
+        registrar.features()
+        KoinMviStore(features = registrar.build(), defaultState = defaultState)
     }
 }
 
