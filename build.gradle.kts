@@ -13,8 +13,8 @@ plugins {
 }
 
 allprojects {
-    group = "com.ktomek.yamv" // Common group ID for all modules
-    version = "0.0.1" // Default version (can be overridden in submodules)
+    group = "com.ktomek.yamv"
+    version = properties["VERSION_NAME"] as? String ?: "0.0.1"
 }
 
 detekt {
