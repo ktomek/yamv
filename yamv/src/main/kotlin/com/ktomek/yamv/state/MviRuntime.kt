@@ -7,6 +7,8 @@ import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.intention.FeatureRouter
 import com.ktomek.yamv.intention.IntentionRouter
+import com.ktomek.yamv.logging.Yamv
+import com.ktomek.yamv.logging.YamvLogLevel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -37,6 +39,7 @@ class MviRuntime<S : State>(
         get() = stateFlow
 
     init {
+        Yamv.log(YamvLogLevel.DEBUG, TAG, "MviRuntime created with defaultState=$defaultState")
         intentionRouter.initialize(scope, dispatcherConfig)
 
         scope.launch(dispatcherConfig.provideReducerDispatcher()) {
@@ -64,13 +67,19 @@ class MviRuntime<S : State>(
     }
 
     override fun dispatch(intention: Any) {
+        Yamv.log(YamvLogLevel.VERBOSE, TAG, "dispatch($intention)")
         scope.launch(dispatcherConfig.provideIntentionDispatcher(intention)) {
             intentionRouter.dispatchIntention(intention)
         }
     }
 
     override fun clear() {
+        Yamv.log(YamvLogLevel.INFO, TAG, "MviRuntime cleared")
         scope.cancel()
+    }
+
+    companion object {
+        private const val TAG = "MviRuntime"
     }
 }
 
