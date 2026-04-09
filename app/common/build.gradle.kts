@@ -33,9 +33,9 @@ kotlin {
         commonMain.dependencies {
             api(project(":core"))
             api(project(":yamv"))
-            implementation(compose.material3)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
+            api(compose.material3)
+            api(compose.runtime)
+            api(compose.foundation)
             implementation(libs.kotlinx.coroutines.core)
         }
     }

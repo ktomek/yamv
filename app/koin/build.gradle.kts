@@ -50,6 +50,7 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(compose.material3)
+            implementation(compose.ui)
             implementation(libs.koin.android)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.lifecycle.runtime.ktx)
