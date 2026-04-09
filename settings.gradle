@@ -19,6 +19,7 @@ rootProject.name = "yamv"
 include ':app:common'
 include ':app:hilt'
 include ':app:koin'
+include ':app:koin-android'
 include ':core'
 include ':processor-core'
 include ':processor-hilt'
