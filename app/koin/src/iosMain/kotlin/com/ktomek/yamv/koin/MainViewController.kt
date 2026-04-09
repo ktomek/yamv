@@ -11,4 +11,5 @@ fun initKoin() {
     }
 }
 
+@Suppress("FunctionNaming")
 fun MainViewController() = ComposeUIViewController { CounterScreen() }

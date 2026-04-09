@@ -16,9 +16,7 @@ inline fun <reified S : State, reified INTENTION> FunctionTypedFeature<S, INTENT
                 intentions
                     .filterIsInstance<INTENTION>()
                     .collect { intention ->
-                        launch {
-                            send(this@wrap.invoke(intention))
-                        }
+                        launch { send(this@wrap.invoke(intention)) }
                     }
             }
     }

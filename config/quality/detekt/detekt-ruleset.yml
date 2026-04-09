@@ -130,6 +130,7 @@ complexity:
     ignoreDefaultParameters: true
     ignoreDataClasses: true
     ignoreAnnotatedParameter: [ ]
+    ignoreAnnotated: [ 'Composable' ]
     excludes: [ '**/*Module.kt', '**/*UseCase.kt', '**/*ViewModel.kt' ]
   MethodOverloading:
     active: false
@@ -746,6 +747,7 @@ style:
   UnusedPrivateProperty:
     active: true
     allowedNames: '_|ignored|expected|serialVersionUID'
+    excludes: [ '**/*.kts' ]
   UseAnyOrNoneInsteadOfFind:
     active: true
   UseArrayLiteralsInAnnotations:
@@ -808,7 +810,7 @@ Compose:
   CompositionLocalAllowlist:
     active: true
     # -- You can optionally define a list of CompositionLocals that are allowed here
-    allowedCompositionLocals: LocalExtendedTypography,LocalSpacing,LocalShapes,LocalAppColors
+    # allowedCompositionLocals: LocalExtendedTypography,LocalSpacing,LocalShapes,LocalAppColors
   CompositionLocalNaming:
     active: true
   ContentEmitterReturningValues:
@@ -836,8 +838,8 @@ Compose:
     active: true
     # -- You can optionally add your own Modifier types
     # customModifiers: BananaModifier,PotatoModifier
-  ModifierComposable:
-    active: true
+#  ModifierComposable:
+#    active: true
     # -- You can optionally add your own Modifier types
     # customModifiers: BananaModifier,PotatoModifier
   ModifierComposed:

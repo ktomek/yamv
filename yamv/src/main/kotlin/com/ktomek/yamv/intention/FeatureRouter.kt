@@ -10,6 +10,9 @@ import com.ktomek.yamv.feature.TypedFeatureHolder
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
 import com.ktomek.yamv.state.CoroutineDispatcherConfig
+import kotlinx.atomicfu.AtomicBoolean
+import kotlinx.atomicfu.AtomicInt
+import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -20,9 +23,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import kotlinx.atomicfu.AtomicBoolean
-import kotlinx.atomicfu.AtomicInt
-import kotlinx.atomicfu.atomic
 
 /**
  * Base MVI router which is taking intentions and sending them to features.

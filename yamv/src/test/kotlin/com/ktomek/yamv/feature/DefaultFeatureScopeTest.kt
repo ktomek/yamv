@@ -28,23 +28,27 @@ class DefaultFeatureScopeTest {
     }
 
     @Test
-    fun `DefaultFeatureScope with custom dispatcher creates an active scope`() = runTest(dispatcher) {
-        val scope = DefaultFeatureScope(dispatcher)
-        assertThat(scope.featureScope.isActive).isTrue()
-    }
+    fun `DefaultFeatureScope with custom dispatcher creates an active scope`() =
+        runTest(dispatcher) {
+            val scope = DefaultFeatureScope(dispatcher)
+            assertThat(scope.featureScope.isActive).isTrue()
+        }
 
     @Test
     fun `featureScope launches background coroutines that emit outcomes`() = runTest(dispatcher) {
-        val feature = object : Feature.FlowFeature<ScopedFeatureState>, HasFeatureScope by DefaultFeatureScope(dispatcher) {
-            override fun invoke(intentions: Flow<Any>): Flow<Outcome<ScopedFeatureState>> = channelFlow {
-                featureScope.launch {
-                    repeat(3) {
-                        delay(50)
-                        send(StateOutcome { state -> state.copy(ticks = state.ticks + 1) })
+        val feature = object :
+            Feature.FlowFeature<ScopedFeatureState>,
+            HasFeatureScope by DefaultFeatureScope(dispatcher) {
+            override fun invoke(intentions: Flow<Any>): Flow<Outcome<ScopedFeatureState>> =
+                channelFlow {
+                    featureScope.launch {
+                        repeat(3) {
+                            delay(50)
+                            send(StateOutcome { state -> state.copy(ticks = state.ticks + 1) })
+                        }
                     }
+                    intentions.collect { }
                 }
-                intentions.collect { }
-            }
         }
 
         val runtime = MviRuntime(
@@ -65,11 +69,14 @@ class DefaultFeatureScopeTest {
     fun `featureScope is cancelled when MviRuntime is cleared`() = runTest(dispatcher) {
         val featureScopeDelegate = DefaultFeatureScope(dispatcher)
 
-        val feature = object : Feature.FlowFeature<ScopedFeatureState>, HasFeatureScope by featureScopeDelegate {
-            override fun invoke(intentions: Flow<Any>): Flow<Outcome<ScopedFeatureState>> = channelFlow {
-                featureScope.launch { delay(Long.MAX_VALUE) }
-                intentions.collect { }
-            }
+        val feature = object :
+            Feature.FlowFeature<ScopedFeatureState>,
+            HasFeatureScope by featureScopeDelegate {
+            override fun invoke(intentions: Flow<Any>): Flow<Outcome<ScopedFeatureState>> =
+                channelFlow {
+                    featureScope.launch { delay(Long.MAX_VALUE) }
+                    intentions.collect { }
+                }
         }
 
         val runtime = MviRuntime(
@@ -89,8 +96,8 @@ class DefaultFeatureScopeTest {
 
     @Test
     fun `features without HasFeatureScope are unaffected by shutdown`() = runTest(dispatcher) {
-        val feature = object : Feature.FlowFeature<ScopedFeatureState> {
-            override fun invoke(intentions: Flow<Any>): Flow<Outcome<ScopedFeatureState>> = channelFlow {
+        val feature = Feature.FlowFeature<ScopedFeatureState> { intentions ->
+            channelFlow {
                 intentions.collect { }
             }
         }
