@@ -12,6 +12,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    testOptions {
+        unitTests.all { it.useJUnitPlatform() }
+    }
 }
 
 kotlin {
@@ -36,6 +39,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel.savedstate)
             implementation(libs.androidx.compose.ui)
             implementation(libs.androidx.compose.preview)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.bundles.testing.unit)
         }
     }
 }
