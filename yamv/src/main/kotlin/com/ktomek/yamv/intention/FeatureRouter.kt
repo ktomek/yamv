@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.AtomicInt
 import kotlinx.atomicfu.atomic
+import com.ktomek.yamv.logging.Yamv
+import com.ktomek.yamv.logging.YamvLogLevel
 
 /**
  * Base MVI router which is taking intentions and sending them to features.
@@ -41,6 +43,7 @@ internal class FeatureRouter<S : State>(
         if (isDisposed.value) error("Router has been disposed")
         if (!isInitialized.value) error("Router has not been initialized")
         subscribed.await()
+        Yamv.log(YamvLogLevel.VERBOSE, TAG, "Dispatching intention: $intention")
         intentionFlow.emit(intention)
     }
 
@@ -49,8 +52,11 @@ internal class FeatureRouter<S : State>(
             "Router has already been initialized"
         }
 
+        Yamv.log(YamvLogLevel.INFO, TAG, "Initializing FeatureRouter with ${features.size} feature(s)")
+
         if (features.isEmpty()) {
             subscribed.complete(Unit)
+            Yamv.log(YamvLogLevel.DEBUG, TAG, "No features — router ready immediately")
             return
         }
 
@@ -82,24 +88,30 @@ internal class FeatureRouter<S : State>(
     }
 
     private fun markSubscribed() {
-        if (remainingToSubscribe.decrementAndGet() == 0 && !subscribed.isCompleted) {
+        val remaining = remainingToSubscribe.decrementAndGet()
+        Yamv.log(YamvLogLevel.DEBUG, TAG, "Feature subscribed. Remaining: $remaining")
+        if (remaining == 0 && !subscribed.isCompleted) {
             subscribed.complete(Unit)
+            Yamv.log(YamvLogLevel.INFO, TAG, "All features subscribed — router ready")
         }
     }
 
     fun shutdown() {
         if (isDisposed.getAndSet(true)) return
+        Yamv.log(YamvLogLevel.INFO, TAG, "Shutting down FeatureRouter")
 
         featureJobs.forEach { job ->
             try {
-                // Cancel the job properly using the Job's cancel method
                 job.cancel()
             } catch (e: Exception) {
-                // Log error but don't let it prevent other jobs from being cancelled
-                println("Error cancelling feature job: ${e.message}")
+                Yamv.log(YamvLogLevel.WARN, TAG, "Error cancelling feature job: ${e.message}")
             }
         }
     }
 
     fun isDisposed(): Boolean = isDisposed.value
+
+    companion object {
+        private const val TAG = "FeatureRouter"
+    }
 }
