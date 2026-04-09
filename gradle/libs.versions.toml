@@ -66,6 +66,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 androidx-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 androidx-compose-meterial = { module = "androidx.compose.material:material", version.ref = "compose" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 androidx-compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.9.7" }
