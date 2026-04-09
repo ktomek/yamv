@@ -1,9 +1,9 @@
 [versions]
-atomicfu = "0.27.0"
+atomicfu = "0.32.1"
 #android config
 accompanistNavigationAnimation = "0.36.0"
 autoService = "1.1.1"
-koin = "4.0.0"
+koin = "4.2.0"
 compose = "1.10.6"
 coreKtx = "1.18.0"
 hilt = "2.59.2"
@@ -18,9 +18,9 @@ android = "9.1.0"
 kotlin = "2.3.20"
 ksp = "2.3.2"
 detekt = "1.23.8"
-detekt-compose = "0.5.6"
+detekt-compose = "0.5.7"
 coroutines = "1.10.2"
-compose-multiplatform = "1.8.0"
+compose-multiplatform = "1.10.3"
 
 # AndroidX libraries
 junit = "4.13.2"
