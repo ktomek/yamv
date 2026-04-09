@@ -46,7 +46,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.ktomek.yamv"
             artifactId = project.name
-            version = "0.0.1"
+            version = rootProject.version.toString()
         }
     }
 }

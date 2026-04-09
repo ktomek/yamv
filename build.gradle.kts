@@ -103,6 +103,7 @@ tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
         html.required = true
         xml.required = false
         txt.required = false
+        sarif.required = true
     }
 }
 

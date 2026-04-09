@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     alias(libs.plugins.compose.compiler)
+    `maven-publish`
 }
 
 android {
@@ -39,6 +40,16 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(libs.koin.android)
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.ktomek.yamv"
+            artifactId = project.name
+            version = rootProject.version.toString()
         }
     }
 }
