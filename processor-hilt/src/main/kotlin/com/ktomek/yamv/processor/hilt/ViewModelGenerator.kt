@@ -29,6 +29,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
  *     override val store: MviStore<CounterState, Any> = MviRuntime(
  *         features = features,
  *         defaultState = CounterState(),
+ *         dispatcherConfig = dispatcherConfig,
  *     )
  * }
  * ```
