@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * Abstract ViewModel-based MviStore host.
+ * Abstract lifecycle-retained MviStore host.
  *
  * Subclasses must override [store] with an [MviStore] implementation (typically [com.ktomek.yamv.state.MviRuntime]).
  * The [store] lifecycle is automatically tied to the ViewModel: [onCleared] calls [store].clear().
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
  * @param S The state type.
  * @param I The intention type.
  */
-abstract class MviViewModel<S : State, I : Any> : ViewModel(), MviStore<S, I> {
+abstract class MviRetainedStore<S : State, I : Any> : ViewModel(), MviStore<S, I> {
 
     protected abstract val store: MviStore<S, I>
 
