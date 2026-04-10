@@ -35,7 +35,7 @@ YAMV (Yet Another MVI framework) is a Kotlin-first MVI (Model-View-Intent) archi
 - **`:yamv`** — Core framework (pure Kotlin, no Android deps): `MviRuntime`, `MviStore`, `MviRegistry`, `FeatureRouter`, Feature wrappers
 - **`:yamv-retainer`** — Lifecycle-retained MviStore: `MviRetainedStore`, `hiltMviStore()` Compose helper
 - **`:processor-core`** — DI-agnostic KSP utilities: `AutoStateDiscovery`, `AutoFeatureDiscovery`
-- **`:processor-hilt`** — Hilt-specific KSP processor: generates `*Store` ViewModels and `*FeaturesModule` Hilt modules
+- **`:processor-hilt`** — Hilt-specific KSP processor: generates `*Store` retained stores and `*FeaturesModule` Hilt modules
 - **`:app`** — Counter demo app showing framework usage end-to-end
 
 ## Architecture

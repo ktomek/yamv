@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
  * Abstract lifecycle-retained MviStore host.
  *
  * Subclasses must override [store] with an [MviStore] implementation (typically [com.ktomek.yamv.state.MviRuntime]).
- * The [store] lifecycle is automatically tied to the ViewModel: [onCleared] calls [store].clear().
+ * The [store] lifecycle is automatically tied to the retained lifecycle scope: [onCleared] calls [store].clear().
  *
  * @param S The state type.
  * @param I The intention type.
