@@ -64,8 +64,8 @@ val counterModule = module {
 ```kotlin
 // commonMain
 @Composable
-fun CounterScreen(vm: KoinMviRetainedStore<CounterState> = koinMviStore()) {
-    val state by vm.state.collectAsStateWithLifecycle()
+fun CounterScreen(store: KoinMviRetainedStore<CounterState> = koinMviStore()) {
+    val state by store.state.collectAsStateWithLifecycle()
     // ...
 }
 ```

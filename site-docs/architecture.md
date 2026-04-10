@@ -5,41 +5,41 @@
 YAMV implements strict unidirectional data flow:
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                   Composable UI                      │
-│   val state by vm.state.collectAsStateWithLifecycle()│
-│   vm.dispatch(CounterIntention.Increment)            │
-└────────────────────┬────────────────────▲────────────┘
-                     │ Intention           │ StateFlow<S>
-                     ▼                    │
-┌─────────────────────────────────────────────────────┐
-│            MviRetainedStore (generated *Store)        │
-│   delegates to MviRuntime                            │
-└────────────────────┬────────────────────▲────────────┘
-                     │                    │
-                     ▼                    │
-┌─────────────────────────────────────────────────────┐
-│                    MviRuntime                        │
-│  ┌──────────────┐  ┌──────────────┐  ┌───────────┐  │
-│  │  Reducers    │  │   Effects    │  │Intentions │  │
-│  │  (Main)      │  │   (Main)     │  │(Main)     │  │
-│  └──────┬───────┘  └──────┬───────┘  └─────┬─────┘  │
-└─────────│─────────────────│────────────────│─────────┘
-          │                 │                │
-          └─────────────────▼────────────────┘
-                     SharedFlow<Outcome<S>>
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────┐
-│                   FeatureRouter                      │
-│   intentionFlow: MutableSharedFlow<Any>              │
-│   outcomeFlow:   MutableSharedFlow<Outcome<S>>       │
-└────────────────────┬────────────────────────────────┘
-                     │ (one coroutine per feature)
-          ┌──────────┼──────────┐
-          ▼          ▼          ▼
-     Feature A   Feature B  Feature C
-   (Default dispatcher, or per-feature)
+┌──────────────────────────────────────────────────────────┐
+│                       Composable UI                      │
+│   val state by store.state.collectAsStateWithLifecycle() │
+│   store.dispatch(CounterIntention.Increment)             │
+└─────────────────────────┬──────────────────▲─────────────┘
+                          │ Intention        │ StateFlow<S>
+                          ▼                  │
+┌──────────────────────────────────────────────────────────┐
+│             MviRetainedStore (generated *Store)           │
+│   delegates to MviRuntime                                │
+└─────────────────────────┬──────────────────▲─────────────┘
+                          │                  │
+                          ▼                  │
+┌──────────────────────────────────────────────────────────┐
+│                       MviRuntime                         │
+│   ┌──────────────┐  ┌──────────────┐  ┌───────────────┐ │
+│   │  Reducers    │  │   Effects    │  │  Intentions   │ │
+│   │  (Main)      │  │   (Main)     │  │  (Main)       │ │
+│   └──────┬───────┘  └──────┬───────┘  └───────┬───────┘ │
+└──────────│─────────────────│──────────────────│──────────┘
+           │                 │                  │
+           └─────────────────▼──────────────────┘
+                      SharedFlow<Outcome<S>>
+                             │
+                             ▼
+┌──────────────────────────────────────────────────────────┐
+│                      FeatureRouter                       │
+│   intentionFlow: MutableSharedFlow<Any>                  │
+│   outcomeFlow:   MutableSharedFlow<Outcome<S>>           │
+└─────────────────────────┬────────────────────────────────┘
+                          │ (one coroutine per feature)
+               ┌──────────┼──────────┐
+               ▼          ▼          ▼
+          Feature A   Feature B  Feature C
+        (Default dispatcher, or per-feature)
 ```
 
 ## Key Types
@@ -150,7 +150,7 @@ MviRetainedStore created (ViewModel)
       → CompletableDeferred completed
   → Ready to dispatch
 
-vm.dispatch(intention)
+store.dispatch(intention)
   → scope.launch(intentionDispatcher) { intentionRouter.dispatchIntention(intention) }
     → subscribed.await() (returns immediately after init)
     → intentionFlow.emit(intention)

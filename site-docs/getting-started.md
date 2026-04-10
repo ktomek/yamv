@@ -139,12 +139,12 @@ class DecrementFeature : TypedFeature<CounterState, CounterIntention.Decrement> 
 
     ```kotlin
     @Composable
-    fun CounterScreen(vm: CounterStateStore = hiltMviStore()) {
-        val state by vm.state.collectAsStateWithLifecycle()
+    fun CounterScreen(store: CounterStateStore = hiltMviStore()) {
+        val state by store.state.collectAsStateWithLifecycle()
         CounterContent(
             count = state.count,
-            onIncrement = { vm.dispatch(CounterIntention.Increment) },
-            onDecrement = { vm.dispatch(CounterIntention.Decrement) },
+            onIncrement = { store.dispatch(CounterIntention.Increment) },
+            onDecrement = { store.dispatch(CounterIntention.Decrement) },
         )
     }
     ```
@@ -153,8 +153,8 @@ class DecrementFeature : TypedFeature<CounterState, CounterIntention.Decrement> 
 
     ```kotlin
     @Composable
-    fun CounterScreen(vm: CounterStateStore = koinMviStore()) {
-        val state by vm.state.collectAsStateWithLifecycle()
+    fun CounterScreen(store: CounterStateStore = koinMviStore()) {
+        val state by store.state.collectAsStateWithLifecycle()
         // same as above
     }
     ```

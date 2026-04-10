@@ -82,12 +82,12 @@ class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> 
 
 ```kotlin
 @Composable
-fun CounterScreen(vm: CounterStateStore = hiltMviStore()) {
-    val state by vm.state.collectAsStateWithLifecycle()
+fun CounterScreen(store: CounterStateStore = hiltMviStore()) {
+    val state by store.state.collectAsStateWithLifecycle()
 
     Column {
         Text("Count: ${state.count}")
-        Button(onClick = { vm.dispatch(CounterIntention.Increment) }) {
+        Button(onClick = { store.dispatch(CounterIntention.Increment) }) {
             Text("+")
         }
     }
