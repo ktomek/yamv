@@ -23,7 +23,7 @@ private class TestMviRetainedStore(override val store: MviStore<TestState, Any>)
 class MviRetainedStoreTest {
 
     @Test
-    fun `GIVEN MviViewModel with store WHEN accessing state THEN delegates to store state`() {
+    fun `GIVEN MviRetainedStore with store WHEN accessing state THEN delegates to store state`() {
         // Arrange
         val stateFlow = MutableStateFlow<TestState>(TestStateImpl("test"))
         val mockStore: MviStore<TestState, Any> = mockk(relaxed = true)
@@ -36,7 +36,7 @@ class MviRetainedStoreTest {
     }
 
     @Test
-    fun `GIVEN MviViewModel with store WHEN accessing effects THEN delegates to store effects`() {
+    fun `GIVEN MviRetainedStore with store WHEN accessing effects THEN delegates to store effects`() {
         // Arrange
         val effectsFlow: Flow<EffectOutcome<TestState>> = emptyFlow()
         val mockStore: MviStore<TestState, Any> = mockk(relaxed = true)
@@ -49,7 +49,7 @@ class MviRetainedStoreTest {
     }
 
     @Test
-    fun `GIVEN MviViewModel with store WHEN dispatch is called THEN delegates to store dispatch`() {
+    fun `GIVEN MviRetainedStore with store WHEN dispatch is called THEN delegates to store dispatch`() {
         // Arrange
         val intention = "test-intention"
         val mockStore: MviStore<TestState, Any> = mockk(relaxed = true)
@@ -63,7 +63,7 @@ class MviRetainedStoreTest {
     }
 
     @Test
-    fun `GIVEN MviViewModel with store WHEN clear is called THEN delegates to store clear`() {
+    fun `GIVEN MviRetainedStore with store WHEN clear is called THEN delegates to store clear`() {
         // Arrange
         val mockStore: MviStore<TestState, Any> = mockk(relaxed = true)
         val viewModel = TestMviRetainedStore(mockStore)
