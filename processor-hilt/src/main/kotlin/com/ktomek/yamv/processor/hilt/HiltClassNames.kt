@@ -13,9 +13,9 @@ internal object HiltClassNames {
     val Binds = ClassName("dagger", "Binds")
     val IntoSet = ClassName("dagger.multibindings", "IntoSet")
     val ElementsIntoSet = ClassName("dagger.multibindings", "ElementsIntoSet")
-    val Qualifier = ClassName("javax.inject", "Qualifier")
     val BindsOptionalOf = ClassName("dagger", "BindsOptionalOf")
     val Optional = ClassName("java.util", "Optional")
+    val MviDispatcherConfig = ClassName("com.ktomek.yamv.hilt", "MviDispatcherConfig")
 }
 
 internal object YamvClassNames {
