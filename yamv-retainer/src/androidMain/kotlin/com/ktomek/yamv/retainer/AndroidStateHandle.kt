@@ -1,4 +1,4 @@
-package com.ktomek.yamv.viewmodel
+package com.ktomek.yamv.retainer
 
 import androidx.lifecycle.SavedStateHandle
 import com.ktomek.yamv.state.StateHandle

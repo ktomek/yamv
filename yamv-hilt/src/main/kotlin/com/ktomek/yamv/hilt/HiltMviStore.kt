@@ -2,7 +2,7 @@ package com.ktomek.yamv.hilt
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ktomek.yamv.viewmodel.MviRetainedStore
+import com.ktomek.yamv.retainer.MviRetainedStore
 
 /**
  * Returns a Hilt-provided [MviRetainedStore] instance scoped to the current backstack entry.

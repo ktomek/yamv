@@ -1,8 +1,8 @@
 package com.ktomek.yamv.hilt
 
 import androidx.lifecycle.SavedStateHandle
+import com.ktomek.yamv.retainer.AndroidStateHandle
 import com.ktomek.yamv.state.StateHandle
-import com.ktomek.yamv.viewmodel.AndroidStateHandle
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

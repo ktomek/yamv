@@ -16,7 +16,7 @@ internal object HiltClassNames {
 }
 
 internal object YamvClassNames {
-    val MviRetainedStore = ClassName("com.ktomek.yamv.viewmodel", "MviRetainedStore")
+    val MviRetainedStore = ClassName("com.ktomek.yamv.retainer", "MviRetainedStore")
     val MviRuntime = ClassName("com.ktomek.yamv.state", "MviRuntime")
     val MviStore = ClassName("com.ktomek.yamv.state", "MviStore")
     val Feature = ClassName("com.ktomek.yamv.feature", "Feature")

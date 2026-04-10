@@ -3,9 +3,9 @@ package com.ktomek.yamv.koin
 import androidx.compose.runtime.Composable
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
+import com.ktomek.yamv.retainer.MviRetainedStore
 import com.ktomek.yamv.state.MviRuntime
 import com.ktomek.yamv.state.MviStore
-import com.ktomek.yamv.viewmodel.MviRetainedStore
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel

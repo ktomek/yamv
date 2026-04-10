@@ -1,4 +1,4 @@
-package com.ktomek.yamv.viewmodel
+package com.ktomek.yamv.retainer
 
 import com.ktomek.yamv.core.EffectOutcome
 import com.ktomek.yamv.core.State

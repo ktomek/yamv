@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ktomek.yamv.viewmodel"
+    namespace = "com.ktomek.yamv.retainer"
     compileSdk = 36
     defaultConfig { minSdk = 24 }
     compileOptions {
