@@ -57,6 +57,10 @@ A **Feature** decides *when* and *which* outcome to emit (the orchestration). An
 
 Each feature handles one intention type. Each outcome handles one state transition. Adding new behavior means adding a new file — not modifying an existing ViewModel or reducer. Features are injected as a `Set<Feature<S>>`, so they are truly pluggable: add or remove a feature from the DI set without touching any other code.
 
+### Composable by design
+
+`Set<Feature<S>>` injection means features can be conditionally included via DI configuration — A/B tests, feature flags, build variants — without touching any code. Swap, add, or remove behaviors entirely at the wiring level.
+
 ### Multithreading by convention
 
 Features run on `Dispatchers.Default` (concurrent), reducers apply on `Dispatchers.Main` (serialized) — correct by default. No manual dispatcher management per method. Per-feature and per-state dispatcher customization is available when needed.
