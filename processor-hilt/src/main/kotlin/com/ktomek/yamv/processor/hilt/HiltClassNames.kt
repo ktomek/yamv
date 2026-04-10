@@ -13,6 +13,9 @@ internal object HiltClassNames {
     val Binds = ClassName("dagger", "Binds")
     val IntoSet = ClassName("dagger.multibindings", "IntoSet")
     val ElementsIntoSet = ClassName("dagger.multibindings", "ElementsIntoSet")
+    val Qualifier = ClassName("javax.inject", "Qualifier")
+    val BindsOptionalOf = ClassName("dagger", "BindsOptionalOf")
+    val Optional = ClassName("java.util", "Optional")
 }
 
 internal object YamvClassNames {
@@ -20,6 +23,8 @@ internal object YamvClassNames {
     val MviRuntime = ClassName("com.ktomek.yamv.state", "MviRuntime")
     val MviStore = ClassName("com.ktomek.yamv.state", "MviStore")
     val Feature = ClassName("com.ktomek.yamv.feature", "Feature")
+    val CoroutineDispatcherConfig = ClassName("com.ktomek.yamv.state", "CoroutineDispatcherConfig")
+    val DefaultCoroutineDispatcherConfig = ClassName("com.ktomek.yamv.state", "DefaultCoroutineDispatcherConfig")
     const val WrapImportPackage = "com.ktomek.yamv.feature"
     const val WrapImportName = "wrap"
 }

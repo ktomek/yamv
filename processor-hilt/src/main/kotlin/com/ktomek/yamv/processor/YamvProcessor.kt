@@ -8,6 +8,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.ktomek.yamv.processor.core.AutoStateDiscovery
+import com.ktomek.yamv.processor.hilt.DispatcherQualifierGenerator
 import com.ktomek.yamv.processor.hilt.FeatureFilter
 import com.ktomek.yamv.processor.hilt.FeaturesModuleGenerator
 import com.ktomek.yamv.processor.hilt.ViewModelGenerator
@@ -24,13 +25,15 @@ class YamvProcessor(
         val featureFilter = FeatureFilter(resolver)
         val allFeatures = featureFilter.findAll()
 
+        val qualifierGenerator = DispatcherQualifierGenerator(codeGenerator)
         val viewModelGenerator = ViewModelGenerator(codeGenerator)
         val featuresModuleGenerator = FeaturesModuleGenerator(codeGenerator)
 
         stateClasses.forEach { stateClass ->
-            viewModelGenerator.generate(stateClass)
+            val qualifierClass = qualifierGenerator.generate(stateClass)
+            viewModelGenerator.generate(stateClass, qualifierClass)
             val stateFeatures = featureFilter.forState(stateClass, allFeatures)
-            featuresModuleGenerator.generate(stateClass, stateFeatures)
+            featuresModuleGenerator.generate(stateClass, stateFeatures, qualifierClass)
         }
 
         return emptyList()

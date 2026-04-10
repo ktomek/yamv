@@ -41,13 +41,13 @@ import com.squareup.kotlinpoet.ksp.writeTo
  */
 internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator) {
 
-    fun generate(stateClass: KSClassDeclaration, features: List<KSDeclaration>) {
+    fun generate(stateClass: KSClassDeclaration, features: List<KSDeclaration>, qualifierClass: ClassName) {
         val stateClassName = stateClass.toClassName()
         val moduleName = "${stateClassName.simpleName}FeaturesModule"
 
         FileSpec.builder(stateClassName.packageName, moduleName)
             .addImport(YamvClassNames.WrapImportPackage, YamvClassNames.WrapImportName)
-            .addType(buildModuleInterface(moduleName, stateClassName, features))
+            .addType(buildModuleInterface(moduleName, stateClassName, features, qualifierClass))
             .build()
             .writeTo(codeGenerator, Dependencies(false))
     }
@@ -56,6 +56,7 @@ internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator)
         moduleName: String,
         stateClass: ClassName,
         features: List<KSDeclaration>,
+        qualifierClass: ClassName,
     ): TypeSpec {
         val featureSetType = Set::class.asClassName().parameterizedBy(
             YamvClassNames.Feature.parameterizedBy(stateClass)
@@ -71,6 +72,7 @@ internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator)
             .addAnnotation(HiltClassNames.Module)
             .addAnnotation(buildInstallInAnnotation())
             .apply { bindsFeatures.forEach { addFunction(buildAbstractBindsForClass(it, stateClass)) } }
+            .addFunction(buildOptionalDispatcherConfigBinding(qualifierClass))
             .addType(buildCompanionObject(stateClass, featureSetType, providesFeatures, propertyFeatures))
             .build()
     }
@@ -133,6 +135,14 @@ internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator)
             statement = statement,
         )
     }
+
+    private fun buildOptionalDispatcherConfigBinding(qualifierClass: ClassName): FunSpec =
+        FunSpec.builder("bindOptionalDispatcherConfig")
+            .addModifiers(KModifier.ABSTRACT)
+            .addAnnotation(HiltClassNames.BindsOptionalOf)
+            .addAnnotation(AnnotationSpec.builder(qualifierClass).build())
+            .returns(YamvClassNames.CoroutineDispatcherConfig)
+            .build()
 
     private fun buildAbstractBinds(name: String, paramType: ClassName, returnType: TypeName): FunSpec =
         FunSpec.builder(name)

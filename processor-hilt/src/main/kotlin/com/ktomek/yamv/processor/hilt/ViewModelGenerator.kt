@@ -23,9 +23,12 @@ import com.squareup.kotlinpoet.ksp.writeTo
  * Generated output example:
  * ```kotlin
  * @HiltViewModel
- * class CounterStateViewModel @Inject constructor(
- *     private val features: Set<@JvmSuppressWildcards Feature<CounterState>>,
+ * class CounterStateStore @Inject constructor(
+ *     features: Set<@JvmSuppressWildcards Feature<CounterState>>,
+ *     @CounterStateDispatcherConfig optionalDispatcherConfig: Optional<CoroutineDispatcherConfig>,
  * ) : MviRetainedStore<CounterState, Any>() {
+ *     override val dispatcherConfig: CoroutineDispatcherConfig =
+ *         optionalDispatcherConfig.orElseGet { DefaultCoroutineDispatcherConfig() }
  *     override val store: MviStore<CounterState, Any> = MviRuntime(
  *         features = features,
  *         defaultState = CounterState(),
@@ -36,7 +39,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
  */
 internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
 
-    fun generate(stateClass: KSClassDeclaration) {
+    fun generate(stateClass: KSClassDeclaration, qualifierClass: ClassName) {
         val packageName = stateClass.packageName.asString()
         val stateName = stateClass.simpleName.asString()
         val stateClassName = ClassName(packageName, stateName)
@@ -44,7 +47,7 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
         val viewModelClassName = "${stateName}Store"
 
         FileSpec.builder(packageName, viewModelClassName)
-            .addType(buildViewModelClass(viewModelClassName, stateClassName, defaultStateClass))
+            .addType(buildViewModelClass(viewModelClassName, stateClassName, defaultStateClass, qualifierClass))
             .build()
             .writeTo(codeGenerator, Dependencies(false))
     }
@@ -66,14 +69,16 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
         className: String,
         stateClass: ClassName,
         defaultStateClass: ClassName,
+        qualifierClass: ClassName,
     ): TypeSpec = TypeSpec.classBuilder(className)
         .addAnnotation(HiltClassNames.HiltViewModel)
-        .primaryConstructor(buildConstructor(stateClass))
+        .primaryConstructor(buildConstructor(stateClass, qualifierClass))
         .superclass(YamvClassNames.MviRetainedStore.parameterizedBy(stateClass, ClassName("kotlin", "Any")))
+        .addProperty(buildDispatcherConfigProperty())
         .addProperty(buildStoreProperty(stateClass, defaultStateClass))
         .build()
 
-    private fun buildConstructor(stateClass: ClassName): FunSpec =
+    private fun buildConstructor(stateClass: ClassName, qualifierClass: ClassName): FunSpec =
         FunSpec.constructorBuilder()
             .addAnnotation(AnnotationSpec.builder(HiltClassNames.Inject).build())
             .addParameter(
@@ -81,6 +86,23 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
                 ClassName("kotlin.collections", "Set").parameterizedBy(
                     YamvClassNames.Feature.parameterizedBy(stateClass).jvmSuppressWildcards()
                 )
+            )
+            .addParameter(
+                com.squareup.kotlinpoet.ParameterSpec.builder(
+                    "optionalDispatcherConfig",
+                    HiltClassNames.Optional.parameterizedBy(YamvClassNames.CoroutineDispatcherConfig),
+                )
+                    .addAnnotation(AnnotationSpec.builder(qualifierClass).build())
+                    .build()
+            )
+            .build()
+
+    private fun buildDispatcherConfigProperty(): PropertySpec =
+        PropertySpec.builder("dispatcherConfig", YamvClassNames.CoroutineDispatcherConfig)
+            .addModifiers(KModifier.OVERRIDE)
+            .initializer(
+                "optionalDispatcherConfig.orElseGet·{·%T()·}",
+                YamvClassNames.DefaultCoroutineDispatcherConfig,
             )
             .build()
 
