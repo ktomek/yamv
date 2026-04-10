@@ -1,7 +1,7 @@
 package com.ktomek.yamv.hilt
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.ktomek.yamv.retainer.MviRetainedStore
 
 /**

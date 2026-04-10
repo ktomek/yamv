@@ -71,6 +71,7 @@ androidx-compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", 
 androidx-compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.9.7" }
 androidx-compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "compose-hilt" }
+androidx-hilt-lifecycle-viewmodel-compose = { module = "androidx.hilt:hilt-lifecycle-viewmodel-compose", version.ref = "compose-hilt" }
 
 # Dependency Injection lib
 dagger-hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "hilt" }
