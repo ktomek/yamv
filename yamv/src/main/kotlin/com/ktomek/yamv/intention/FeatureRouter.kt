@@ -5,6 +5,7 @@ import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.Feature.FlowFeature
 import com.ktomek.yamv.feature.Feature.FlowUnitFeature
+import com.ktomek.yamv.feature.HasFeatureDispatcher
 import com.ktomek.yamv.feature.HasFeatureScope
 import com.ktomek.yamv.feature.TypedFeatureHolder
 import com.ktomek.yamv.logging.Yamv
@@ -71,7 +72,9 @@ internal class FeatureRouter<S : State>(
 
         featureJobs = features.map { feature ->
             val f = (feature as? TypedFeatureHolder)?.feature ?: feature
-            scope.launch(dispatcherConfig.provideFeatureDispatcher(f)) {
+            val dispatcher = (f as? HasFeatureDispatcher)?.featureDispatcher
+                ?: dispatcherConfig.provideFeatureDispatcher(f)
+            scope.launch(dispatcher) {
                 processFeature(feature)
             }
         }
