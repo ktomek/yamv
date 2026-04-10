@@ -20,12 +20,12 @@ import org.koin.core.qualifier.named
  * Replaces per-state generated classes (e.g. `CounterStateStore`). Register it via [mviStore]
  * and retrieve it via [koinMviStore] — both derive the Koin qualifier from [S] automatically.
  */
-class KoinMviRetainedStore<S : State>(
+open class KoinMviRetainedStore<S : State>(
     features: Set<Feature<S>>,
     defaultState: S,
     dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig(),
 ) : MviRetainedStore<S, Any>() {
-    override val dispatcherConfig: CoroutineDispatcherConfig = dispatcherConfig
+    public override val dispatcherConfig: CoroutineDispatcherConfig = dispatcherConfig
     override val store: MviStore<S, Any> = MviRuntime(
         features = features,
         defaultState = defaultState,

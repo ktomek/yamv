@@ -8,7 +8,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import org.koin.core.KoinApplication
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import kotlin.test.assertEquals
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
@@ -39,7 +43,9 @@ private class TrackingCoroutineDispatcherConfig(
 }
 
 /**
- * Subclass of [KoinMviRetainedStore] that exposes [dispatcherConfig] for assertion in tests.
+ * Subclass of [KoinMviRetainedStore] used in tests that require construction via a named config parameter.
+ *
+ * Since [KoinMviRetainedStore.dispatcherConfig] is public, no extra accessor is needed.
  */
 private class InspectableMviRetainedStore<S : State>(
     features: Set<Feature<S>>,
@@ -49,11 +55,14 @@ private class InspectableMviRetainedStore<S : State>(
     features = features,
     defaultState = defaultState,
     dispatcherConfig = config,
-) {
-    fun getDispatcherConfig(): CoroutineDispatcherConfig = dispatcherConfig
-}
+)
 
 class KoinMviRetainedStoreDispatcherConfigTest {
+
+    @AfterEach
+    fun tearDown() {
+        stopKoin()
+    }
 
     @Test
     fun `GIVEN KoinMviRetainedStore with default config WHEN created THEN dispatcherConfig is DefaultCoroutineDispatcherConfig`() {
@@ -65,7 +74,7 @@ class KoinMviRetainedStoreDispatcherConfigTest {
         )
 
         // Assert
-        assertTrue(store.getDispatcherConfig() is DefaultCoroutineDispatcherConfig)
+        assertTrue(store.dispatcherConfig is DefaultCoroutineDispatcherConfig)
     }
 
     @Test
@@ -81,7 +90,7 @@ class KoinMviRetainedStoreDispatcherConfigTest {
         )
 
         // Assert
-        assertSame(customConfig, store.getDispatcherConfig())
+        assertSame(customConfig, store.dispatcherConfig)
     }
 
     @Test
@@ -126,5 +135,21 @@ class KoinMviRetainedStoreDispatcherConfigTest {
             customConfig.intentionDispatcherCallCount,
             "Expected intentionDispatcherCallCount to increase by 1",
         )
+    }
+
+    @Test
+    fun `GIVEN mviStore DSL with custom dispatcherConfig WHEN resolved via Koin THEN store has custom dispatcherConfig`() {
+        // Arrange
+        val customConfig = TrackingCoroutineDispatcherConfig()
+        val koinModule = module {
+            mviStore(defaultState = TestState(), dispatcherConfig = customConfig) {}
+        }
+
+        // Act
+        val koinApp = KoinApplication.init().modules(koinModule)
+        val store = koinApp.koin.get<KoinMviRetainedStore<TestState>>(stateQualifier<TestState>())
+
+        // Assert
+        assertSame(customConfig, store.dispatcherConfig)
     }
 }
