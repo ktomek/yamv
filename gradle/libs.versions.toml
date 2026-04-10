@@ -70,7 +70,6 @@ androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 androidx-compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.9.7" }
-androidx-compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "compose-hilt" }
 androidx-hilt-lifecycle-viewmodel-compose = { module = "androidx.hilt:hilt-lifecycle-viewmodel-compose", version.ref = "compose-hilt" }
 
 # Dependency Injection lib
@@ -108,7 +107,6 @@ compose = [
     "androidx-compose-meterial",
     "androidx-compose-preview",
     "androidx-compose-navigation",
-    "androidx-compose-hilt",
     "androidx-lifecycle-viewmodel-compose",
 ]
 
