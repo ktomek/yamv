@@ -9,6 +9,7 @@ import com.ktomek.yamv.feature.Feature.FlowFeature
 import com.ktomek.yamv.ui.counter.logic.AutoIncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoIncreaseCounterIntention
 import hu.akarnokd.kotlin.flow.takeUntil
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +26,7 @@ import kotlin.time.Duration.Companion.seconds
 @AutoFeature
 class AutoIncreaseFeature @Inject constructor() : FlowFeature<CounterState> {
 
-    @OptIn(FlowPreview::class)
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     override fun invoke(intentions: Flow<Any>): Flow<CounterOutcome> =
         intentions
             .filter { it is AutoIncreaseCounterIntention }

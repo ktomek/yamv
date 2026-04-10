@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.state.DefaultCoroutineDispatcherConfig
 import com.ktomek.yamv.state.MviRuntime
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -13,6 +14,7 @@ private data class ActionTestState(val count: Int = 0) : State
 private data class DoAction(val id: String)
 private data class OtherAction(val id: String)
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ActionTypedFeatureWrapperTest {
 
     @Test

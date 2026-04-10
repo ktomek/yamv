@@ -7,29 +7,29 @@ plugins {
 }
 
 android {
-    compileSdk 36
+    compileSdk = 36
 
     defaultConfig {
-        applicationId "com.ktomek.yamv"
-        minSdk 24
-        versionCode 1
-        versionName "1.0"
+        applicationId = "com.ktomek.yamv"
+        minSdk = 24
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
-            useSupportLibrary true
+            useSupportLibrary = true
         }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     packagingOptions {
         resources {
@@ -37,7 +37,7 @@ android {
             excludes += 'META-INF/LICENSE.md'
         }
     }
-    namespace 'com.ktomek.yamv'
+    namespace = 'com.ktomek.yamv'
 }
 
 kotlin {
