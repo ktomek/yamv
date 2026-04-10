@@ -5,7 +5,7 @@ import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.state.MviRuntime
 import com.ktomek.yamv.state.MviStore
-import com.ktomek.yamv.viewmodel.MviViewModel
+import com.ktomek.yamv.viewmodel.MviRetainedStore
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
@@ -18,10 +18,10 @@ import org.koin.core.qualifier.named
  * Replaces per-state generated classes (e.g. `CounterStateStore`). Register it via [mviStore]
  * and retrieve it via [koinMviStore] — both derive the Koin qualifier from [S] automatically.
  */
-class KoinMviStore<S : State>(
+class KoinMviRetainedStore<S : State>(
     features: Set<Feature<S>>,
     defaultState: S,
-) : MviViewModel<S, Any>() {
+) : MviRetainedStore<S, Any>() {
     override val store: MviStore<S, Any> = MviRuntime(
         features = features,
         defaultState = defaultState,
@@ -37,7 +37,7 @@ class KoinMviStore<S : State>(
 inline fun <reified S : State> stateQualifier(): Qualifier = named(S::class.simpleName!!)
 
 /**
- * Registers a [KoinMviStore] for state type [S] as a Koin ViewModel, qualified by [stateQualifier].
+ * Registers a [KoinMviRetainedStore] for state type [S] as a Koin ViewModel, qualified by [stateQualifier].
  *
  * Call this inside a `module { }` block. The [features] lambda receives a [FeatureRegistrar]
  * so `add(feature)` and `get<T>()` are available without calling `.wrap()` manually.
@@ -62,21 +62,21 @@ inline fun <reified S : State> Module.mviStore(
     viewModel(stateQualifier<S>()) {
         val registrar = FeatureRegistrar<S>(this)
         registrar.features()
-        KoinMviStore(features = registrar.build(), defaultState = defaultState)
+        KoinMviRetainedStore(features = registrar.build(), defaultState = defaultState)
     }
 }
 
 /**
- * Returns the [KoinMviStore] for state type [S] scoped to the current navigation back-stack entry.
+ * Returns the [KoinMviRetainedStore] for state type [S] scoped to the current navigation back-stack entry.
  *
  * The qualifier is derived from [S] automatically — no string literals needed at call sites.
  *
  * Usage:
  * ```kotlin
  * @Composable
- * fun CounterScreen(store: KoinMviStore<CounterState> = koinMviStore()) { ... }
+ * fun CounterScreen(store: KoinMviRetainedStore<CounterState> = koinMviStore()) { ... }
  * ```
  */
 @Composable
-inline fun <reified S : State> koinMviStore(): KoinMviStore<S> =
+inline fun <reified S : State> koinMviStore(): KoinMviRetainedStore<S> =
     koinViewModel(stateQualifier<S>())
