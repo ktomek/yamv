@@ -5,6 +5,7 @@ import com.ktomek.yamv.core.State
 import com.ktomek.yamv.core.StateOutcome
 import com.ktomek.yamv.state.DefaultCoroutineDispatcherConfig
 import com.ktomek.yamv.state.MviRuntime
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test
 
 private data class ConcurrencyTestState(val results: List<String> = emptyList()) : State
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class FunctionTypedFeatureConcurrencyTest {
 
     @Test
