@@ -2,7 +2,7 @@
 
 [![Build, Test](https://github.com/ktomek/yamv/actions/workflows/ci.yml/badge.svg)](https://github.com/ktomek/yamv/actions/workflows/ci.yml)
 [![JitPack](https://jitpack.io/v/ktomek/yamv.svg)](https://jitpack.io/#ktomek/yamv)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 A Kotlin-first **MVI (Model-View-Intent)** framework for Android & Kotlin Multiplatform with compile-time code generation via KSP.
 
@@ -171,5 +171,11 @@ Full documentation: **[ktomek.github.io/yamv](https://ktomek.github.io/yamv)**
 ## License
 
 ```
-MIT License — see LICENSE file
+Copyright 2024 Krzysztof Tomek
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
 ```
