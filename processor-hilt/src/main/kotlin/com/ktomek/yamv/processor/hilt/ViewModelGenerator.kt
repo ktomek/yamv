@@ -23,9 +23,12 @@ import com.squareup.kotlinpoet.ksp.writeTo
  * Generated output example:
  * ```kotlin
  * @HiltViewModel
- * class CounterStateViewModel @Inject constructor(
- *     private val features: Set<@JvmSuppressWildcards Feature<CounterState>>,
+ * class CounterStateStore @Inject constructor(
+ *     features: Set<@JvmSuppressWildcards Feature<CounterState>>,
+ *     @MviDispatcherConfig(CounterState::class) optionalDispatcherConfig: Optional<CoroutineDispatcherConfig>,
  * ) : MviRetainedStore<CounterState, Any>() {
+ *     override val dispatcherConfig: CoroutineDispatcherConfig =
+ *         optionalDispatcherConfig.orElseGet { DefaultCoroutineDispatcherConfig() }
  *     override val store: MviStore<CounterState, Any> = MviRuntime(
  *         features = features,
  *         defaultState = CounterState(),
@@ -70,6 +73,7 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
         .addAnnotation(HiltClassNames.HiltViewModel)
         .primaryConstructor(buildConstructor(stateClass))
         .superclass(YamvClassNames.MviRetainedStore.parameterizedBy(stateClass, ClassName("kotlin", "Any")))
+        .addProperty(buildDispatcherConfigProperty())
         .addProperty(buildStoreProperty(stateClass, defaultStateClass))
         .build()
 
@@ -81,6 +85,27 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
                 ClassName("kotlin.collections", "Set").parameterizedBy(
                     YamvClassNames.Feature.parameterizedBy(stateClass).jvmSuppressWildcards()
                 )
+            )
+            .addParameter(
+                com.squareup.kotlinpoet.ParameterSpec.builder(
+                    "optionalDispatcherConfig",
+                    HiltClassNames.Optional.parameterizedBy(YamvClassNames.CoroutineDispatcherConfig),
+                )
+                    .addAnnotation(
+                        AnnotationSpec.builder(HiltClassNames.MviDispatcherConfig)
+                            .addMember("%T::class", stateClass)
+                            .build()
+                    )
+                    .build()
+            )
+            .build()
+
+    private fun buildDispatcherConfigProperty(): PropertySpec =
+        PropertySpec.builder("dispatcherConfig", YamvClassNames.CoroutineDispatcherConfig)
+            .addModifiers(KModifier.OVERRIDE)
+            .initializer(
+                "optionalDispatcherConfig.orElseGet·{·%T()·}",
+                YamvClassNames.DefaultCoroutineDispatcherConfig,
             )
             .build()
 

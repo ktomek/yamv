@@ -71,6 +71,7 @@ internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator)
             .addAnnotation(HiltClassNames.Module)
             .addAnnotation(buildInstallInAnnotation())
             .apply { bindsFeatures.forEach { addFunction(buildAbstractBindsForClass(it, stateClass)) } }
+            .addFunction(buildOptionalDispatcherConfigBinding(stateClass))
             .addType(buildCompanionObject(stateClass, featureSetType, providesFeatures, propertyFeatures))
             .build()
     }
@@ -133,6 +134,18 @@ internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator)
             statement = statement,
         )
     }
+
+    private fun buildOptionalDispatcherConfigBinding(stateClass: ClassName): FunSpec =
+        FunSpec.builder("bindOptionalDispatcherConfig")
+            .addModifiers(KModifier.ABSTRACT)
+            .addAnnotation(HiltClassNames.BindsOptionalOf)
+            .addAnnotation(
+                AnnotationSpec.builder(HiltClassNames.MviDispatcherConfig)
+                    .addMember("%T::class", stateClass)
+                    .build()
+            )
+            .returns(YamvClassNames.CoroutineDispatcherConfig)
+            .build()
 
     private fun buildAbstractBinds(name: String, paramType: ClassName, returnType: TypeName): FunSpec =
         FunSpec.builder(name)
