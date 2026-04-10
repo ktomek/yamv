@@ -14,14 +14,20 @@ MVI architecture brings predictability to UI state. YAMV makes it production-rea
 
 ## Core Concepts
 
-```
-UI dispatches Intention
-    → FeatureRouter routes to matching Features
-        → Features emit Outcomes
-            → StateOutcome  → reduces state (pure function)
-            → EffectOutcome → side effect (navigation, toast, etc.)
-            → IntentionOutcome → dispatches another intention
-    → StateFlow<S> updates UI
+``` mermaid
+flowchart LR
+    UI["🖥️ UI\ndispatch()"] -->|Intention| Router["🚦 FeatureRouter"]
+    Router --> Features["🧩 Features"]
+    Features -->|StateOutcome| State["🔄 reduces state"]
+    Features -->|EffectOutcome| Effect["⚡ side effect"]
+    Features -->|IntentionOutcome| Router
+    State -->|"StateFlow‹S›"| UI
+
+    style UI fill:#7c4dff,color:#fff,stroke:#7c4dff
+    style Router fill:#aa00ff,color:#fff,stroke:#aa00ff
+    style Features fill:#d500f9,color:#fff,stroke:#d500f9
+    style State fill:#651fff,color:#fff,stroke:#651fff
+    style Effect fill:#6200ea,color:#fff,stroke:#6200ea
 ```
 
 ## Modules at a Glance

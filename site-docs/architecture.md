@@ -4,67 +4,107 @@
 
 YAMV implements strict unidirectional data flow:
 
+``` mermaid
+flowchart TB
+    subgraph UI ["🖥️ Composable UI"]
+        direction LR
+        dispatch["store.dispatch(Intention)"]
+        observe["store.state.collectAsStateWithLifecycle()"]
+    end
+
+    subgraph Store ["🏪 MviRetainedStore · generated *Store"]
+        delegates["delegates to MviRuntime"]
+    end
+
+    subgraph Runtime ["⚙️ MviRuntime"]
+        direction LR
+        reducers["🔄 Reducers\n`scan() → StateFlow`\n**Main**"]
+        effects["⚡ Effects\n`effectsFlow`\n**Main**"]
+        redispatch["🔁 Re-dispatch\n`IntentionOutcome`\n**Main**"]
+    end
+
+    subgraph Router ["🚦 FeatureRouter"]
+        intentionFlow["intentionFlow\n`SharedFlow‹Any›`"]
+        outcomeFlow["outcomeFlow\n`SharedFlow‹Outcome‹S››`"]
+    end
+
+    subgraph Features ["🧩 Features · one coroutine each"]
+        direction LR
+        fa["Feature A"]
+        fb["Feature B"]
+        fc["Feature C"]
+    end
+
+    dispatch -->|"Intention"| Store
+    Store --> intentionFlow
+    intentionFlow --> fa & fb & fc
+    fa & fb & fc --> outcomeFlow
+    outcomeFlow --> reducers & effects & redispatch
+    reducers -->|"StateFlow‹S›"| observe
+    redispatch -.->|"re-dispatch"| intentionFlow
+
+    style UI fill:#7c4dff,color:#fff,stroke:#7c4dff
+    style Store fill:#651fff,color:#fff,stroke:#651fff
+    style Runtime fill:#6200ea,color:#fff,stroke:#6200ea
+    style Router fill:#aa00ff,color:#fff,stroke:#aa00ff
+    style Features fill:#d500f9,color:#fff,stroke:#d500f9
+
+    style dispatch fill:#b388ff,color:#000,stroke:#7c4dff
+    style observe fill:#b388ff,color:#000,stroke:#7c4dff
+    style delegates fill:#b39ddb,color:#000,stroke:#651fff
+    style reducers fill:#ce93d8,color:#000,stroke:#6200ea
+    style effects fill:#ce93d8,color:#000,stroke:#6200ea
+    style redispatch fill:#ce93d8,color:#000,stroke:#6200ea
+    style intentionFlow fill:#ea80fc,color:#000,stroke:#aa00ff
+    style outcomeFlow fill:#ea80fc,color:#000,stroke:#aa00ff
+    style fa fill:#f3e5f5,color:#000,stroke:#d500f9
+    style fb fill:#f3e5f5,color:#000,stroke:#d500f9
+    style fc fill:#f3e5f5,color:#000,stroke:#d500f9
 ```
-┌──────────────────────────────────────────────────────────┐
-│                       Composable UI                      │
-│   val state by store.state.collectAsStateWithLifecycle() │
-│   store.dispatch(CounterIntention.Increment)             │
-└─────────────────────────┬──────────────────▲─────────────┘
-                          │ Intention        │ StateFlow<S>
-                          ▼                  │
-┌──────────────────────────────────────────────────────────┐
-│             MviRetainedStore (generated *Store)           │
-│   delegates to MviRuntime                                │
-└─────────────────────────┬──────────────────▲─────────────┘
-                          │                  │
-                          ▼                  │
-┌──────────────────────────────────────────────────────────┐
-│                       MviRuntime                         │
-│   ┌──────────────┐  ┌──────────────┐  ┌───────────────┐ │
-│   │  Reducers    │  │   Effects    │  │  Intentions   │ │
-│   │  (Main)      │  │   (Main)     │  │  (Main)       │ │
-│   └──────┬───────┘  └──────┬───────┘  └───────┬───────┘ │
-└──────────│─────────────────│──────────────────│──────────┘
-           │                 │                  │
-           └─────────────────▼──────────────────┘
-                      SharedFlow<Outcome<S>>
-                             │
-                             ▼
-┌──────────────────────────────────────────────────────────┐
-│                      FeatureRouter                       │
-│   intentionFlow: MutableSharedFlow<Any>                  │
-│   outcomeFlow:   MutableSharedFlow<Outcome<S>>           │
-└─────────────────────────┬────────────────────────────────┘
-                          │ (one coroutine per feature)
-               ┌──────────┼──────────┐
-               ▼          ▼          ▼
-          Feature A   Feature B  Feature C
-        (Default dispatcher, or per-feature)
+
+## Outcome Types
+
+``` mermaid
+flowchart LR
+    feature["🧩 Feature"] --> outcome{"Outcome‹S›"}
+    outcome -->|StateOutcome| reducer["🔄 `(S) → S`\nreduces state via scan()"]
+    outcome -->|EffectOutcome| effect["⚡ side effect\nnavigation, toast, etc."]
+    outcome -->|IntentionOutcome| intention["🔁 re-dispatches\nanother intention"]
+
+    style feature fill:#d500f9,color:#fff,stroke:#d500f9
+    style outcome fill:#aa00ff,color:#fff,stroke:#aa00ff
+    style reducer fill:#7c4dff,color:#fff,stroke:#7c4dff
+    style effect fill:#651fff,color:#fff,stroke:#651fff
+    style intention fill:#6200ea,color:#fff,stroke:#6200ea
 ```
-
-## Key Types
-
-### Outcomes
-
-Every feature produces `Outcome<S>` values. There are three kinds:
-
-| Type | Interface | Effect |
-|------|-----------|--------|
-| `StateOutcome<S>` | `fun interface (S) -> S` | Reduces state via `scan()` |
-| `EffectOutcome<S>` | marker | Emitted on `effects: Flow<EffectOutcome<S>>` |
-| `IntentionOutcome<S>` | has `val intention: Any` | Re-dispatched as a new intention |
 
 Declare outcome subclasses as **standalone classes** — they are decoupled from features and testable in isolation. See [Features Guide](features.md#outcomes-as-separate-classes).
 
-### Features
+## Feature Abstraction Levels
 
-Three abstraction levels (choose the simplest one that fits):
+Three levels — choose the simplest one that fits:
 
-| Type | API | When to use |
-|------|-----|-------------|
-| `Feature.FlowFeature<S>` | `(Flow<Any>) -> Flow<Outcome<S>>` | Low-level; handles multiple intention types |
-| `TypedFeature<S, I>` | `(Flow<I>) -> Flow<Outcome<S>>` | Typed; one feature per intention type |
-| `FunctionTypedFeature<S, I>` | `suspend (I) -> Outcome<S>` | Simplest; one outcome per intention |
+``` mermaid
+flowchart LR
+    subgraph simple ["Simplest"]
+        func["**FunctionTypedFeature‹S, I›**\n`suspend (I) → Outcome‹S›`"]
+    end
+    subgraph typed ["Typed streaming"]
+        tf["**TypedFeature‹S, I›**\n`(Flow‹I›) → Flow‹Outcome‹S››`"]
+    end
+    subgraph raw ["Low-level"]
+        ff["**Feature.FlowFeature‹S›**\n`(Flow‹Any›) → Flow‹Outcome‹S››`"]
+    end
+
+    func -.->|".wrap()"| tf -.->|".wrap()"| ff
+
+    style simple fill:#c5cae9,color:#000,stroke:#7c4dff
+    style typed fill:#b39ddb,color:#000,stroke:#7c4dff
+    style raw fill:#ce93d8,color:#000,stroke:#7c4dff
+    style func fill:#e8eaf6,color:#000,stroke:#5c6bc0
+    style tf fill:#ede7f6,color:#000,stroke:#7e57c2
+    style ff fill:#f3e5f5,color:#000,stroke:#ab47bc
+```
 
 Use `.wrap()` to convert `TypedFeature` or `FunctionTypedFeature` to `Feature<S>` when wiring manually. With `@AutoFeature` (Hilt) or `mviStore {}` DSL (Koin), wrapping is automatic.
 
@@ -74,18 +114,38 @@ Use `functionTypedFeature<S, I> { }` builder for inline definitions.
 
 `CoroutineDispatcherConfig` controls which dispatcher each part of the pipeline runs on:
 
-```
-MviRuntime owns CoroutineScope(SupervisorJob() + reducerDispatcher)
-│
-├── launch(reducerDispatcher)    ── Reducer collector: scan outcomes → update StateFlow
-├── launch(reducerDispatcher)    ── Effect collector: forward EffectOutcomes
-├── launch(intentionDispatcher)  ── IntentionOutcome collector: re-dispatch
-│
-└── FeatureRouter initialized with this scope
-    │
-    ├── launch(featureDispatcher) ── Feature A coroutine
-    ├── launch(featureDispatcher) ── Feature B coroutine
-    └── launch(featureDispatcher) ── Feature C coroutine
+``` mermaid
+flowchart TB
+    subgraph scope ["MviRuntime · CoroutineScope(SupervisorJob)"]
+        direction TB
+        subgraph main ["Dispatchers.Main"]
+            r["🔄 Reducer collector\nscan → StateFlow"]
+            e["⚡ Effect collector\nforward EffectOutcomes"]
+            i["🔁 IntentionOutcome collector\nre-dispatch"]
+        end
+    end
+
+    subgraph router ["FeatureRouter"]
+        subgraph feat ["Dispatchers.Default · or per-feature"]
+            direction LR
+            f1["Feature A"]
+            f2["Feature B"]
+            f3["Feature C"]
+        end
+    end
+
+    scope --> router
+
+    style scope fill:#ede7f6,color:#000,stroke:#7c4dff
+    style main fill:#d1c4e9,color:#000,stroke:#651fff
+    style router fill:#f3e5f5,color:#000,stroke:#aa00ff
+    style feat fill:#fce4ec,color:#000,stroke:#d500f9
+    style r fill:#b39ddb,color:#000,stroke:#651fff
+    style e fill:#b39ddb,color:#000,stroke:#651fff
+    style i fill:#b39ddb,color:#000,stroke:#651fff
+    style f1 fill:#f8bbd0,color:#000,stroke:#d500f9
+    style f2 fill:#f8bbd0,color:#000,stroke:#d500f9
+    style f3 fill:#f8bbd0,color:#000,stroke:#d500f9
 ```
 
 Default dispatchers (`DefaultCoroutineDispatcherConfig`):
@@ -137,28 +197,39 @@ object MyDispatcherModule {
 }
 ```
 
-**Key invariant:** `FeatureRouter` uses `CompletableDeferred` to ensure all features are subscribed to the intention `SharedFlow` before the first intention is dispatched. This prevents race conditions at startup.
+!!! info "Subscription safety"
+    `FeatureRouter` uses `CompletableDeferred` to ensure all features are subscribed to the intention `SharedFlow` before the first intention is dispatched. This prevents race conditions at startup.
 
 ## Lifecycle
 
-```
-MviRetainedStore created (ViewModel)
-  → MviRuntime created (in constructor)
-    → FeatureRouter.initialize() called
-      → Feature coroutines launched (one per feature)
-      → All features subscribe to intentionFlow
-      → CompletableDeferred completed
-  → Ready to dispatch
+``` mermaid
+sequenceDiagram
+    participant UI as 🖥️ UI
+    participant Store as 🏪 MviRetainedStore
+    participant Runtime as ⚙️ MviRuntime
+    participant Router as 🚦 FeatureRouter
+    participant F as 🧩 Features
 
-store.dispatch(intention)
-  → scope.launch(intentionDispatcher) { intentionRouter.dispatchIntention(intention) }
-    → subscribed.await() (returns immediately after init)
-    → intentionFlow.emit(intention)
-      → Features receive intention, produce Outcomes
-      → Outcomes flow to MviRuntime collectors
+    Note over Store,Runtime: Construction
+    Store->>Runtime: create MviRuntime
+    Runtime->>Router: initialize(scope, config)
+    Router->>F: launch coroutine per feature
+    F-->>Router: subscribe to intentionFlow
+    Note over Router: CompletableDeferred ✅
 
-MviRetainedStore.onCleared()
-  → store.clear()
-    → scope.cancel() (cancels all 3 runtime collectors + all feature coroutines)
-    → FeatureRouter.shutdown() (cancels feature jobs + feature scopes)
+    Note over UI,F: Dispatch
+    UI->>Store: dispatch(intention)
+    Store->>Runtime: scope.launch { dispatchIntention }
+    Runtime->>Router: intentionFlow.emit(intention)
+    Router->>F: intention broadcast
+    F-->>Router: Outcome‹S›
+    Router-->>Runtime: outcomeFlow
+    Runtime-->>Runtime: scan → StateFlow
+    Runtime-->>UI: StateFlow‹S› updated
+
+    Note over UI,F: Cleanup
+    UI->>Store: onCleared()
+    Store->>Runtime: clear()
+    Runtime->>Router: shutdown()
+    Router->>F: cancel all jobs + scopes
 ```
