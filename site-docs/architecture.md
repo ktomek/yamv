@@ -5,106 +5,45 @@
 YAMV implements strict unidirectional data flow:
 
 ``` mermaid
-flowchart TB
-    subgraph UI ["🖥️ Composable UI"]
-        direction LR
-        dispatch["store.dispatch(Intention)"]
-        observe["store.state.collectAsStateWithLifecycle()"]
-    end
-
-    subgraph Store ["🏪 MviRetainedStore · generated *Store"]
-        delegates["delegates to MviRuntime"]
-    end
-
-    subgraph Runtime ["⚙️ MviRuntime"]
-        direction LR
-        reducers["🔄 Reducers\n`scan() → StateFlow`\n**Main**"]
-        effects["⚡ Effects\n`effectsFlow`\n**Main**"]
-        redispatch["🔁 Re-dispatch\n`IntentionOutcome`\n**Main**"]
-    end
-
-    subgraph Router ["🚦 FeatureRouter"]
-        intentionFlow["intentionFlow\n`SharedFlow‹Any›`"]
-        outcomeFlow["outcomeFlow\n`SharedFlow‹Outcome‹S››`"]
-    end
-
-    subgraph Features ["🧩 Features · one coroutine each"]
-        direction LR
-        fa["Feature A"]
-        fb["Feature B"]
-        fc["Feature C"]
-    end
-
-    dispatch -->|"Intention"| Store
-    Store --> intentionFlow
-    intentionFlow --> fa & fb & fc
-    fa & fb & fc --> outcomeFlow
-    outcomeFlow --> reducers & effects & redispatch
-    reducers -->|"StateFlow‹S›"| observe
-    redispatch -.->|"re-dispatch"| intentionFlow
-
-    style UI fill:#7c4dff,color:#fff,stroke:#7c4dff
-    style Store fill:#651fff,color:#fff,stroke:#651fff
-    style Runtime fill:#6200ea,color:#fff,stroke:#6200ea
-    style Router fill:#aa00ff,color:#fff,stroke:#aa00ff
-    style Features fill:#d500f9,color:#fff,stroke:#d500f9
-
-    style dispatch fill:#b388ff,color:#000,stroke:#7c4dff
-    style observe fill:#b388ff,color:#000,stroke:#7c4dff
-    style delegates fill:#b39ddb,color:#000,stroke:#651fff
-    style reducers fill:#ce93d8,color:#000,stroke:#6200ea
-    style effects fill:#ce93d8,color:#000,stroke:#6200ea
-    style redispatch fill:#ce93d8,color:#000,stroke:#6200ea
-    style intentionFlow fill:#ea80fc,color:#000,stroke:#aa00ff
-    style outcomeFlow fill:#ea80fc,color:#000,stroke:#aa00ff
-    style fa fill:#f3e5f5,color:#000,stroke:#d500f9
-    style fb fill:#f3e5f5,color:#000,stroke:#d500f9
-    style fc fill:#f3e5f5,color:#000,stroke:#d500f9
+flowchart LR
+    UI(["🖥️ UI"])
+    UI -->|"dispatch(Intention)"| Store
+    Store(["🏪 Store"])
+    Store -->|"routes to"| Features
+    Features(["🧩 Features"])
+    Features -->|"Outcome‹S›"| Store
+    Store -->|"StateFlow‹S›"| UI
 ```
+
+**The cycle:** UI dispatches an intention → Store routes it to matching features → features emit outcomes → outcomes update state → UI observes new state.
+
+Outcomes come in three kinds:
+
+- **`StateOutcome`** — pure `(S) → S` reducer, applied via `scan()`
+- **`EffectOutcome`** — side effect (navigation, toast, analytics)
+- **`IntentionOutcome`** — re-dispatches another intention back into the cycle
 
 ## Outcome Types
 
 ``` mermaid
 flowchart LR
-    feature["🧩 Feature"] --> outcome{"Outcome‹S›"}
-    outcome -->|StateOutcome| reducer["🔄 `(S) → S`\nreduces state via scan()"]
-    outcome -->|EffectOutcome| effect["⚡ side effect\nnavigation, toast, etc."]
-    outcome -->|IntentionOutcome| intention["🔁 re-dispatches\nanother intention"]
-
-    style feature fill:#d500f9,color:#fff,stroke:#d500f9
-    style outcome fill:#aa00ff,color:#fff,stroke:#aa00ff
-    style reducer fill:#7c4dff,color:#fff,stroke:#7c4dff
-    style effect fill:#651fff,color:#fff,stroke:#651fff
-    style intention fill:#6200ea,color:#fff,stroke:#6200ea
+    feature(["🧩 Feature"]) --> outcome{"Outcome‹S›"}
+    outcome -->|StateOutcome| reducer["🔄 reduces state\n`(S) → S`"]
+    outcome -->|EffectOutcome| effect["⚡ side effect"]
+    outcome -->|IntentionOutcome| intention["🔁 re-dispatches\nintention"]
 ```
 
 Declare outcome subclasses as **standalone classes** — they are decoupled from features and testable in isolation. See [Features Guide](features.md#outcomes-as-separate-classes).
 
 ## Feature Abstraction Levels
 
-Three levels — choose the simplest one that fits:
+Three abstraction levels (choose the simplest one that fits):
 
-``` mermaid
-flowchart LR
-    subgraph simple ["Simplest"]
-        func["**FunctionTypedFeature‹S, I›**\n`suspend (I) → Outcome‹S›`"]
-    end
-    subgraph typed ["Typed streaming"]
-        tf["**TypedFeature‹S, I›**\n`(Flow‹I›) → Flow‹Outcome‹S››`"]
-    end
-    subgraph raw ["Low-level"]
-        ff["**Feature.FlowFeature‹S›**\n`(Flow‹Any›) → Flow‹Outcome‹S››`"]
-    end
-
-    func -.->|".wrap()"| tf -.->|".wrap()"| ff
-
-    style simple fill:#c5cae9,color:#000,stroke:#7c4dff
-    style typed fill:#b39ddb,color:#000,stroke:#7c4dff
-    style raw fill:#ce93d8,color:#000,stroke:#7c4dff
-    style func fill:#e8eaf6,color:#000,stroke:#5c6bc0
-    style tf fill:#ede7f6,color:#000,stroke:#7e57c2
-    style ff fill:#f3e5f5,color:#000,stroke:#ab47bc
-```
+| Type | API | When to use |
+|------|-----|-------------|
+| `Feature.FlowFeature<S>` | `(Flow<Any>) -> Flow<Outcome<S>>` | Low-level; handles multiple intention types |
+| `TypedFeature<S, I>` | `(Flow<I>) -> Flow<Outcome<S>>` | Typed; one feature per intention type |
+| `FunctionTypedFeature<S, I>` | `suspend (I) -> Outcome<S>` | Simplest; one outcome per intention |
 
 Use `.wrap()` to convert `TypedFeature` or `FunctionTypedFeature` to `Feature<S>` when wiring manually. With `@AutoFeature` (Hilt) or `mviStore {}` DSL (Koin), wrapping is automatic.
 
@@ -114,38 +53,18 @@ Use `functionTypedFeature<S, I> { }` builder for inline definitions.
 
 `CoroutineDispatcherConfig` controls which dispatcher each part of the pipeline runs on:
 
-``` mermaid
-flowchart TB
-    subgraph scope ["MviRuntime · CoroutineScope(SupervisorJob)"]
-        direction TB
-        subgraph main ["Dispatchers.Main"]
-            r["🔄 Reducer collector\nscan → StateFlow"]
-            e["⚡ Effect collector\nforward EffectOutcomes"]
-            i["🔁 IntentionOutcome collector\nre-dispatch"]
-        end
-    end
-
-    subgraph router ["FeatureRouter"]
-        subgraph feat ["Dispatchers.Default · or per-feature"]
-            direction LR
-            f1["Feature A"]
-            f2["Feature B"]
-            f3["Feature C"]
-        end
-    end
-
-    scope --> router
-
-    style scope fill:#ede7f6,color:#000,stroke:#7c4dff
-    style main fill:#d1c4e9,color:#000,stroke:#651fff
-    style router fill:#f3e5f5,color:#000,stroke:#aa00ff
-    style feat fill:#fce4ec,color:#000,stroke:#d500f9
-    style r fill:#b39ddb,color:#000,stroke:#651fff
-    style e fill:#b39ddb,color:#000,stroke:#651fff
-    style i fill:#b39ddb,color:#000,stroke:#651fff
-    style f1 fill:#f8bbd0,color:#000,stroke:#d500f9
-    style f2 fill:#f8bbd0,color:#000,stroke:#d500f9
-    style f3 fill:#f8bbd0,color:#000,stroke:#d500f9
+```
+MviRuntime owns CoroutineScope(SupervisorJob() + reducerDispatcher)
+│
+├── launch(reducerDispatcher)    ── Reducer collector: scan outcomes → update StateFlow
+├── launch(reducerDispatcher)    ── Effect collector: forward EffectOutcomes
+├── launch(intentionDispatcher)  ── IntentionOutcome collector: re-dispatch
+│
+└── FeatureRouter initialized with this scope
+    │
+    ├── launch(featureDispatcher) ── Feature A coroutine
+    ├── launch(featureDispatcher) ── Feature B coroutine
+    └── launch(featureDispatcher) ── Feature C coroutine
 ```
 
 Default dispatchers (`DefaultCoroutineDispatcherConfig`):
