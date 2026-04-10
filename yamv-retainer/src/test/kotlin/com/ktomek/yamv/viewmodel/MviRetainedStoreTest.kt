@@ -17,10 +17,10 @@ private interface TestState : State {
 
 private data class TestStateImpl(override val value: String = "initial") : TestState
 
-private class TestMviViewModel(override val store: MviStore<TestState, Any>) :
-    MviViewModel<TestState, Any>()
+private class TestMviRetainedStore(override val store: MviStore<TestState, Any>) :
+    MviRetainedStore<TestState, Any>()
 
-class MviViewModelTest {
+class MviRetainedStoreTest {
 
     @Test
     fun `GIVEN MviViewModel with store WHEN accessing state THEN delegates to store state`() {
@@ -28,7 +28,7 @@ class MviViewModelTest {
         val stateFlow = MutableStateFlow<TestState>(TestStateImpl("test"))
         val mockStore: MviStore<TestState, Any> = mockk(relaxed = true)
         io.mockk.every { mockStore.state } returns stateFlow
-        val viewModel = TestMviViewModel(mockStore)
+        val viewModel = TestMviRetainedStore(mockStore)
 
         // Act & Assert
         assertEquals(stateFlow, viewModel.state)
@@ -41,7 +41,7 @@ class MviViewModelTest {
         val effectsFlow: Flow<EffectOutcome<TestState>> = emptyFlow()
         val mockStore: MviStore<TestState, Any> = mockk(relaxed = true)
         io.mockk.every { mockStore.effects } returns effectsFlow
-        val viewModel = TestMviViewModel(mockStore)
+        val viewModel = TestMviRetainedStore(mockStore)
 
         // Act & Assert
         assertEquals(effectsFlow, viewModel.effects)
@@ -53,7 +53,7 @@ class MviViewModelTest {
         // Arrange
         val intention = "test-intention"
         val mockStore: MviStore<TestState, Any> = mockk(relaxed = true)
-        val viewModel = TestMviViewModel(mockStore)
+        val viewModel = TestMviRetainedStore(mockStore)
 
         // Act
         viewModel.dispatch(intention)
@@ -66,7 +66,7 @@ class MviViewModelTest {
     fun `GIVEN MviViewModel with store WHEN clear is called THEN delegates to store clear`() {
         // Arrange
         val mockStore: MviStore<TestState, Any> = mockk(relaxed = true)
-        val viewModel = TestMviViewModel(mockStore)
+        val viewModel = TestMviRetainedStore(mockStore)
 
         // Act
         viewModel.clear()
