@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.allopen)
     `maven-publish`
 }
 
@@ -48,6 +49,10 @@ kotlin {
             implementation(libs.bundles.testing.unit)
         }
     }
+}
+
+allOpen {
+    annotation("com.ktomek.yamv.annotations.OpenForTesting")
 }
 
 publishing {

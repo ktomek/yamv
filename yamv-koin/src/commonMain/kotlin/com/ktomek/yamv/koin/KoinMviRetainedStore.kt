@@ -1,6 +1,7 @@
 package com.ktomek.yamv.koin
 
 import androidx.compose.runtime.Composable
+import com.ktomek.yamv.annotations.OpenForTesting
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.retainer.MviRetainedStore
@@ -20,7 +21,8 @@ import org.koin.core.qualifier.named
  * Replaces per-state generated classes (e.g. `CounterStateStore`). Register it via [mviStore]
  * and retrieve it via [koinMviStore] — both derive the Koin qualifier from [S] automatically.
  */
-open class KoinMviRetainedStore<S : State>(
+@OpenForTesting
+class KoinMviRetainedStore<S : State>(
     features: Set<Feature<S>>,
     defaultState: S,
     dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig(),
