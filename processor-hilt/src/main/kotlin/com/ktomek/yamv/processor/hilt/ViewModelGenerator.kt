@@ -29,6 +29,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
  *     override val store: MviStore<CounterState, Any> = MviRuntime(
  *         features = features,
  *         defaultState = CounterState(),
+ *         dispatcherConfig = dispatcherConfig,
  *     )
  * }
  * ```
@@ -90,7 +91,7 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
         )
             .addModifiers(KModifier.OVERRIDE)
             .initializer(
-                "%T(\n  features = features,\n  defaultState = %T(),\n)",
+                "%T(\n  features = features,\n  defaultState = %T(),\n  dispatcherConfig = dispatcherConfig,\n)",
                 YamvClassNames.MviRuntime,
                 defaultStateClass,
             )

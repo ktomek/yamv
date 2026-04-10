@@ -3,6 +3,8 @@ package com.ktomek.yamv.retainer
 import androidx.lifecycle.ViewModel
 import com.ktomek.yamv.core.EffectOutcome
 import com.ktomek.yamv.core.State
+import com.ktomek.yamv.state.CoroutineDispatcherConfig
+import com.ktomek.yamv.state.DefaultCoroutineDispatcherConfig
 import com.ktomek.yamv.state.MviStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +19,8 @@ import kotlinx.coroutines.flow.StateFlow
  * @param I The intention type.
  */
 abstract class MviRetainedStore<S : State, I : Any> : ViewModel(), MviStore<S, I> {
+
+    protected open val dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig()
 
     protected abstract val store: MviStore<S, I>
 

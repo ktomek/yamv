@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.allopen)
     `maven-publish`
 }
 
@@ -17,6 +18,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    testOptions {
+        unitTests.all { it.useJUnitPlatform() }
     }
 }
 
@@ -41,7 +45,14 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.koin.android)
         }
+        androidUnitTest.dependencies {
+            implementation(libs.bundles.testing.unit)
+        }
     }
+}
+
+allOpen {
+    annotation("com.ktomek.yamv.annotations.OpenForTesting")
 }
 
 publishing {

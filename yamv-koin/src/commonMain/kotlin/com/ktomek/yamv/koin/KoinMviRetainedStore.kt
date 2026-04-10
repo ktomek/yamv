@@ -1,9 +1,12 @@
 package com.ktomek.yamv.koin
 
 import androidx.compose.runtime.Composable
+import com.ktomek.yamv.annotations.OpenForTesting
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.retainer.MviRetainedStore
+import com.ktomek.yamv.state.CoroutineDispatcherConfig
+import com.ktomek.yamv.state.DefaultCoroutineDispatcherConfig
 import com.ktomek.yamv.state.MviRuntime
 import com.ktomek.yamv.state.MviStore
 import org.koin.compose.viewmodel.koinViewModel
@@ -18,13 +21,17 @@ import org.koin.core.qualifier.named
  * Replaces per-state generated classes (e.g. `CounterStateStore`). Register it via [mviStore]
  * and retrieve it via [koinMviStore] — both derive the Koin qualifier from [S] automatically.
  */
+@OpenForTesting
 class KoinMviRetainedStore<S : State>(
     features: Set<Feature<S>>,
     defaultState: S,
+    dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig(),
 ) : MviRetainedStore<S, Any>() {
+    override val dispatcherConfig: CoroutineDispatcherConfig = dispatcherConfig
     override val store: MviStore<S, Any> = MviRuntime(
         features = features,
         defaultState = defaultState,
+        dispatcherConfig = dispatcherConfig,
     )
 }
 
@@ -57,12 +64,17 @@ inline fun <reified S : State> stateQualifier(): Qualifier = named(S::class.simp
  */
 inline fun <reified S : State> Module.mviStore(
     defaultState: S,
+    dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig(),
     crossinline features: FeatureRegistrar<S>.() -> Unit,
 ) {
     viewModel(stateQualifier<S>()) {
         val registrar = FeatureRegistrar<S>(this)
         registrar.features()
-        KoinMviRetainedStore(features = registrar.build(), defaultState = defaultState)
+        KoinMviRetainedStore(
+            features = registrar.build(),
+            defaultState = defaultState,
+            dispatcherConfig = dispatcherConfig,
+        )
     }
 }
 
