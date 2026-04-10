@@ -24,7 +24,7 @@ kotlin {
 }
 
 dependencies {
-    api(project(":yamv-viewmodel"))
+    api(project(":yamv-retainer"))
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.android.compiler)
     implementation(libs.androidx.compose.hilt)

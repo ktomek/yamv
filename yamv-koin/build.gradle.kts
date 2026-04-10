@@ -32,7 +32,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":yamv-viewmodel"))
+            api(project(":yamv-retainer"))
             implementation(project(":core"))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
