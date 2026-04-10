@@ -21,5 +21,4 @@ class HasFeatureDispatcherTest {
 
         assertThat(scope.featureDispatcher).isEqualTo(Dispatchers.Default)
     }
-
 }
