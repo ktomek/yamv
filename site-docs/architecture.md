@@ -13,6 +13,7 @@ flowchart LR
     Features(["🧩 Features"])
     Features -->|"Outcome‹S›"| Store
     Store -->|"StateFlow‹S›"| UI
+    Store -.->|"effects"| UI
 ```
 
 **The cycle:** UI dispatches an intention → Store routes it to matching features → features emit outcomes → outcomes update state → UI observes new state.
