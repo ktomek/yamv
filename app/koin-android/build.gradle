@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'com.ktomek.yamv.koin'
+    namespace = 'com.ktomek.yamv.koin'
     compileSdk 36
 
     defaultConfig {

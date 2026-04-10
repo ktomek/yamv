@@ -17,7 +17,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
-            useSupportLibrary true
+            useSupportLibrary = true
         }
     }
 
@@ -37,7 +37,7 @@ android {
             excludes += 'META-INF/LICENSE.md'
         }
     }
-    namespace 'com.ktomek.yamv'
+    namespace = 'com.ktomek.yamv'
 }
 
 kotlin {
