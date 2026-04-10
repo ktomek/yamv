@@ -25,7 +25,7 @@ open class KoinMviRetainedStore<S : State>(
     defaultState: S,
     dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig(),
 ) : MviRetainedStore<S, Any>() {
-    public override val dispatcherConfig: CoroutineDispatcherConfig = dispatcherConfig
+    override val dispatcherConfig: CoroutineDispatcherConfig = dispatcherConfig
     override val store: MviStore<S, Any> = MviRuntime(
         features = features,
         defaultState = defaultState,

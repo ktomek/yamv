@@ -6,9 +6,13 @@ import com.ktomek.yamv.state.CoroutineDispatcherConfig
 import com.ktomek.yamv.state.DefaultCoroutineDispatcherConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.koin.core.KoinApplication
 import org.koin.core.context.stopKoin
@@ -45,7 +49,7 @@ private class TrackingCoroutineDispatcherConfig(
 /**
  * Subclass of [KoinMviRetainedStore] used in tests that require construction via a named config parameter.
  *
- * Since [KoinMviRetainedStore.dispatcherConfig] is public, no extra accessor is needed.
+ * Exposes [dispatcherConfig] publicly so tests can assert on it, since the base class keeps it protected.
  */
 private class InspectableMviRetainedStore<S : State>(
     features: Set<Feature<S>>,
@@ -55,12 +59,23 @@ private class InspectableMviRetainedStore<S : State>(
     features = features,
     defaultState = defaultState,
     dispatcherConfig = config,
-)
+) {
+    public override val dispatcherConfig: CoroutineDispatcherConfig
+        get() = super.dispatcherConfig
+}
 
 class KoinMviRetainedStoreDispatcherConfigTest {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @BeforeEach
+    fun setUp() {
+        Dispatchers.setMain(StandardTestDispatcher())
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     @AfterEach
     fun tearDown() {
+        Dispatchers.resetMain()
         stopKoin()
     }
 
@@ -138,7 +153,7 @@ class KoinMviRetainedStoreDispatcherConfigTest {
     }
 
     @Test
-    fun `GIVEN mviStore DSL with custom dispatcherConfig WHEN resolved via Koin THEN store has custom dispatcherConfig`() {
+    fun `GIVEN mviStore DSL with custom dispatcherConfig WHEN resolved via Koin THEN store uses custom dispatcherConfig`() {
         // Arrange
         val customConfig = TrackingCoroutineDispatcherConfig()
         val koinModule = module {
@@ -147,9 +162,12 @@ class KoinMviRetainedStoreDispatcherConfigTest {
 
         // Act
         val koinApp = KoinApplication.init().modules(koinModule)
-        val store = koinApp.koin.get<KoinMviRetainedStore<TestState>>(stateQualifier<TestState>())
+        koinApp.koin.get<KoinMviRetainedStore<TestState>>(stateQualifier<TestState>())
 
-        // Assert
-        assertSame(customConfig, store.dispatcherConfig)
+        // Assert — MviRuntime calls provideReducerDispatcher on init using the custom config
+        assertTrue(
+            customConfig.reducerDispatcherCallCount > 0,
+            "Expected reducerDispatcherCallCount > 0 but was ${customConfig.reducerDispatcherCallCount}",
+        )
     }
 }
