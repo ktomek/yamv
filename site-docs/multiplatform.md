@@ -20,7 +20,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation("com.github.ktomek.yamv:yamv:VERSION")
-            implementation("com.github.ktomek.yamv:yamv-viewmodel:VERSION")
+            implementation("com.github.ktomek.yamv:yamv-retainer:VERSION")
             implementation("com.github.ktomek.yamv:yamv-koin:VERSION")
         }
     }
@@ -29,15 +29,30 @@ kotlin {
 
 ### 2. Create your Koin module
 
+Using the `mviStore {}` DSL — features are wrapped automatically:
+
 ```kotlin
 // commonMain
 val counterModule = module {
-    factory { CounterState() }
     factoryOf(::IncrementFeature)
     factoryOf(::DecrementFeature)
+    mviStore(defaultState = CounterState()) {
+        feature { get<IncrementFeature>() }
+        feature { get<DecrementFeature>() }
+    }
+}
+```
+
+Or manual wiring with explicit `.wrap()`:
+
+```kotlin
+val counterModule = module {
     factory<MviStore<CounterState, Any>> {
         MviRuntime(
-            features = setOf(get<IncrementFeature>().wrap(), get<DecrementFeature>().wrap()),
+            features = setOf(
+                IncrementFeature().wrap(),
+                DecrementFeature().wrap(),
+            ),
             defaultState = CounterState(),
         )
     }
@@ -49,7 +64,7 @@ val counterModule = module {
 ```kotlin
 // commonMain
 @Composable
-fun CounterScreen(vm: CounterStateStore = koinMviStore()) {
+fun CounterScreen(vm: KoinMviRetainedStore<CounterState> = koinMviStore()) {
     val state by vm.state.collectAsStateWithLifecycle()
     // ...
 }
@@ -63,7 +78,3 @@ fun MainViewController() = ComposeUIViewController {
     App()
 }
 ```
-
-## StateHandle on iOS
-
-`MviViewModel` uses `StateHandle` for saved state restoration. On iOS, `IosStateHandle` provides a no-op implementation (iOS ViewModel lifecycle manages this differently).

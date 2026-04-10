@@ -6,11 +6,11 @@ A Kotlin-first **MVI (Model-View-Intent)** framework for Android & Kotlin Multip
 
 MVI architecture brings predictability to UI state. YAMV makes it production-ready:
 
-- **Compile-time safety** — KSP generates your ViewModels and DI modules
+- **Compile-time safety** — KSP generates your retained stores and DI modules
 - **Zero runtime reflection** — all wiring happens at build time
 - **Coroutine-native** — built on Kotlin Coroutines and Flow, no RxJava
 - **Multiplatform** — same framework for Android (Hilt/Koin) and iOS (Koin + Compose Multiplatform)
-- **Testable** — pure Kotlin core with no Android dependencies; test with JUnit 5 + Turbine
+- **Testable** — pure Kotlin core with no Android dependencies; reducers are standalone classes testable without coroutines
 
 ## Core Concepts
 
@@ -30,10 +30,10 @@ UI dispatches Intention
 |--------|-----------------|
 | `core` | `State`, `Outcome`, `@AutoState`, `@AutoFeature` |
 | `yamv` | `MviRuntime`, `MviStore`, `FeatureRouter`, feature builders |
-| `yamv-viewmodel` | `MviViewModel` (Android + iOS) |
+| `yamv-retainer` | `MviRetainedStore` (Android ViewModel + iOS) |
 | `yamv-hilt` | `hiltMviStore()` Compose helper |
-| `yamv-koin` | `koinMviStore()` Compose helper |
-| `processor-hilt` | KSP: generates `*Store` ViewModel + `*FeaturesModule` |
+| `yamv-koin` | `koinMviStore()` / `mviStore {}` DSL |
+| `processor-hilt` | KSP: generates `*Store` retained store + `*FeaturesModule` |
 
 ## Quick Install
 

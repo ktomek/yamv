@@ -9,7 +9,7 @@ A Kotlin-first **MVI (Model-View-Intent)** framework for Android & Kotlin Multip
 - **Reactive** — state management via Kotlin Coroutines & Flow
 - **Type-safe** — sealed intentions, typed features, compile-time generation
 - **Multiplatform** — Android (Hilt or Koin) + iOS (Compose Multiplatform + Koin)
-- **Zero boilerplate** — `@AutoState` + `@AutoFeature` generate the ViewModel and Hilt/Koin modules
+- **Zero boilerplate** — `@AutoState` + `@AutoFeature` generate the retained store and Hilt/Koin modules
 
 ## Quick Start
 
@@ -33,7 +33,7 @@ dependencies {
     implementation("com.github.ktomek.yamv:yamv:VERSION")
 
     // Android ViewModel integration
-    implementation("com.github.ktomek.yamv:yamv-viewmodel:VERSION")
+    implementation("com.github.ktomek.yamv:yamv-retainer:VERSION")
 
     // Choose your DI integration:
     implementation("com.github.ktomek.yamv:yamv-hilt:VERSION")   // Hilt
@@ -50,24 +50,31 @@ Replace `VERSION` with the latest badge version above.
 ### 3. Define your state and intentions
 
 ```kotlin
-// State
 @AutoState
 data class CounterState(val count: Int = 0) : State
 
-// Intentions
 sealed class CounterIntention {
     data object Increment : CounterIntention()
     data object Decrement : CounterIntention()
 }
 ```
 
-### 4. Write a feature
+### 4. Define reducers and features
+
+Declare reducers as separate classes — decoupled from features, independently testable:
 
 ```kotlin
+// Reducer — pure (S) -> S, tested without coroutines
+class IncrementReducer : StateOutcome<CounterState> {
+    override fun reduce(prevState: CounterState) =
+        prevState.copy(count = prevState.count + 1)
+}
+
+// Feature — maps intentions to outcomes
 @AutoFeature
 class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> {
     override fun invoke(intentions: Flow<CounterIntention.Increment>): Flow<Outcome<CounterState>> =
-        intentions.map { StateOutcome { it.copy(count = it.count + 1) } }
+        intentions.map { IncrementReducer() }
 }
 ```
 
@@ -95,9 +102,9 @@ That's it. `@AutoState` generates `CounterStateStore` and `@AutoFeature` generat
 |--------|-------------|----------|
 | `core` | Marker interfaces & annotations (`State`, `Outcome`, `@AutoState`, `@AutoFeature`) | Pure Kotlin |
 | `yamv` | Core runtime (`MviRuntime`, `MviStore`, `FeatureRouter`) | Kotlin Multiplatform |
-| `yamv-viewmodel` | `MviViewModel` base class | Android + iOS |
+| `yamv-retainer` | `MviRetainedStore` — lifecycle-retained ViewModel base | Android + iOS |
 | `yamv-hilt` | `hiltMviStore()` Compose helper | Android |
-| `yamv-koin` | `koinMviStore()` Compose helper | Kotlin Multiplatform |
+| `yamv-koin` | `koinMviStore()` / `mviStore {}` DSL | Kotlin Multiplatform |
 | `processor-core` | KSP utilities (DI-agnostic) | JVM |
 | `processor-hilt` | Hilt KSP processor — generates `*Store` + `*FeaturesModule` | JVM |
 

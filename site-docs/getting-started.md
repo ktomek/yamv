@@ -41,7 +41,7 @@ plugins {
     dependencies {
         implementation("com.github.ktomek.yamv:core:VERSION")
         implementation("com.github.ktomek.yamv:yamv:VERSION")
-        implementation("com.github.ktomek.yamv:yamv-viewmodel:VERSION")
+        implementation("com.github.ktomek.yamv:yamv-retainer:VERSION")
         implementation("com.github.ktomek.yamv:yamv-hilt:VERSION")
         ksp("com.github.ktomek.yamv:processor-hilt:VERSION")
     }
@@ -54,7 +54,7 @@ plugins {
     dependencies {
         implementation("com.github.ktomek.yamv:core:VERSION")
         implementation("com.github.ktomek.yamv:yamv:VERSION")
-        implementation("com.github.ktomek.yamv:yamv-viewmodel:VERSION")
+        implementation("com.github.ktomek.yamv:yamv-retainer:VERSION")
         implementation("com.github.ktomek.yamv:yamv-koin:VERSION")
     }
     ```
@@ -71,7 +71,7 @@ import com.ktomek.yamv.annotations.AutoState
 data class CounterState(val count: Int = 0) : State
 ```
 
-`@AutoState` triggers KSP to generate `CounterStateStore` — a `@HiltViewModel` subclass of `MviViewModel<CounterState, Any>`.
+`@AutoState` triggers KSP to generate `CounterStateStore` — a `@HiltViewModel` subclass of `MviRetainedStore<CounterState, Any>`.
 
 ### 2. Define Intentions
 
@@ -83,14 +83,36 @@ sealed class CounterIntention {
 }
 ```
 
-### 3. Write Features
+### 3. Define Reducers
 
-Each feature handles one type of intention:
+Declare reducers as standalone classes. They are pure `(S) -> S` functions, decoupled from features and testable without coroutines:
+
+```kotlin
+import com.ktomek.yamv.core.StateOutcome
+
+class IncrementReducer : StateOutcome<CounterState> {
+    override fun reduce(prevState: CounterState) =
+        prevState.copy(count = prevState.count + 1)
+}
+
+class DecrementReducer : StateOutcome<CounterState> {
+    override fun reduce(prevState: CounterState) =
+        prevState.copy(count = prevState.count - 1)
+}
+
+class SetValueReducer(private val value: Int) : StateOutcome<CounterState> {
+    override fun reduce(prevState: CounterState) =
+        prevState.copy(count = value)
+}
+```
+
+### 4. Write Features
+
+Each feature maps intentions to outcomes (reducers):
 
 ```kotlin
 import com.ktomek.yamv.annotations.AutoFeature
 import com.ktomek.yamv.feature.TypedFeature
-import com.ktomek.yamv.core.StateOutcome
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -99,7 +121,7 @@ class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> 
     override fun invoke(
         intentions: Flow<CounterIntention.Increment>
     ): Flow<Outcome<CounterState>> =
-        intentions.map { StateOutcome { state -> state.copy(count = state.count + 1) } }
+        intentions.map { IncrementReducer() }
 }
 
 @AutoFeature
@@ -107,11 +129,11 @@ class DecrementFeature : TypedFeature<CounterState, CounterIntention.Decrement> 
     override fun invoke(
         intentions: Flow<CounterIntention.Decrement>
     ): Flow<Outcome<CounterState>> =
-        intentions.map { StateOutcome { state -> state.copy(count = state.count - 1) } }
+        intentions.map { DecrementReducer() }
 }
 ```
 
-### 4. Collect State in Compose
+### 5. Collect State in Compose
 
 === "Hilt"
 

@@ -1,10 +1,10 @@
 # Code Generation
 
-YAMV uses [KSP (Kotlin Symbol Processing)](https://github.com/google/ksp) to generate boilerplate at compile time. You write the annotations; YAMV generates the ViewModel and DI wiring.
+YAMV uses [KSP (Kotlin Symbol Processing)](https://github.com/google/ksp) to generate boilerplate at compile time. You write the annotations; YAMV generates the retained store and DI wiring.
 
 ## @AutoState
 
-Annotate a `State` subclass to generate a `*Store` ViewModel:
+Annotate a `State` subclass to generate a `*Store` retained store:
 
 ```kotlin
 @AutoState
@@ -16,11 +16,15 @@ data class CounterState(val count: Int = 0) : State
 @HiltViewModel
 class CounterStateStore @Inject constructor(
     features: Set<@JvmSuppressWildcards Feature<CounterState>>,
-    stateHandle: StateHandle,
-) : MviViewModel<CounterState, Any>() {
+    @MviDispatcherConfig(CounterState::class)
+    optionalDispatcherConfig: Optional<CoroutineDispatcherConfig>,
+) : MviRetainedStore<CounterState, Any>() {
+    override val dispatcherConfig: CoroutineDispatcherConfig =
+        optionalDispatcherConfig.orElseGet { DefaultCoroutineDispatcherConfig() }
     override val store: MviStore<CounterState, Any> = MviRuntime(
         features = features,
         defaultState = CounterState(),
+        dispatcherConfig = dispatcherConfig,
     )
 }
 ```
@@ -41,20 +45,24 @@ class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> 
 @Module
 @InstallIn(ViewModelComponent::class)
 interface CounterStateFeaturesModule {
-    @Binds
-    @IntoSet
-    @ViewModelScoped
+    @Binds @IntoSet @ViewModelScoped
     fun bindIncrementFeature(feature: IncrementFeature): Feature<CounterState>
 
+    @BindsOptionalOf @MviDispatcherConfig(CounterState::class)
+    fun bindOptionalDispatcherConfig(): CoroutineDispatcherConfig
+
     companion object {
-        @Provides
-        @IntoSet
-        @ViewModelScoped
-        fun provideIncrementFeatureWrapped(feature: IncrementFeature): Feature<CounterState> =
-            feature.wrap()
+        @Provides @ElementsIntoSet @ViewModelScoped
+        fun provideDefaults(): Set<Feature<CounterState>> = emptySet()
+
+        // FunctionTypedFeature classes get .wrap() in companion:
+        @Provides @IntoSet @ViewModelScoped
+        fun provideDecreaseFeature(it: DecreaseFeature): Feature<CounterState> = it.wrap()
     }
 }
 ```
+
+`@Binds` (abstract) methods go in the interface body; `@Provides` + `.wrap()` methods go in the companion object (Dagger constraint).
 
 ## Using @AutoFeature on Properties
 
@@ -64,7 +72,7 @@ If your feature is a lambda or builder result, annotate the property:
 object CounterFeatures {
     @AutoFeature
     val incrementFeature = functionTypedFeature<CounterState, CounterIntention.Increment> { _ ->
-        StateOutcome { state -> state.copy(count = state.count + 1) }
+        IncrementReducer()
     }
 }
 ```
@@ -78,14 +86,23 @@ object CounterFeatures {
 
 ## Without Code Generation
 
-If you prefer manual wiring (or use Koin without KSP), extend `MviViewModel` directly:
+If you prefer manual wiring (or use Koin without KSP), extend `MviRetainedStore` directly and call `.wrap()` on typed features:
 
 ```kotlin
 class CounterViewModel(features: Set<Feature<CounterState>>)
-    : MviViewModel<CounterState, Any>() {
+    : MviRetainedStore<CounterState, Any>() {
     override val store = MviRuntime(
         features = features,
         defaultState = CounterState(),
     )
 }
+
+// Manual wiring — .wrap() required for TypedFeature / FunctionTypedFeature
+val store = MviRuntime(
+    features = setOf(
+        IncrementFeature().wrap(),
+        DecrementFeature().wrap(),
+    ),
+    defaultState = CounterState(),
+)
 ```

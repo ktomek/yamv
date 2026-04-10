@@ -13,7 +13,7 @@ YAMV implements strict unidirectional data flow:
                      │ Intention           │ StateFlow<S>
                      ▼                    │
 ┌─────────────────────────────────────────────────────┐
-│              MviViewModel (generated *Store)         │
+│            MviRetainedStore (generated *Store)        │
 │   delegates to MviRuntime                            │
 └────────────────────┬────────────────────▲────────────┘
                      │                    │
@@ -39,7 +39,7 @@ YAMV implements strict unidirectional data flow:
           ┌──────────┼──────────┐
           ▼          ▼          ▼
      Feature A   Feature B  Feature C
-   (Default dispatcher)
+   (Default dispatcher, or per-feature)
 ```
 
 ## Key Types
@@ -54,6 +54,8 @@ Every feature produces `Outcome<S>` values. There are three kinds:
 | `EffectOutcome<S>` | marker | Emitted on `effects: Flow<EffectOutcome<S>>` |
 | `IntentionOutcome<S>` | has `val intention: Any` | Re-dispatched as a new intention |
 
+Declare outcome subclasses as **standalone classes** — they are decoupled from features and testable in isolation. See [Features Guide](features.md#outcomes-as-separate-classes).
+
 ### Features
 
 Three abstraction levels (choose the simplest one that fits):
@@ -64,23 +66,72 @@ Three abstraction levels (choose the simplest one that fits):
 | `TypedFeature<S, I>` | `(Flow<I>) -> Flow<Outcome<S>>` | Typed; one feature per intention type |
 | `FunctionTypedFeature<S, I>` | `suspend (I) -> Outcome<S>` | Simplest; one outcome per intention |
 
-Use `.wrap()` to convert `TypedFeature` or `FunctionTypedFeature` to `Feature<S>`.
+Use `.wrap()` to convert `TypedFeature` or `FunctionTypedFeature` to `Feature<S>` when wiring manually. With `@AutoFeature` (Hilt) or `mviStore {}` DSL (Koin), wrapping is automatic.
+
 Use `functionTypedFeature<S, I> { }` builder for inline definitions.
 
-## Coroutine Architecture
+## Dispatcher Architecture
+
+`CoroutineDispatcherConfig` controls which dispatcher each part of the pipeline runs on:
 
 ```
-MviRuntime owns CoroutineScope(SupervisorJob() + Main)
+MviRuntime owns CoroutineScope(SupervisorJob() + reducerDispatcher)
 │
-├── launch(Main) ── Reducer collector: scan outcomes → update StateFlow
-├── launch(Main) ── Effect collector: forward EffectOutcomes to effectsFlow
-├── launch(Main) ── IntentionOutcome collector: re-dispatch intentions
+├── launch(reducerDispatcher)    ── Reducer collector: scan outcomes → update StateFlow
+├── launch(reducerDispatcher)    ── Effect collector: forward EffectOutcomes
+├── launch(intentionDispatcher)  ── IntentionOutcome collector: re-dispatch
 │
 └── FeatureRouter initialized with this scope
     │
-    ├── launch(Default) ── Feature A coroutine
-    ├── launch(Default) ── Feature B coroutine
-    └── launch(Default) ── Feature C coroutine
+    ├── launch(featureDispatcher) ── Feature A coroutine
+    ├── launch(featureDispatcher) ── Feature B coroutine
+    └── launch(featureDispatcher) ── Feature C coroutine
+```
+
+Default dispatchers (`DefaultCoroutineDispatcherConfig`):
+
+| Operation | Dispatcher | Rationale |
+|-----------|-----------|-----------|
+| Intention dispatch | `Main` | UI-safe, async launch |
+| Reducers (`scan`) | `Main` | State mutations must be serialized |
+| Effects | `Main` | Observers expect UI thread |
+| Features | `Default` | Non-blocking, concurrent processing |
+
+### Customizing Dispatchers
+
+Override `CoroutineDispatcherConfig` to control dispatcher assignment per intention or feature:
+
+```kotlin
+class CustomDispatcherConfig : CoroutineDispatcherConfig {
+    override fun provideIntentionDispatcher(intention: Any?) = Dispatchers.Main
+    override fun provideReducerDispatcher() = Dispatchers.Main
+    override fun provideFeatureDispatcher(feature: Any) = when (feature) {
+        is NetworkFeature -> Dispatchers.IO
+        else -> Dispatchers.Default
+    }
+}
+```
+
+**Per-feature dispatcher:** Features can implement `HasFeatureDispatcher` to declare their own dispatcher, which takes precedence over `CoroutineDispatcherConfig`:
+
+```kotlin
+class NetworkFeature : TypedFeature<MyState, FetchData>, HasFeatureDispatcher {
+    override val featureDispatcher = Dispatchers.IO
+    // ...
+}
+```
+
+Features with `HasFeatureScope` (via `DefaultFeatureScope`) automatically expose the scope's dispatcher.
+
+**Per-state config (Hilt):** Use the `@MviDispatcherConfig` qualifier to inject a custom config per state type:
+
+```kotlin
+@Module
+@InstallIn(ViewModelComponent::class)
+object MyDispatcherModule {
+    @Provides @MviDispatcherConfig(CounterState::class)
+    fun provide(): CoroutineDispatcherConfig = CustomDispatcherConfig()
+}
 ```
 
 **Key invariant:** `FeatureRouter` uses `CompletableDeferred` to ensure all features are subscribed to the intention `SharedFlow` before the first intention is dispatched. This prevents race conditions at startup.
@@ -88,23 +139,23 @@ MviRuntime owns CoroutineScope(SupervisorJob() + Main)
 ## Lifecycle
 
 ```
-MviViewModel created
+MviRetainedStore created (ViewModel)
   → MviRuntime created (in constructor)
     → FeatureRouter.initialize() called
-      → Feature coroutines launched
+      → Feature coroutines launched (one per feature)
       → All features subscribe to intentionFlow
       → CompletableDeferred completed
   → Ready to dispatch
 
 vm.dispatch(intention)
-  → scope.launch(Main) { intentionRouter.dispatchIntention(intention) }
+  → scope.launch(intentionDispatcher) { intentionRouter.dispatchIntention(intention) }
     → subscribed.await() (returns immediately after init)
     → intentionFlow.emit(intention)
       → Features receive intention, produce Outcomes
       → Outcomes flow to MviRuntime collectors
 
-MviViewModel.onCleared()
+MviRetainedStore.onCleared()
   → store.clear()
     → scope.cancel() (cancels all 3 runtime collectors + all feature coroutines)
-    → FeatureRouter.shutdown() (cancels feature jobs)
+    → FeatureRouter.shutdown() (cancels feature jobs + feature scopes)
 ```

@@ -2,13 +2,47 @@
 
 A **Feature** transforms a stream of intentions into a stream of outcomes. Each feature is responsible for one piece of logic.
 
+## Outcomes as Separate Classes
+
+Declare `StateOutcome` reducers as standalone classes or objects. This decouples state transformations from features, making them independently testable with simple unit tests (no Flow, no coroutines):
+
+```kotlin
+// Reducer — pure function, tested in isolation
+class IncrementReducer : StateOutcome<CounterState> {
+    override fun reduce(prevState: CounterState) =
+        prevState.copy(count = prevState.count + 1)
+}
+
+class DecrementReducer : StateOutcome<CounterState> {
+    override fun reduce(prevState: CounterState) =
+        prevState.copy(count = prevState.count - 1)
+}
+
+// Test — simple, no coroutines needed
+@Test
+fun `IncrementReducer increments count`() {
+    val result = IncrementReducer().reduce(CounterState(count = 5))
+    assertThat(result.count).isEqualTo(6)
+}
+```
+
+Features then reference these reducers:
+
+```kotlin
+val incrementFeature = functionTypedFeature<CounterState, CounterIntention.Increment> { _ ->
+    IncrementReducer()
+}
+```
+
+This separation applies to all outcome types — `EffectOutcome` and `IntentionOutcome` subclasses benefit from the same pattern.
+
 ## FunctionTypedFeature — simplest
 
 For one-shot operations (no streaming, no background work):
 
 ```kotlin
 val incrementFeature = functionTypedFeature<CounterState, CounterIntention.Increment> { _ ->
-    StateOutcome { state -> state.copy(count = state.count + 1) }
+    IncrementReducer()
 }
 ```
 
@@ -17,20 +51,32 @@ Or as a class:
 ```kotlin
 class IncrementFeature : FunctionTypedFeature<CounterState, CounterIntention.Increment> {
     override suspend fun invoke(intention: CounterIntention.Increment): Outcome<CounterState> =
-        StateOutcome { state -> state.copy(count = state.count + 1) }
+        IncrementReducer()
 }
-```
-
-Use `.wrap()` to convert to `Feature<S>`:
-```kotlin
-IncrementFeature().wrap()
 ```
 
 > **Note:** Multiple concurrent intentions are processed concurrently. If your `invoke` does async work (network, DB), each intention gets its own coroutine automatically.
 
+### Using `.wrap()`
+
+`FunctionTypedFeature` and `TypedFeature` must be converted to `Feature<S>` before passing to `MviRuntime`. If you're **not** using Hilt code generation (`@AutoFeature`) or the Koin `mviStore {}` DSL, call `.wrap()` manually:
+
+```kotlin
+val runtime = MviRuntime(
+    features = setOf(
+        IncrementFeature().wrap(),
+        DecrementFeature().wrap(),
+    ),
+    defaultState = CounterState(),
+)
+```
+
+With **Hilt** (`@AutoFeature`), the generated module calls `.wrap()` for you.
+With **Koin** `mviStore {}` DSL, features are wrapped automatically via `FeatureRegistrar`.
+
 ## TypedFeature — typed streaming
 
-For features that transform a stream of intentions:
+For features that transform a stream of intentions. Operate directly on the `intentions` flow — use standard flow operators (`map`, `flatMapLatest`, `flatMapMerge`, etc.) to transform intentions into outcomes:
 
 ```kotlin
 class FetchDataFeature(
@@ -38,27 +84,32 @@ class FetchDataFeature(
 ) : TypedFeature<AppState, AppIntention.Fetch> {
     override fun invoke(
         intentions: Flow<AppIntention.Fetch>
-    ): Flow<Outcome<AppState>> = channelFlow {
-        intentions.collect { intention ->
-            try {
-                val data = repository.fetch(intention.id)  // suspend call
-                send(StateOutcome { state -> state.copy(data = data) })
-            } catch (e: Exception) {
-                send(StateOutcome { state -> state.copy(error = e.message) })
+    ): Flow<Outcome<AppState>> =
+        intentions.flatMapMerge { intention ->
+            flow {
+                emit(LoadingReducer())
+                val data = repository.fetch(intention.id)
+                emit(DataLoadedReducer(data))
             }
         }
-    }
 }
 ```
 
-Use `.wrap()` to convert:
+Use `flatMapMerge` for concurrent processing, `flatMapLatest` to cancel previous work on new intention, or `map` for simple 1:1 transforms:
+
 ```kotlin
-FetchDataFeature(repository).wrap()
+// Simple 1:1 transform — no need for channelFlow
+class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> {
+    override fun invoke(
+        intentions: Flow<CounterIntention.Increment>
+    ): Flow<Outcome<CounterState>> =
+        intentions.map { IncrementReducer() }
+}
 ```
 
-## TypedFeature with background work
+### When to use `channelFlow`
 
-Use `channelFlow { }` when you need to launch background coroutines (timers, polling):
+Reserve `channelFlow { }` for features that need to **launch independent coroutines** — timers, polling, WebSocket listeners — where the work isn't driven by the intention stream:
 
 ```kotlin
 class AutoIncrementFeature : TypedFeature<CounterState, CounterIntention.StartAuto> {
@@ -71,15 +122,13 @@ class AutoIncrementFeature : TypedFeature<CounterState, CounterIntention.StartAu
             timerJob = launch {
                 while (isActive) {
                     delay(1_000)
-                    send(StateOutcome { state -> state.copy(count = state.count + 1) })
+                    send(IncrementReducer())
                 }
             }
         }
     }
 }
 ```
-
-The `channelFlow` block's `this` is a `ProducerScope` (a `CoroutineScope` + `send()`). Any `launch { }` inside is a child of the feature's coroutine — cancelled automatically when the ViewModel is cleared.
 
 ## FlowFeature — low-level
 
@@ -96,7 +145,7 @@ class LoggingFeature : Feature.FlowUnitFeature<AppState> {
 
 ## Combining Outcomes
 
-A single feature can emit multiple outcome types:
+A single feature can emit multiple outcome types using `flatMapMerge` or `flatMapConcat`:
 
 ```kotlin
 class LoginFeature(
@@ -104,19 +153,20 @@ class LoginFeature(
 ) : TypedFeature<AppState, AppIntention.Login> {
     override fun invoke(
         intentions: Flow<AppIntention.Login>
-    ): Flow<Outcome<AppState>> = channelFlow {
-        intentions.collect { intention ->
-            try {
-                val user = auth.login(intention.email, intention.password)
-                send(StateOutcome { state -> state.copy(user = user, isLoading = false) })
-                send(object : IntentionOutcome<AppState> {
-                    override val intention = AppIntention.LoadDashboard
-                })
-            } catch (e: AuthException) {
-                send(StateOutcome { state -> state.copy(error = e.message, isLoading = false) })
-                send(object : EffectOutcome<AppState> {})  // trigger snackbar, etc.
+    ): Flow<Outcome<AppState>> =
+        intentions.flatMapMerge { intention ->
+            flow {
+                emit(LoginLoadingReducer())
+                try {
+                    val user = auth.login(intention.email, intention.password)
+                    emit(LoginSuccessReducer(user))
+                    emit(object : IntentionOutcome<AppState> {
+                        override val intention = AppIntention.LoadDashboard
+                    })
+                } catch (e: AuthException) {
+                    emit(LoginErrorReducer(e.message))
+                }
             }
         }
-    }
 }
 ```
