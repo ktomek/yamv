@@ -22,15 +22,4 @@ class HasFeatureDispatcherTest {
         assertThat(scope.featureDispatcher).isEqualTo(Dispatchers.Default)
     }
 
-    @Test
-    fun `HasFeatureScope default implementation extracts dispatcher from scope`() {
-        val dispatcher = StandardTestDispatcher()
-        val feature = object : HasFeatureScope {
-            override val featureScope = kotlinx.coroutines.CoroutineScope(
-                kotlinx.coroutines.SupervisorJob() + dispatcher
-            )
-        }
-
-        assertThat(feature.featureDispatcher).isSameInstanceAs(dispatcher)
-    }
 }

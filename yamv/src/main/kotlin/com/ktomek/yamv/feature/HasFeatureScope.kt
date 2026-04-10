@@ -1,16 +1,12 @@
 package com.ktomek.yamv.feature
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlin.coroutines.ContinuationInterceptor
 
 /**
  * Opt-in interface for features that need a coroutine scope tied to the feature's lifetime.
  *
- * Extends [HasFeatureDispatcher] — the dispatcher is extracted from [featureScope]'s context
- * by default, so [FeatureRouter][com.ktomek.yamv.intention.FeatureRouter] launches the feature
- * on the scope's dispatcher automatically.
+ * Extends [HasFeatureDispatcher] — implementations should derive [featureDispatcher] from
+ * [featureScope]'s context. See [DefaultFeatureScope] for the standard implementation.
  *
  * Implement via delegation to [DefaultFeatureScope]:
  * ```kotlin
@@ -26,8 +22,4 @@ import kotlin.coroutines.ContinuationInterceptor
  */
 interface HasFeatureScope : HasFeatureDispatcher {
     val featureScope: CoroutineScope
-
-    override val featureDispatcher: CoroutineDispatcher
-        get() = featureScope.coroutineContext[ContinuationInterceptor] as? CoroutineDispatcher
-            ?: Dispatchers.Default
 }
