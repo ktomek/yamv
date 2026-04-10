@@ -20,8 +20,8 @@ internal object YamvClassNames {
     val MviRuntime = ClassName("com.ktomek.yamv.state", "MviRuntime")
     val MviStore = ClassName("com.ktomek.yamv.state", "MviStore")
     val Feature = ClassName("com.ktomek.yamv.feature", "Feature")
-    val WrapImportPackage = "com.ktomek.yamv.feature"
-    val WrapImportName = "wrap"
+    const val WrapImportPackage = "com.ktomek.yamv.feature"
+    const val WrapImportName = "wrap"
 }
 
 internal object FeatureFqns {

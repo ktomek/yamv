@@ -11,6 +11,7 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.ksp.toClassName
@@ -133,7 +134,7 @@ internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator)
         )
     }
 
-    private fun buildAbstractBinds(name: String, paramType: ClassName, returnType: com.squareup.kotlinpoet.TypeName): FunSpec =
+    private fun buildAbstractBinds(name: String, paramType: ClassName, returnType: TypeName): FunSpec =
         FunSpec.builder(name)
             .addAnnotation(HiltClassNames.Binds)
             .addAnnotation(HiltClassNames.IntoSet)

@@ -1,12 +1,10 @@
 package com.ktomek.yamv.state
 
-import com.ktomek.yamv.core.Outcome
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.core.StateOutcome
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.Feature.FlowFeature
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -19,12 +17,6 @@ private interface TestState1 : State {
 }
 
 private data class TestState1Impl(override val value: String = "state1") : TestState1
-
-private interface TestState2 : State {
-    val count: Int
-}
-
-private data class TestState2Impl(override val count: Int = 0) : TestState2
 
 private fun testDispatcherConfig(dispatcher: CoroutineDispatcher) = object : CoroutineDispatcherConfig {
     override fun provideIntentionDispatcher(intention: Any?) = dispatcher

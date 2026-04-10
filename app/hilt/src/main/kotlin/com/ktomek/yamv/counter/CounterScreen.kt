@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.ktomek.yamv.counter.logic.state.CounterStateStore
+import com.ktomek.yamv.hilt.hiltMviStore
 import com.ktomek.yamv.ui.counter.logic.AutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.AutoIncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.DecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.IncreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoDecreaseCounterIntention
 import com.ktomek.yamv.ui.counter.logic.StopAutoIncreaseCounterIntention
-import com.ktomek.yamv.hilt.hiltMviStore
 import com.ktomek.yamv.ui.counter.view.CounterContent
 
 @Composable
@@ -26,14 +26,20 @@ fun CounterScreen(
         onDecrease = { store.dispatch(DecreaseCounterIntention) },
         onAutoIncrease = {
             store.dispatch(
-                if (state.autoIncreaseOn) StopAutoIncreaseCounterIntention
-                else AutoIncreaseCounterIntention
+                if (state.autoIncreaseOn) {
+                    StopAutoIncreaseCounterIntention
+                } else {
+                    AutoIncreaseCounterIntention
+                }
             )
         },
         onAutoDecrease = {
             store.dispatch(
-                if (state.autoDecreaseOn) StopAutoDecreaseCounterIntention
-                else AutoDecreaseCounterIntention
+                if (state.autoDecreaseOn) {
+                    StopAutoDecreaseCounterIntention
+                } else {
+                    AutoDecreaseCounterIntention
+                }
             )
         },
     )

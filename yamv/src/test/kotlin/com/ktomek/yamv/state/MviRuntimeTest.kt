@@ -53,9 +53,8 @@ class MviRuntimeTest {
         val incrementReducer: StateOutcome<TestState> = StateOutcome { prev -> TestStateImpl(prev.count + 1) }
 
         val feature = object : FlowFeature<TestState> {
-            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> {
-                return intentions.map { incrementReducer }
-            }
+            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> =
+                intentions.map { incrementReducer }
         }
 
         val runtime = MviRuntime(
@@ -80,9 +79,8 @@ class MviRuntimeTest {
         val testEffect = object : EffectOutcome<TestState> {}
 
         val feature = object : FlowFeature<TestState> {
-            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> {
-                return intentions.map { testEffect }
-            }
+            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> =
+                intentions.map { testEffect }
         }
 
         val runtime = MviRuntime(
@@ -108,8 +106,8 @@ class MviRuntimeTest {
         var dispatchCount = 0
 
         val feature = object : FlowFeature<TestState> {
-            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> {
-                return intentions.map { intention ->
+            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> =
+                intentions.map { intention ->
                     dispatchCount++
                     // Only re-dispatch once to avoid infinite loop
                     if (dispatchCount == 1) {
@@ -120,7 +118,6 @@ class MviRuntimeTest {
                         StateOutcome { prev -> prev }
                     }
                 }
-            }
         }
 
         val runtime = MviRuntime(
@@ -148,12 +145,11 @@ class MviRuntimeTest {
         var emissionCount = 0
 
         val feature = object : FlowFeature<TestState> {
-            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> {
-                return intentions.map {
+            override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> =
+                intentions.map {
                     emissionCount++
                     StateOutcome { prev -> TestStateImpl(prev.count + 1) }
                 }
-            }
         }
 
         val runtime = MviRuntime(

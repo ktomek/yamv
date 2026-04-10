@@ -27,14 +27,20 @@ fun CounterScreen(
         onDecrease = { store.dispatch(DecreaseCounterIntention) },
         onAutoIncrease = {
             store.dispatch(
-                if (state.autoIncreaseOn) StopAutoIncreaseCounterIntention
-                else AutoIncreaseCounterIntention
+                if (state.autoIncreaseOn) {
+                    StopAutoIncreaseCounterIntention
+                } else {
+                    AutoIncreaseCounterIntention
+                }
             )
         },
         onAutoDecrease = {
             store.dispatch(
-                if (state.autoDecreaseOn) StopAutoDecreaseCounterIntention
-                else AutoDecreaseCounterIntention
+                if (state.autoDecreaseOn) {
+                    StopAutoDecreaseCounterIntention
+                } else {
+                    AutoDecreaseCounterIntention
+                }
             )
         },
     )

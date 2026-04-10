@@ -151,7 +151,7 @@ class FeatureRouterTest {
             try {
                 router.dispatchIntention("x")
                 fail("Expected IllegalStateException when dispatching before initialize")
-            } catch (e: IllegalStateException) {
+            } catch (ignored: IllegalStateException) {
                 // expected
             }
         }
@@ -166,7 +166,7 @@ class FeatureRouterTest {
             try {
                 router.observeOutcomes()
                 fail("Expected IllegalStateException when observing before initialize")
-            } catch (e: IllegalStateException) {
+            } catch (ignored: IllegalStateException) {
                 // expected
             }
         }
@@ -182,7 +182,7 @@ class FeatureRouterTest {
             try {
                 router.initialize(this, testDispatcherConfig(testDispatcher))
                 fail("Expected IllegalStateException when initializing twice")
-            } catch (e: IllegalStateException) {
+            } catch (ignored: IllegalStateException) {
                 // expected
             }
         }

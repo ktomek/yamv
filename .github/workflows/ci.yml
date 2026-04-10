@@ -65,9 +65,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: detekt-report
-          path: build/reports/detekt/detektAll.html
+          path: build/reports/detekt/detekt.html
       - name: Upload SARIF to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: success() || failure()
         with:
-          sarif_file: build/reports/detekt/detektAll.sarif
+          sarif_file: build/reports/detekt/detekt.sarif

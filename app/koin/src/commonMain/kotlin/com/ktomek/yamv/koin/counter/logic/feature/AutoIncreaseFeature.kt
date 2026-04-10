@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.seconds
 
-class AutoIncreaseFeature constructor(private val f: DecreaseFeature) : FlowFeature<CounterState> {
+class AutoIncreaseFeature constructor(ignored: DecreaseFeature) : FlowFeature<CounterState> {
 
     @OptIn(FlowPreview::class)
     override fun invoke(intentions: Flow<Any>): Flow<CounterOutcome> =

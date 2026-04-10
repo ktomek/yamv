@@ -83,6 +83,7 @@ val baselineFile = file("$rootDir/config/quality/detekt/baseline.xml")
 val kotlinFiles = "**/*.kt"
 val resourceFiles = "**/resources/**"
 val buildFiles = "**/build/**"
+val worktreeFiles = "**/.worktrees/**"
 
 tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
     description = "Custom DETEKT build for all modules"
@@ -97,7 +98,7 @@ tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
     config.setFrom(configFile)
 
     include(kotlinFiles)
-    exclude(resourceFiles, buildFiles)
+    exclude(resourceFiles, buildFiles, worktreeFiles)
 
     reports {
         html.required = true
