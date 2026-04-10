@@ -22,6 +22,7 @@ internal object YamvClassNames {
     val Feature = ClassName("com.ktomek.yamv.feature", "Feature")
     const val WrapImportPackage = "com.ktomek.yamv.feature"
     const val WrapImportName = "wrap"
+    val CoroutineDispatcherConfig = ClassName("com.ktomek.yamv.state", "CoroutineDispatcherConfig")
 }
 
 internal object FeatureFqns {
