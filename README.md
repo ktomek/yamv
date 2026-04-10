@@ -11,6 +11,56 @@ A Kotlin-first **MVI (Model-View-Intent)** framework for Android & Kotlin Multip
 - **Multiplatform** — Android (Hilt or Koin) + iOS (Compose Multiplatform + Koin)
 - **Zero boilerplate** — `@AutoState` + `@AutoFeature` generate the retained store and Hilt/Koin modules
 
+## Why YAMV?
+
+Most state management approaches — whether MVVM ViewModels or MVI frameworks with central reducers — tend toward the same problem: logic accumulates in one place. The ViewModel becomes a god object, or the reducer becomes a god function with dozens of cases.
+
+YAMV takes a different approach: **there is no central reducer**.
+
+### Distributed reducers
+
+In a typical MVI framework, a single `reduce()` function handles every action:
+
+```kotlin
+// Typical MVI — one reducer grows with every action
+fun reduce(state: S, action: Action): S = when (action) {
+    is Increment -> state.copy(count = state.count + 1)
+    is SetLoading -> state.copy(loading = true)
+    is SetData -> state.copy(data = action.data)
+    // ... grows linearly
+}
+```
+
+In YAMV, each state transformation is its own `StateOutcome` class — a pure `(S) -> S` function:
+
+```kotlin
+class IncrementOutcome : StateOutcome<CounterState> {
+    override fun reduce(prevState: CounterState) =
+        prevState.copy(count = prevState.count + 1)
+}
+```
+
+Testing is trivial — no coroutines, no Flow, no store setup:
+
+```kotlin
+@Test fun `increment adds one`() {
+    val result = IncrementOutcome().reduce(CounterState(count = 5))
+    assertThat(result.count).isEqualTo(6)
+}
+```
+
+### Separation of "when" from "what"
+
+A **Feature** decides *when* and *which* outcome to emit (the orchestration). An **Outcome** decides *how* state changes (the transformation). Two independent concerns, two independent test targets.
+
+### Forced modularity
+
+Each feature handles one intention type. Each outcome handles one state transition. Adding new behavior means adding a new file — not modifying an existing ViewModel or reducer. Features are injected as a `Set<Feature<S>>`, so they are truly pluggable: add or remove a feature from the DI set without touching any other code.
+
+### Multithreading by convention
+
+Features run on `Dispatchers.Default` (concurrent), reducers apply on `Dispatchers.Main` (serialized) — correct by default. No manual dispatcher management per method. Per-feature and per-state dispatcher customization is available when needed.
+
 ## Quick Start
 
 ### 1. Add JitPack repository
