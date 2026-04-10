@@ -64,8 +64,8 @@ sealed class CounterIntention {
 Declare reducers as separate classes — decoupled from features, independently testable:
 
 ```kotlin
-// Reducer — pure (S) -> S, tested without coroutines
-class IncrementReducer : StateOutcome<CounterState> {
+// Outcome — pure (S) -> S, tested without coroutines
+class IncrementOutcome : StateOutcome<CounterState> {
     override fun reduce(prevState: CounterState) =
         prevState.copy(count = prevState.count + 1)
 }
@@ -74,7 +74,7 @@ class IncrementReducer : StateOutcome<CounterState> {
 @AutoFeature
 class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> {
     override fun invoke(intentions: Flow<CounterIntention.Increment>): Flow<Outcome<CounterState>> =
-        intentions.map { IncrementReducer() }
+        intentions.map { IncrementOutcome() }
 }
 ```
 

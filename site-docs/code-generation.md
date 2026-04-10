@@ -51,11 +51,12 @@ interface CounterStateFeaturesModule {
     @BindsOptionalOf @MviDispatcherConfig(CounterState::class)
     fun bindOptionalDispatcherConfig(): CoroutineDispatcherConfig
 
-    companion object {
-        @Provides @ElementsIntoSet @ViewModelScoped
-        fun provideDefaults(): Set<Feature<CounterState>> = emptySet()
+    // @Multibinds declares the empty set so Dagger doesn't fail when no features are bound
+    @Multibinds
+    fun featureSet(): Set<Feature<CounterState>>
 
-        // FunctionTypedFeature classes get .wrap() in companion:
+    companion object {
+        // FunctionTypedFeature classes need .wrap() — goes in companion:
         @Provides @IntoSet @ViewModelScoped
         fun provideDecreaseFeature(it: DecreaseFeature): Feature<CounterState> = it.wrap()
     }
@@ -72,7 +73,7 @@ If your feature is a lambda or builder result, annotate the property:
 object CounterFeatures {
     @AutoFeature
     val incrementFeature = functionTypedFeature<CounterState, CounterIntention.Increment> { _ ->
-        IncrementReducer()
+        IncrementOutcome()
     }
 }
 ```

@@ -103,11 +103,14 @@ Override `CoroutineDispatcherConfig` to control dispatcher assignment per intent
 
 ```kotlin
 class CustomDispatcherConfig : CoroutineDispatcherConfig {
+    // Single-threaded dispatcher for sequential feature processing
+    private val singleThread = Dispatchers.Default.limitedParallelism(1)
+
     override fun provideIntentionDispatcher(intention: Any?) = Dispatchers.Main
     override fun provideReducerDispatcher() = Dispatchers.Main
     override fun provideFeatureDispatcher(feature: Any) = when (feature) {
         is NetworkFeature -> Dispatchers.IO
-        else -> Dispatchers.Default
+        else -> singleThread
     }
 }
 ```

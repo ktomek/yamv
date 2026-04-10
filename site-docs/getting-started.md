@@ -83,24 +83,24 @@ sealed class CounterIntention {
 }
 ```
 
-### 3. Define Reducers
+### 3. Define Outcomes
 
-Declare reducers as standalone classes. They are pure `(S) -> S` functions, decoupled from features and testable without coroutines:
+Declare outcomes as standalone classes. They are pure `(S) -> S` functions, decoupled from features and testable without coroutines:
 
 ```kotlin
 import com.ktomek.yamv.core.StateOutcome
 
-class IncrementReducer : StateOutcome<CounterState> {
+class IncrementOutcome : StateOutcome<CounterState> {
     override fun reduce(prevState: CounterState) =
         prevState.copy(count = prevState.count + 1)
 }
 
-class DecrementReducer : StateOutcome<CounterState> {
+class DecrementOutcome : StateOutcome<CounterState> {
     override fun reduce(prevState: CounterState) =
         prevState.copy(count = prevState.count - 1)
 }
 
-class SetValueReducer(private val value: Int) : StateOutcome<CounterState> {
+class SetValueOutcome(private val value: Int) : StateOutcome<CounterState> {
     override fun reduce(prevState: CounterState) =
         prevState.copy(count = value)
 }
@@ -108,7 +108,7 @@ class SetValueReducer(private val value: Int) : StateOutcome<CounterState> {
 
 ### 4. Write Features
 
-Each feature maps intentions to outcomes (reducers):
+Each feature maps intentions to outcomes:
 
 ```kotlin
 import com.ktomek.yamv.annotations.AutoFeature
@@ -121,7 +121,7 @@ class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> 
     override fun invoke(
         intentions: Flow<CounterIntention.Increment>
     ): Flow<Outcome<CounterState>> =
-        intentions.map { IncrementReducer() }
+        intentions.map { IncrementOutcome() }
 }
 
 @AutoFeature
@@ -129,7 +129,7 @@ class DecrementFeature : TypedFeature<CounterState, CounterIntention.Decrement> 
     override fun invoke(
         intentions: Flow<CounterIntention.Decrement>
     ): Flow<Outcome<CounterState>> =
-        intentions.map { DecrementReducer() }
+        intentions.map { DecrementOutcome() }
 }
 ```
 

@@ -29,7 +29,7 @@ kotlin {
 
 ### 2. Create your Koin module
 
-Using the `mviStore {}` DSL — features are wrapped automatically:
+Using the `mviStore {}` DSL — typed features are wrapped automatically via `add()`:
 
 ```kotlin
 // commonMain
@@ -37,8 +37,8 @@ val counterModule = module {
     factoryOf(::IncrementFeature)
     factoryOf(::DecrementFeature)
     mviStore(defaultState = CounterState()) {
-        feature { get<IncrementFeature>() }
-        feature { get<DecrementFeature>() }
+        add(get<IncrementFeature>())   // .wrap() applied automatically
+        add(get<DecrementFeature>())
     }
 }
 ```
