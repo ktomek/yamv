@@ -60,7 +60,6 @@ dependencies {
 
     implementation libs.dagger.hilt.core
     implementation libs.dagger.hilt.android
-    implementation libs.androidx.compose.hilt
     ksp libs.dagger.hilt.compiler
     ksp libs.dagger.hilt.android.compiler
     ksp project(':processor-core')
