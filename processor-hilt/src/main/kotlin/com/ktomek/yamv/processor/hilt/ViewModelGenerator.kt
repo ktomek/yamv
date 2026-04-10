@@ -18,14 +18,14 @@ import com.squareup.kotlinpoet.jvm.jvmSuppressWildcards
 import com.squareup.kotlinpoet.ksp.writeTo
 
 /**
- * Generates a `@HiltViewModel`-annotated subclass of [MviViewModel] for each `@AutoState` class.
+ * Generates a `@HiltViewModel`-annotated subclass of [MviRetainedStore] for each `@AutoState` class.
  *
  * Generated output example:
  * ```kotlin
  * @HiltViewModel
  * class CounterStateViewModel @Inject constructor(
  *     private val features: Set<@JvmSuppressWildcards Feature<CounterState>>,
- * ) : MviViewModel<CounterState, Any>() {
+ * ) : MviRetainedStore<CounterState, Any>() {
  *     override val store: MviStore<CounterState, Any> = MviRuntime(
  *         features = features,
  *         defaultState = CounterState(),
@@ -68,7 +68,7 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
     ): TypeSpec = TypeSpec.classBuilder(className)
         .addAnnotation(HiltClassNames.HiltViewModel)
         .primaryConstructor(buildConstructor(stateClass))
-        .superclass(YamvClassNames.MviViewModel.parameterizedBy(stateClass, ClassName("kotlin", "Any")))
+        .superclass(YamvClassNames.MviRetainedStore.parameterizedBy(stateClass, ClassName("kotlin", "Any")))
         .addProperty(buildStoreProperty(stateClass, defaultStateClass))
         .build()
 

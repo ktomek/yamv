@@ -3,7 +3,7 @@ package com.ktomek.yamv.koin.counter
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.ktomek.yamv.koin.KoinMviStore
+import com.ktomek.yamv.koin.KoinMviRetainedStore
 import com.ktomek.yamv.koin.counter.logic.state.CounterState
 import com.ktomek.yamv.koin.koinMviStore
 import com.ktomek.yamv.ui.counter.logic.AutoDecreaseCounterIntention
@@ -16,7 +16,7 @@ import com.ktomek.yamv.ui.counter.view.CounterContent
 
 @Composable
 fun CounterScreen(
-    store: KoinMviStore<CounterState> = koinMviStore()
+    store: KoinMviRetainedStore<CounterState> = koinMviStore()
 ) {
     val state by store.state.collectAsState()
     CounterContent(

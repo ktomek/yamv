@@ -1,29 +1,26 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("org.jetbrains.compose")
-    alias(libs.plugins.compose.compiler)
     `maven-publish`
 }
 
 android {
-    namespace = "com.ktomek.yamv.koin"
+    namespace = "com.ktomek.yamv.retainer"
     compileSdk = 36
-    defaultConfig {
-        minSdk = 24
-    }
+    defaultConfig { minSdk = 24 }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    testOptions {
+        unitTests.all { it.useJUnitPlatform() }
     }
 }
 
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
     iosX64()
@@ -32,14 +29,19 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":yamv-retainer"))
+            api(project(":yamv"))
             implementation(project(":core"))
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.androidx.lifecycle.viewmodel)
         }
         androidMain.dependencies {
-            implementation(libs.koin.android)
+            implementation(libs.androidx.lifecycle.viewmodel.compose)
+            implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+            implementation(libs.androidx.compose.ui)
+            implementation(libs.androidx.compose.preview)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.bundles.testing.unit)
         }
     }
 }
