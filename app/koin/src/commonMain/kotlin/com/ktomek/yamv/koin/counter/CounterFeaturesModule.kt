@@ -1,6 +1,5 @@
 package com.ktomek.yamv.koin.counter
 
-import com.ktomek.yamv.feature.wrap
 import com.ktomek.yamv.koin.counter.logic.feature.AutoDecreaseFeature
 import com.ktomek.yamv.koin.counter.logic.feature.AutoIncreaseFeature
 import com.ktomek.yamv.koin.counter.logic.feature.DecreaseFeature
@@ -15,11 +14,9 @@ val counterModule = module {
     factory { AutoIncreaseFeature(get()) }
 
     mviStore(defaultState = CounterState()) {
-        setOf(
-            get<AutoDecreaseFeature>(),
-            get<AutoIncreaseFeature>(),
-            get<DecreaseFeature>().wrap(),
-            increaseFeature,
-        )
+        add(get<AutoDecreaseFeature>())
+        add(get<AutoIncreaseFeature>())
+        add(get<DecreaseFeature>())
+        add(increaseFeature)
     }
 }

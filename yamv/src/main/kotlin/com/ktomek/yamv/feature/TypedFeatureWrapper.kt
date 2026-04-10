@@ -4,7 +4,7 @@ import com.ktomek.yamv.core.State
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.filterIsInstance
 
-inline fun <reified S : State, reified INTENTION> TypedFeature<S, INTENTION>.wrap(): Feature<S> =
+inline fun <S : State, reified INTENTION> TypedFeature<S, INTENTION>.wrap(): Feature<S> =
     Feature.FlowFeature<S> { intentions ->
         channelFlow {
             val typedIntentions = intentions.filterIsInstance<INTENTION>()
