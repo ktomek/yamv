@@ -7,18 +7,18 @@ plugins {
 
 android {
     namespace = 'com.ktomek.yamv.koin'
-    compileSdk 36
+    compileSdk = 36
 
     defaultConfig {
-        applicationId 'com.ktomek.yamv.koin'
-        minSdk 24
-        versionCode 1
-        versionName '1.0'
+        applicationId = 'com.ktomek.yamv.koin'
+        minSdk = 24
+        versionCode = 1
+        versionName = '1.0'
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     packagingOptions {

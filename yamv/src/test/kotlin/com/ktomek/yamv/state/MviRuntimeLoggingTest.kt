@@ -6,6 +6,7 @@ import com.ktomek.yamv.core.StateOutcome
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
 import com.ktomek.yamv.logging.YamvLogger
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test
 
 private data class LogTestState(val x: Int = 0) : State
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MviRuntimeLoggingTest {
 
     private val dispatcher = StandardTestDispatcher()
