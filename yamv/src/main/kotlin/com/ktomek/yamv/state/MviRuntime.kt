@@ -9,6 +9,7 @@ import com.ktomek.yamv.intention.FeatureRouter
 import com.ktomek.yamv.intention.IntentionRouter
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -26,9 +27,16 @@ class MviRuntime<S : State>(
     private val intentionRouter: IntentionRouter<S>,
     private val dispatcherConfig: CoroutineDispatcherConfig,
     val defaultState: S,
+    private val exceptionHandler: MviExceptionHandler = MviExceptionHandler.Default,
 ) : MviStore<S, Any> {
 
-    private val scope = CoroutineScope(SupervisorJob() + dispatcherConfig.provideReducerDispatcher())
+    private val scope = CoroutineScope(
+        SupervisorJob() +
+            dispatcherConfig.provideReducerDispatcher() +
+            CoroutineExceptionHandler { _, throwable ->
+                Yamv.log(YamvLogLevel.ERROR, TAG, "Unhandled exception in scope: $throwable")
+            },
+    )
 
     private val effectsFlow: MutableSharedFlow<EffectOutcome<S>> = MutableSharedFlow()
     override val effects: Flow<EffectOutcome<S>>
@@ -40,13 +48,20 @@ class MviRuntime<S : State>(
 
     init {
         Yamv.log(YamvLogLevel.DEBUG, TAG, "MviRuntime created with defaultState=$defaultState")
-        intentionRouter.initialize(scope, dispatcherConfig)
+        intentionRouter.initialize(scope, dispatcherConfig, exceptionHandler)
 
         scope.launch(dispatcherConfig.provideReducerDispatcher()) {
             intentionRouter
                 .observeOutcomes()
                 .filterIsInstance<Reducer<S>>()
-                .scan(defaultState) { state, reducer -> reducer.reduce(state) }
+                .scan(defaultState) { state, reducer ->
+                    try {
+                        reducer.reduce(state)
+                    } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+                        handleException(MviErrorContext(source = ErrorSource.REDUCER), e)
+                        state
+                    }
+                }
                 .collect { newState ->
                     Yamv.log(YamvLogLevel.VERBOSE, TAG, "State updated: $newState")
                     stateFlow.update { newState }
@@ -58,8 +73,12 @@ class MviRuntime<S : State>(
                 .observeOutcomes()
                 .filterIsInstance<EffectOutcome<S>>()
                 .collect { effect ->
-                    Yamv.log(YamvLogLevel.DEBUG, TAG, "Effect emitted: $effect")
-                    effectsFlow.emit(effect)
+                    try {
+                        Yamv.log(YamvLogLevel.DEBUG, TAG, "Effect emitted: $effect")
+                        effectsFlow.emit(effect)
+                    } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+                        handleException(MviErrorContext(source = ErrorSource.EFFECT), e)
+                    }
                 }
         }
 
@@ -68,7 +87,19 @@ class MviRuntime<S : State>(
                 .observeOutcomes()
                 .filterIsInstance<IntentionOutcome<S>>()
                 .map { it.intention }
-                .collect(intentionRouter::dispatchIntention)
+                .collect { intention ->
+                    try {
+                        intentionRouter.dispatchIntention(intention)
+                    } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+                        handleException(
+                            MviErrorContext(
+                                source = ErrorSource.INTENTION_REDISPATCH,
+                                intention = intention,
+                            ),
+                            e,
+                        )
+                    }
+                }
         }
     }
 
@@ -84,6 +115,19 @@ class MviRuntime<S : State>(
         scope.cancel()
     }
 
+    /**
+     * Delegates to [exceptionHandler]. If the handler rethrows (default),
+     * the entire scope is cancelled for fail-fast behavior.
+     */
+    private fun handleException(context: MviErrorContext, exception: Throwable) {
+        try {
+            exceptionHandler.handle(context, exception)
+        } catch (@Suppress("TooGenericExceptionCaught") rethrown: Throwable) {
+            scope.cancel()
+            throw rethrown
+        }
+    }
+
     companion object {
         private const val TAG = "MviRuntime"
     }
@@ -95,15 +139,18 @@ class MviRuntime<S : State>(
  * @param features The set of features to attach to this runtime.
  * @param defaultState The initial state.
  * @param dispatcherConfig The coroutine dispatcher configuration (defaults to DefaultCoroutineDispatcherConfig).
+ * @param exceptionHandler The exception handler (defaults to [MviExceptionHandler.Default] which rethrows).
  * @return A new MviRuntime instance.
  */
 fun <S : State> MviRuntime(
     features: Set<Feature<S>>,
     defaultState: S,
     dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig(),
+    exceptionHandler: MviExceptionHandler = MviExceptionHandler.Default,
 ): MviRuntime<S> =
     MviRuntime(
         intentionRouter = FeatureRouter(features),
         dispatcherConfig = dispatcherConfig,
         defaultState = defaultState,
+        exceptionHandler = exceptionHandler,
     )
