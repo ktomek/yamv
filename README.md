@@ -11,6 +11,10 @@ A Kotlin-first **MVI (Model-View-Intent)** framework for Android & Kotlin Multip
 - **Multiplatform** — Android (Hilt or Koin) + iOS (Compose Multiplatform + Koin)
 - **Zero boilerplate** — `@AutoState` + `@AutoFeature` generate the retained store and Hilt/Koin modules
 
+<p align="center">
+  <img src="site-docs/resources/yamv-mvi.gif" alt="YAMV MVI Data Flow" width="700"/>
+</p>
+
 ## Why YAMV?
 
 Most state management approaches — whether MVVM ViewModels or MVI frameworks with central reducers — tend toward the same problem: logic accumulates in one place. The ViewModel becomes a god object, or the reducer becomes a god function with dozens of cases.
