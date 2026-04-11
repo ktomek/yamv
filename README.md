@@ -175,7 +175,7 @@ Full documentation: **[ktomek.github.io/yamv](https://ktomek.github.io/yamv)**
 ## License
 
 ```
-Copyright 2024 Krzysztof Tomek
+Copyright 2024 Tomasz Kaszkowiak
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
