@@ -1,7 +1,6 @@
 package com.ktomek.yamv.stress
 
 import com.google.common.truth.Truth.assertThat
-import com.ktomek.yamv.core.Outcome
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.core.StateOutcome
 import com.ktomek.yamv.feature.Feature
@@ -13,7 +12,6 @@ import com.ktomek.yamv.state.MviRuntime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
