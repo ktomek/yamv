@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- `MviExceptionHandler` — customizable exception handling for the MVI pipeline with fail-fast default
+- `MviErrorContext` / `ErrorSource` — structured error context (source, intention, feature)
+- Lifecycle and concurrency stress tests for `MviRuntime`
+
 ## [0.1.0] — Initial Release
 
 ### Added

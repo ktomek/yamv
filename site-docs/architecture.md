@@ -129,6 +129,40 @@ See [Code Generation — @AutoDispatcherConfig](code-generation.md#autodispatche
 !!! info "Subscription safety"
     `FeatureRouter` uses `CompletableDeferred` to ensure all features are subscribed to the intention `SharedFlow` before the first intention is dispatched. This prevents race conditions at startup.
 
+## Exception Handling
+
+`MviExceptionHandler` controls what happens when an exception occurs in the MVI pipeline. The default handler rethrows and cancels the runtime scope — a broken feature means illegal application state.
+
+```kotlin
+// Default: fail fast (recommended)
+val runtime = MviRuntime(
+    features = features,
+    defaultState = MyState(),
+)
+
+// Custom: log + rethrow
+val runtime = MviRuntime(
+    features = features,
+    defaultState = MyState(),
+    exceptionHandler = MviExceptionHandler { context, e ->
+        crashlytics.recordException(e)
+        throw e  // still fail fast, but reported
+    },
+)
+```
+
+The handler receives `MviErrorContext` with:
+
+| Field | Description |
+|-------|-------------|
+| `source: ErrorSource` | Where it happened: `REDUCER`, `FEATURE`, `EFFECT`, `INTENTION_REDISPATCH` |
+| `intention: Any?` | The intention being processed (when available) |
+| `feature: Feature<*>?` | The feature that failed (for `FEATURE` source) |
+
+**Fail-fast behavior (default):** When the handler rethrows, the entire `CoroutineScope` is cancelled — all collectors (reducers, effects, intention re-dispatch) and all features stop. The runtime is dead.
+
+**Degraded mode (opt-in):** If the handler does _not_ rethrow, the pipeline continues with the previous state. This is the user's explicit choice — the framework does not silently swallow exceptions.
+
 ## Lifecycle
 
 ``` mermaid
@@ -141,7 +175,7 @@ sequenceDiagram
 
     Note over Store,Runtime: Construction
     Store->>Runtime: create MviRuntime
-    Runtime->>Router: initialize(scope, config)
+    Runtime->>Router: initialize(scope, config, exceptionHandler)
     Router->>F: launch coroutine per feature
     F-->>Router: subscribe to intentionFlow
     Note over Router: CompletableDeferred ✅
