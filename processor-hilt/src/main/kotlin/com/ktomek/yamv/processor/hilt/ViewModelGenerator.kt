@@ -25,10 +25,11 @@ import com.squareup.kotlinpoet.ksp.writeTo
  * @HiltViewModel
  * class CounterStateStore @Inject constructor(
  *     features: Set<@JvmSuppressWildcards Feature<CounterState>>,
+ *     defaultConfig: Optional<CoroutineDispatcherConfig>,
  *     @MviDispatcherConfig(CounterState::class) optionalDispatcherConfig: Optional<CoroutineDispatcherConfig>,
  * ) : MviRetainedStore<CounterState, Any>() {
  *     override val dispatcherConfig: CoroutineDispatcherConfig =
- *         optionalDispatcherConfig.orElseGet { DefaultCoroutineDispatcherConfig() }
+ *         optionalDispatcherConfig.orElseGet { defaultConfig.orElseGet { DefaultCoroutineDispatcherConfig() } }
  *     override val store: MviStore<CounterState, Any> = MviRuntime(
  *         features = features,
  *         defaultState = CounterState(),
@@ -87,6 +88,10 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
                 )
             )
             .addParameter(
+                "defaultConfig",
+                HiltClassNames.Optional.parameterizedBy(YamvClassNames.CoroutineDispatcherConfig),
+            )
+            .addParameter(
                 com.squareup.kotlinpoet.ParameterSpec.builder(
                     "optionalDispatcherConfig",
                     HiltClassNames.Optional.parameterizedBy(YamvClassNames.CoroutineDispatcherConfig),
@@ -104,7 +109,7 @@ internal class ViewModelGenerator(private val codeGenerator: CodeGenerator) {
         PropertySpec.builder("dispatcherConfig", YamvClassNames.CoroutineDispatcherConfig)
             .addModifiers(KModifier.OVERRIDE)
             .initializer(
-                "optionalDispatcherConfig.orElseGet·{·%T()·}",
+                "optionalDispatcherConfig.orElseGet·{·defaultConfig.orElseGet·{·%T()·}·}",
                 YamvClassNames.DefaultCoroutineDispatcherConfig,
             )
             .build()
