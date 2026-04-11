@@ -34,7 +34,21 @@ private sealed class StressIntention {
     data object FastAction : StressIntention()
 }
 
+/** Mirrors production: single-threaded intentions/reducers, multi-threaded features. */
 private fun realDispatcherConfig() = object : CoroutineDispatcherConfig {
+    override fun provideIntentionDispatcher(intention: Any?) = Dispatchers
+        .Default
+        .limitedParallelism(1)
+
+    override fun provideReducerDispatcher() = Dispatchers
+        .Default
+        .limitedParallelism(1)
+
+    override fun provideFeatureDispatcher(feature: Any) = Dispatchers.Default
+}
+
+/** All multi-threaded — worst-case scenario for race conditions. */
+private fun multiThreadDispatcherConfig() = object : CoroutineDispatcherConfig {
     override fun provideIntentionDispatcher(intention: Any?) = Dispatchers.Default
     override fun provideReducerDispatcher() = Dispatchers.Default
     override fun provideFeatureDispatcher(feature: Any) = Dispatchers.Default
@@ -84,20 +98,46 @@ class MviRuntimeStressTest {
         runtime.clear()
     }
 
+    @RepeatedTest(10)
+    fun `state remains consistent with multi-threaded intentions and reducers`() = runBlocking {
+        val feature = FunctionTypedFeature<StressState, StressIntention.Increment> {
+            StateOutcome { state -> state.copy(count = state.count + 1) }
+        }
+
+        val runtime = MviRuntime(
+            features = setOf(feature.wrap()),
+            defaultState = StressState(),
+            dispatcherConfig = multiThreadDispatcherConfig(),
+        )
+
+        delay(100)
+
+        coroutineScope {
+            repeat(8) {
+                launch(Dispatchers.Default) {
+                    repeat(1_250) {
+                        runtime.dispatch(StressIntention.Increment)
+                    }
+                }
+            }
+        }
+
+        awaitState(runtime, timeoutMs = 10_000) { it.count == 10_000 }
+        assertThat(runtime.state.value.count).isEqualTo(10_000)
+        runtime.clear()
+    }
+
     @RepeatedTest(5)
     fun `mixed feature types produce correct total under load`() = runBlocking {
         val functionFeature = FunctionTypedFeature<StressState, StressIntention.Increment> {
             StateOutcome { state -> state.copy(count = state.count + 1) }
         }
 
-        val typedFeature = object : TypedFeature<StressState, StressIntention.Increment> {
-            override fun invoke(
-                intention: Flow<StressIntention.Increment>,
-            ): Flow<Outcome<StressState>> =
-                intention.map { StateOutcome<StressState> { state -> state.copy(count = state.count + 1) } }
+        val typedFeature = TypedFeature<StressState, StressIntention.Increment> { intention ->
+            intention.map { StateOutcome { state -> state.copy(count = state.count + 1) } }
         }
 
-        val flowFeature = Feature.FlowFeature<StressState> { intentions ->
+        val flowFeature = Feature.FlowFeature { intentions ->
             intentions
                 .filterIsInstance<StressIntention.Increment>()
                 .map { StateOutcome<StressState> { state -> state.copy(count = state.count + 1) } }
