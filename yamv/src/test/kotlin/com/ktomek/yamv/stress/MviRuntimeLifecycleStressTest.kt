@@ -137,7 +137,7 @@ class MviRuntimeLifecycleStressTest {
             features = setOf(feature.wrap()),
             defaultState = LifecycleState(),
             dispatcherConfig = realDispatcherConfig(),
-            exceptionHandler = MviExceptionHandler { context, _ ->
+            exceptionHandler = { context, _ ->
                 handlerCalled.set(true)
                 capturedSource.add(context.source)
             },
@@ -165,7 +165,7 @@ class MviRuntimeLifecycleStressTest {
             features = setOf(feature.wrap()),
             defaultState = LifecycleState(),
             dispatcherConfig = realDispatcherConfig(),
-            exceptionHandler = MviExceptionHandler { context, _ ->
+            exceptionHandler = { context, _ ->
                 handlerCalled.set(true)
                 capturedSource.add(context.source)
             },
