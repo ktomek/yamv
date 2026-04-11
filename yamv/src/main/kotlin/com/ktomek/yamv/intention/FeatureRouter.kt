@@ -11,6 +11,9 @@ import com.ktomek.yamv.feature.TypedFeatureHolder
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
 import com.ktomek.yamv.state.CoroutineDispatcherConfig
+import com.ktomek.yamv.state.ErrorSource
+import com.ktomek.yamv.state.MviErrorContext
+import com.ktomek.yamv.state.MviExceptionHandler
 import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.AtomicInt
 import kotlinx.atomicfu.atomic
@@ -33,6 +36,7 @@ internal class FeatureRouter<S : State>(
 ) : IntentionRouter<S> {
 
     private lateinit var featureJobs: List<Job>
+    private lateinit var exceptionHandler: MviExceptionHandler
     private val outcomeFlow = MutableSharedFlow<Outcome<S>>()
     private val intentionFlow = MutableSharedFlow<Any>(extraBufferCapacity = 64)
 
@@ -50,10 +54,15 @@ internal class FeatureRouter<S : State>(
         intentionFlow.emit(intention)
     }
 
-    override fun initialize(scope: CoroutineScope, dispatcherConfig: CoroutineDispatcherConfig) {
+    override fun initialize(
+        scope: CoroutineScope,
+        dispatcherConfig: CoroutineDispatcherConfig,
+        exceptionHandler: MviExceptionHandler,
+    ) {
         check(!isInitialized.getAndSet(true)) {
             "Router has already been initialized"
         }
+        this.exceptionHandler = exceptionHandler
 
         Yamv.log(YamvLogLevel.INFO, TAG, "Initializing FeatureRouter with ${features.size} feature(s)")
 
@@ -75,7 +84,15 @@ internal class FeatureRouter<S : State>(
             val dispatcher = (f as? HasFeatureDispatcher)?.featureDispatcher
                 ?: dispatcherConfig.provideFeatureDispatcher(f)
             scope.launch(dispatcher) {
-                processFeature(feature)
+                try {
+                    processFeature(feature)
+                } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+                    Yamv.log(YamvLogLevel.ERROR, TAG, "Feature $feature failed: $e")
+                    exceptionHandler.handle(
+                        MviErrorContext(source = ErrorSource.FEATURE, feature = feature),
+                        e,
+                    )
+                }
             }
         }
     }

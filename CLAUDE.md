@@ -84,6 +84,14 @@ Annotate feature classes/properties with `@AutoFeature` to generate `{StateName}
 
 **Dagger constraint**: `@Binds` (abstract) methods go in the interface body; `@Provides` + `.wrap()` methods go in the companion object.
 
+### Exception Handling
+
+`MviExceptionHandler` controls what happens when a feature or reducer throws. Default: rethrow + cancel scope (fail-fast). Custom handlers can log/report before rethrowing, or opt into degraded mode by not rethrowing.
+
+- `MviExceptionHandler.Default` — rethrows, cancels the entire scope
+- `MviErrorContext` — carries `ErrorSource` (`REDUCER`, `FEATURE`, `EFFECT`, `INTENTION_REDISPATCH`), optional `intention` and `feature` references
+- Pass via `MviRuntime(features, defaultState, exceptionHandler = ...)` or the factory function
+
 ### Coroutine Safety
 
 `FeatureRouter` uses `CompletableDeferred` to ensure all features are subscribed before the first intention is dispatched. `MviRuntime` manages three independent coroutine collectors (reducers, effects, intention re-dispatch) and is cancelled via `clear()`.
