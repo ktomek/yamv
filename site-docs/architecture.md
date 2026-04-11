@@ -106,16 +106,25 @@ class NetworkFeature : TypedFeature<MyState, FetchData>, HasFeatureDispatcher {
 
 Features with `HasFeatureScope` (via `DefaultFeatureScope`) automatically expose the scope's dispatcher.
 
-**Per-state config (Hilt):** Use the `@MviDispatcherConfig` qualifier to inject a custom config per state type:
+**Per-state config (Hilt):** Annotate a `CoroutineDispatcherConfig` class with `@AutoDispatcherConfig` to have the Dagger module generated automatically:
 
 ```kotlin
-@Module
-@InstallIn(ViewModelComponent::class)
-object MyDispatcherModule {
-    @Provides @MviDispatcherConfig(CounterState::class)
-    fun provide(): CoroutineDispatcherConfig = CustomDispatcherConfig()
-}
+// Global default — applies to all states without a specific override
+@AutoDispatcherConfig
+class IoDispatcherConfig : CoroutineDispatcherConfig { ... }
+
+// Per-state — overrides default for CounterState only
+@AutoDispatcherConfig(CounterState::class)
+class CounterDispatcherConfig : CoroutineDispatcherConfig { ... }
+
+// Multi-state — same config for several states
+@AutoDispatcherConfig(TimerState::class, AnimationState::class)
+class SharedConfig : CoroutineDispatcherConfig { ... }
 ```
+
+Precedence: per-state > global default > `DefaultCoroutineDispatcherConfig()`
+
+See [Code Generation — @AutoDispatcherConfig](code-generation.md#autodispatcherconfig) for generated output details.
 
 !!! info "Subscription safety"
     `FeatureRouter` uses `CompletableDeferred` to ensure all features are subscribed to the intention `SharedFlow` before the first intention is dispatched. This prevents race conditions at startup.
