@@ -16,11 +16,12 @@ data class CounterState(val count: Int = 0) : State
 @HiltViewModel
 class CounterStateStore @Inject constructor(
     features: Set<@JvmSuppressWildcards Feature<CounterState>>,
+    defaultConfig: Optional<CoroutineDispatcherConfig>,
     @MviDispatcherConfig(CounterState::class)
     optionalDispatcherConfig: Optional<CoroutineDispatcherConfig>,
 ) : MviRetainedStore<CounterState, Any>() {
     override val dispatcherConfig: CoroutineDispatcherConfig =
-        optionalDispatcherConfig.orElseGet { DefaultCoroutineDispatcherConfig() }
+        optionalDispatcherConfig.orElseGet { defaultConfig.orElseGet { DefaultCoroutineDispatcherConfig() } }
     override val store: MviStore<CounterState, Any> = MviRuntime(
         features = features,
         defaultState = CounterState(),
@@ -78,12 +79,59 @@ object CounterFeatures {
 }
 ```
 
+## @AutoDispatcherConfig
+
+Annotate a `CoroutineDispatcherConfig` implementation to auto-generate a Dagger module — no manual `@Module` + `@Provides` needed:
+
+```kotlin
+// Global default — applies to all states without a specific override
+@AutoDispatcherConfig
+class IoDispatcherConfig : CoroutineDispatcherConfig {
+    override fun provideIntentionDispatcher(intention: Any?) = Dispatchers.Main
+    override fun provideReducerDispatcher() = Dispatchers.Main
+    override fun provideFeatureDispatcher(feature: Any) = Dispatchers.IO
+}
+```
+
+**Generated** `IoDispatcherConfigModule.kt`:
+```kotlin
+@Module
+@InstallIn(ViewModelComponent::class)
+object IoDispatcherConfigModule {
+    @Provides
+    fun provideDefault(): CoroutineDispatcherConfig = IoDispatcherConfig()
+}
+```
+
+For per-state or multi-state configs, specify the state classes:
+
+```kotlin
+@AutoDispatcherConfig(CounterState::class)
+class CounterConfig : CoroutineDispatcherConfig { ... }
+
+@AutoDispatcherConfig(TimerState::class, AnimationState::class)
+class SharedConfig : CoroutineDispatcherConfig { ... }
+```
+
+**Generated** (per-state):
+```kotlin
+@Module
+@InstallIn(ViewModelComponent::class)
+object CounterConfigModule {
+    @Provides @MviDispatcherConfig(CounterState::class)
+    fun provideForCounterState(): CoroutineDispatcherConfig = CounterConfig()
+}
+```
+
+Precedence: per-state > global default > `DefaultCoroutineDispatcherConfig()`
+
 ## Processor Modules
 
 | Module | Annotation | Output |
 |--------|-----------|--------|
 | `processor-hilt` | `@AutoState` | `{Name}Store` (`@HiltViewModel`) |
 | `processor-hilt` | `@AutoFeature` | `{Name}FeaturesModule` (Hilt `@Module`) |
+| `processor-hilt` | `@AutoDispatcherConfig` | `{Name}Module` (Dagger `@Module` with `@Provides`) |
 
 ## Without Code Generation
 
