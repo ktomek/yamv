@@ -1,494 +1,431 @@
 # Graph Report - .  (2026-04-11)
 
 ## Corpus Check
-- Corpus is ~27,363 words - fits in a single context window. You may not need a graph.
+- 101 files · ~22,410 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 481 nodes · 398 edges · 93 communities detected
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.8)
+- 441 nodes · 357 edges · 84 communities detected
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## God Nodes (most connected - your core abstractions)
 1. `FeaturesModuleGenerator` - 13 edges
 2. `FeatureRouterTest` - 11 edges
-3. `YAMV Framework` - 10 edges
-4. `MviRuntime` - 10 edges
-5. `YamvLoggerTest` - 9 edges
-6. `FeatureRouter` - 8 edges
-7. `KoinMviRetainedStoreDispatcherConfigTest` - 8 edges
-8. `FeatureFilter` - 7 edges
-9. `ViewModelGenerator` - 7 edges
-10. `MviRuntimeTest` - 6 edges
+3. `MviRuntimeLifecycleStressTest` - 10 edges
+4. `YamvLoggerTest` - 9 edges
+5. `FeatureRouter` - 8 edges
+6. `KoinMviRetainedStoreDispatcherConfigTest` - 8 edges
+7. `FeatureFilter` - 7 edges
+8. `ViewModelGenerator` - 7 edges
+9. `MviRuntimeTest` - 6 edges
+10. `CoroutineDispatcherConfigTest` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Site Documentation Home` --semantically_similar_to--> `YAMV Framework`  [INFERRED] [semantically similar]
-  site-docs/index.md → README.md
-- `Outcomes as Standalone Classes Pattern` --semantically_similar_to--> `Distributed Reducers Design`  [INFERRED] [semantically similar]
-  site-docs/getting-started.md → README.md
-- `typedFeatureWithScope Builder` --semantically_similar_to--> `FlowFeature (low-level)`  [INFERRED] [semantically similar]
-  docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md → site-docs/features.md
-- `README Documentation Plan` --references--> `YAMV Framework`  [EXTRACTED]
-  docs/superpowers/plans/2026-04-09-documentation-readme-pages.md → README.md
-- `Unidirectional Data Flow` --references--> `MviRuntime`  [EXTRACTED]
-  site-docs/architecture.md → CLAUDE.md
-
-## Hyperedges (group relationships)
-- **MVI Data Flow Pipeline** — claude_featurerouter, claude_mviruntime, claude_feature, claude_stateoutcome, claude_effectoutcome, claude_intentionoutcome [EXTRACTED 1.00]
-- **Feature Abstraction Hierarchy** — claude_feature, claude_typedfeature, claude_functiontypedfeature, features_flowfeature, features_wrap_method [EXTRACTED 1.00]
-- **KSP Code Generation Annotation Set** — claude_autostate, claude_autofeature, architecture_autodispatcherconfig, claude_ksp, readme_module_processor_hilt [EXTRACTED 1.00]
+- None detected - all connections are within the same source files.
 
 ## Communities
 
-### Community 0 - "Architecture & Annotations"
-Cohesion: 0.1
-Nodes (28): Store Lifecycle (init-dispatch-clear), Rationale: CompletableDeferred Subscription Safety, Unidirectional Data Flow, @AutoFeature Annotation, @AutoState Annotation, CompletableDeferred Subscription Safety, EffectOutcome, Feature (sealed) (+20 more)
+### Community 0 - "Community 0"
+Cohesion: 0.11
+Nodes (6): ChainTo, Crash, Increment, LifecycleIntention, LifecycleState, MviRuntimeLifecycleStressTest
 
-### Community 1 - "MviRuntime Stress Tests"
+### Community 1 - "Community 1"
 Cohesion: 0.13
 Nodes (6): FastAction, Increment, MviRuntimeStressTest, SlowAction, StressIntention, StressState
 
-### Community 2 - "Koin Dispatcher Config Tests"
+### Community 2 - "Community 2"
 Cohesion: 0.13
 Nodes (4): InspectableMviRetainedStore, KoinMviRetainedStoreDispatcherConfigTest, TestState, TrackingCoroutineDispatcherConfig
 
-### Community 3 - "Documentation & Getting Started"
-Cohesion: 0.13
-Nodes (15): Hilt Setup Guide, Koin Setup Guide, Site Documentation Home, iOS App Example, Kotlin Multiplatform Support, README Documentation Plan, Module: core, Module: processor-core (+7 more)
-
-### Community 4 - "Features Module Generator"
+### Community 3 - "Community 3"
 Cohesion: 0.14
 Nodes (1): FeaturesModuleGenerator
 
-### Community 5 - "FeatureRouter Tests"
+### Community 4 - "Community 4"
 Cohesion: 0.14
 Nodes (2): FeatureRouterTest, TestState
 
-### Community 6 - "MviRegistry"
+### Community 5 - "Community 5"
 Cohesion: 0.14
 Nodes (3): DefaultMviRegistry, MutableMviRegistry, MviRegistry
 
-### Community 7 - "StateHandle"
+### Community 6 - "Community 6"
 Cohesion: 0.18
 Nodes (2): EmptyStateHandle, StateHandle
 
-### Community 8 - "ViewModel Generator"
+### Community 7 - "Community 7"
 Cohesion: 0.2
 Nodes (1): ViewModelGenerator
 
-### Community 9 - "MviRuntime Tests"
+### Community 8 - "Community 8"
 Cohesion: 0.2
 Nodes (3): MviRuntimeTest, TestState, TestStateImpl
 
-### Community 10 - "ActionTypedFeature Tests"
+### Community 9 - "Community 9"
 Cohesion: 0.2
 Nodes (4): ActionTestState, ActionTypedFeatureWrapperTest, DoAction, OtherAction
 
-### Community 11 - "Logger Tests"
+### Community 10 - "Community 10"
 Cohesion: 0.2
 Nodes (1): YamvLoggerTest
 
-### Community 12 - "FeatureRouter"
+### Community 11 - "Community 11"
 Cohesion: 0.22
 Nodes (1): FeatureRouter
 
-### Community 13 - "CoroutineDispatcherConfig"
+### Community 12 - "Community 12"
 Cohesion: 0.22
 Nodes (2): CoroutineDispatcherConfig, DefaultCoroutineDispatcherConfig
 
-### Community 14 - "MviRetainedStore Tests"
+### Community 13 - "Community 13"
 Cohesion: 0.22
 Nodes (4): MviRetainedStoreTest, TestMviRetainedStore, TestState, TestStateImpl
 
-### Community 15 - "FeatureFilter"
+### Community 14 - "Community 14"
 Cohesion: 0.25
 Nodes (1): FeatureFilter
 
-### Community 16 - "MviRegistry Tests"
+### Community 15 - "Community 15"
 Cohesion: 0.25
 Nodes (3): MviRegistryTest, TestState1, TestState1Impl
 
-### Community 17 - "MviRuntime Logging Tests"
+### Community 16 - "Community 16"
 Cohesion: 0.25
 Nodes (2): LogTestState, MviRuntimeLoggingTest
 
-### Community 18 - "DefaultFeatureScope Tests"
+### Community 17 - "Community 17"
 Cohesion: 0.25
 Nodes (2): DefaultFeatureScopeTest, ScopedFeatureState
 
-### Community 19 - "MviRuntime Config Builder"
+### Community 18 - "Community 18"
 Cohesion: 0.25
 Nodes (2): MviRuntimeBuilder, MviRuntimeConfig
 
-### Community 20 - "Outcome Hierarchy"
+### Community 19 - "Community 19"
 Cohesion: 0.29
 Nodes (5): EffectOutcome, IntentionOutcome, Outcome, Reducer, StateOutcome
 
-### Community 21 - "Counter Outcomes"
+### Community 20 - "Community 20"
 Cohesion: 0.29
 Nodes (3): AutoDecreaseCounterOutcome, AutoIncreaseOutcome, ChangeCounterOutcome
 
-### Community 22 - "Counter Intentions"
+### Community 21 - "Community 21"
 Cohesion: 0.29
 Nodes (6): AutoDecreaseCounterIntention, AutoIncreaseCounterIntention, DecreaseCounterIntention, IncreaseCounterIntention, StopAutoDecreaseCounterIntention, StopAutoIncreaseCounterIntention
 
-### Community 23 - "iOS ContentView"
+### Community 22 - "Community 22"
 Cohesion: 0.29
 Nodes (4): ComposeView, ContentView, UIViewControllerRepresentable, View
 
-### Community 24 - "FeatureRouter Dispatcher Tests"
+### Community 23 - "Community 23"
 Cohesion: 0.29
 Nodes (2): DispatcherTestState, FeatureRouterDispatcherTest
 
-### Community 25 - "FeatureRouter Logging Tests"
+### Community 24 - "Community 24"
 Cohesion: 0.29
 Nodes (2): FeatureRouterLoggingTest, LoggingTestState
 
-### Community 26 - "DispatcherConfig Tests"
+### Community 25 - "Community 25"
 Cohesion: 0.29
 Nodes (1): CoroutineDispatcherConfigTest
 
-### Community 27 - "Dispatcher Architecture"
-Cohesion: 0.29
-Nodes (7): @AutoDispatcherConfig Annotation, Dispatcher Architecture, HasFeatureScope / HasFeatureDispatcher, Rationale: Default Dispatcher Assignment, CoroutineDispatcherConfig, @AutoDispatcherConfig Code Generation, Rationale: Multithreading by Convention
-
-### Community 28 - "DispatcherConfig Module Gen"
+### Community 26 - "Community 26"
 Cohesion: 0.33
 Nodes (1): DispatcherConfigModuleGenerator
 
-### Community 29 - "FunctionTypedFeature Concurrency"
+### Community 27 - "Community 27"
 Cohesion: 0.33
 Nodes (2): ConcurrencyTestState, FunctionTypedFeatureConcurrencyTest
 
-### Community 30 - "Feature Base Types"
+### Community 28 - "Community 28"
 Cohesion: 0.33
 Nodes (3): Feature, FlowFeature, FlowUnitFeature
 
-### Community 31 - "iOS StateHandle"
+### Community 29 - "Community 29"
 Cohesion: 0.33
 Nodes (1): IosStateHandle
 
-### Community 32 - "Android StateHandle"
+### Community 30 - "Community 30"
 Cohesion: 0.33
 Nodes (1): AndroidStateHandle
 
-### Community 33 - "YAMV KSP Processor"
+### Community 31 - "Community 31"
 Cohesion: 0.4
 Nodes (2): YamvProcessor, YamvProcessorProvider
 
-### Community 34 - "IntentionRouter"
+### Community 32 - "Community 32"
 Cohesion: 0.4
 Nodes (1): IntentionRouter
 
-### Community 35 - "TypedFeature"
+### Community 33 - "Community 33"
+Cohesion: 0.4
+Nodes (1): MviRuntime
+
+### Community 34 - "Community 34"
+Cohesion: 0.4
+Nodes (3): ErrorSource, MviErrorContext, MviExceptionHandler
+
+### Community 35 - "Community 35"
 Cohesion: 0.4
 Nodes (3): TypedFeature, TypedFeatureHolder, TypedUnitFeatureHolder
 
-### Community 36 - "MviRetainedStore"
+### Community 36 - "Community 36"
 Cohesion: 0.4
 Nodes (1): MviRetainedStore
 
-### Community 37 - "FeatureRegistrar (Koin)"
+### Community 37 - "Community 37"
 Cohesion: 0.4
 Nodes (1): FeatureRegistrar
 
-### Community 38 - "KoinMviRetainedStore"
+### Community 38 - "Community 38"
 Cohesion: 0.4
 Nodes (1): KoinMviRetainedStore
 
-### Community 39 - "Hilt Class Names"
+### Community 39 - "Community 39"
 Cohesion: 0.5
 Nodes (3): FeatureFqns, HiltClassNames, YamvClassNames
 
-### Community 40 - "AutoDecrease Feature"
+### Community 40 - "Community 40"
 Cohesion: 0.5
 Nodes (1): AutoDecreaseFeature
 
-### Community 41 - "AutoIncrease Feature"
+### Community 41 - "Community 41"
 Cohesion: 0.5
 Nodes (1): AutoIncreaseFeature
 
-### Community 42 - "Koin App Entry"
+### Community 42 - "Community 42"
 Cohesion: 0.5
 Nodes (1): KoinApp
 
-### Community 43 - "Hilt App Entry"
+### Community 43 - "Community 43"
 Cohesion: 0.5
 Nodes (1): YamvApp
 
-### Community 44 - "iOS App Entry"
+### Community 44 - "Community 44"
 Cohesion: 0.5
 Nodes (2): App, iOSApp
 
-### Community 45 - "HasFeatureDispatcher Tests"
+### Community 45 - "Community 45"
 Cohesion: 0.5
 Nodes (1): HasFeatureDispatcherTest
 
-### Community 46 - "MviRuntime Core"
-Cohesion: 0.5
-Nodes (1): MviRuntime
-
-### Community 47 - "MviStore"
+### Community 46 - "Community 46"
 Cohesion: 0.5
 Nodes (1): MviStore
 
-### Community 48 - "YAMV Logger Core"
+### Community 47 - "Community 47"
 Cohesion: 0.5
 Nodes (1): Yamv
 
-### Community 49 - "AutoFeature Discovery"
+### Community 48 - "Community 48"
 Cohesion: 0.5
 Nodes (1): AutoFeatureDiscovery
 
-### Community 50 - "Design Philosophy"
-Cohesion: 0.5
-Nodes (4): Outcomes as Standalone Classes Pattern, Distributed Reducers Design, Forced Modularity Design, Rationale: No Central Reducer
-
-### Community 51 - "StateHandle Hilt Module"
+### Community 49 - "Community 49"
 Cohesion: 0.67
 Nodes (1): YamvStateHandleModule
 
-### Community 52 - "Dispatcher Hilt Module"
+### Community 50 - "Community 50"
 Cohesion: 0.67
 Nodes (1): YamvDispatcherModule
 
-### Community 53 - "AutoState Annotation"
+### Community 51 - "Community 51"
 Cohesion: 0.67
 Nodes (2): AutoState, NoDefaultState
 
-### Community 54 - "iOS Main ViewController"
+### Community 52 - "Community 52"
 Cohesion: 0.67
 Nodes (0): 
 
-### Community 55 - "Decrease Feature"
+### Community 53 - "Community 53"
 Cohesion: 0.67
 Nodes (1): DecreaseFeature
 
-### Community 56 - "MainActivity"
+### Community 54 - "Community 54"
 Cohesion: 0.67
 Nodes (1): MainActivity
 
-### Community 57 - "FunctionTypedFeature"
+### Community 55 - "Community 55"
 Cohesion: 0.67
 Nodes (1): FunctionTypedFeature
 
-### Community 58 - "ActionTypedFeature"
+### Community 56 - "Community 56"
 Cohesion: 0.67
 Nodes (1): ActionTypedFeature
 
-### Community 59 - "FunctionTypedFeature Wrapper"
+### Community 57 - "Community 57"
 Cohesion: 0.67
 Nodes (0): 
 
-### Community 60 - "YamvLogger"
+### Community 58 - "Community 58"
 Cohesion: 0.67
 Nodes (1): YamvLogger
 
-### Community 61 - "AutoState Discovery"
+### Community 59 - "Community 59"
 Cohesion: 0.67
 Nodes (1): AutoStateDiscovery
 
-### Community 62 - "AutoDispatcherConfig Discovery"
+### Community 60 - "Community 60"
 Cohesion: 0.67
 Nodes (1): AutoDispatcherConfigDiscovery
 
-### Community 63 - "HiltMviStore"
+### Community 61 - "Community 61"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 64 - "MviDispatcherConfig"
+### Community 62 - "Community 62"
 Cohesion: 1.0
 Nodes (1): MviDispatcherConfig
 
-### Community 65 - "State Interface"
+### Community 63 - "Community 63"
 Cohesion: 1.0
 Nodes (1): State
 
-### Community 66 - "AutoDispatcherConfig Annotation"
+### Community 64 - "Community 64"
 Cohesion: 1.0
 Nodes (1): AutoDispatcherConfig
 
-### Community 67 - "Counter Screen"
+### Community 65 - "Community 65"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 68 - "Counter State"
+### Community 66 - "Community 66"
 Cohesion: 1.0
 Nodes (1): CounterState
 
-### Community 69 - "Flow Extensions"
+### Community 67 - "Community 67"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 70 - "UI Theme"
+### Community 68 - "Community 68"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 71 - "Counter Content"
+### Community 69 - "Community 69"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 72 - "TypedFeature Wrapper"
+### Community 70 - "Community 70"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 73 - "HasFeatureScope"
+### Community 71 - "Community 71"
 Cohesion: 1.0
 Nodes (1): HasFeatureScope
 
-### Community 74 - "HasFeatureDispatcher"
+### Community 72 - "Community 72"
 Cohesion: 1.0
 Nodes (1): HasFeatureDispatcher
 
-### Community 75 - "DefaultFeatureScope"
+### Community 73 - "Community 73"
 Cohesion: 1.0
 Nodes (1): DefaultFeatureScope
 
-### Community 76 - "ActionTypedFeature Wrapper"
+### Community 74 - "Community 74"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 77 - "YamvLogLevel"
+### Community 75 - "Community 75"
 Cohesion: 1.0
 Nodes (1): YamvLogLevel
 
-### Community 78 - "CI/CD Infrastructure"
-Cohesion: 1.0
-Nodes (2): CI/CD GitHub Actions Pipeline, Semantic Versioning Setup
-
-### Community 79 - "JitPack & Release"
-Cohesion: 1.0
-Nodes (2): JitPack Publishing, GitHub Release Workflow
-
-### Community 80 - "Documentation Site"
-Cohesion: 1.0
-Nodes (2): GitHub Pages Deployment, MkDocs Material Site
-
-### Community 81 - "Root Build Config"
+### Community 76 - "Community 76"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 82 - "OpenForTesting"
+### Community 77 - "Community 77"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 83 - "AutoFeature Annotation"
+### Community 78 - "Community 78"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 84 - "Counter Features Module"
+### Community 79 - "Community 79"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 85 - "Increase Feature"
+### Community 80 - "Community 80"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 86 - "UI Shape"
+### Community 81 - "Community 81"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 87 - "UI Color"
+### Community 82 - "Community 82"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 88 - "UI Typography"
+### Community 83 - "Community 83"
 Cohesion: 1.0
 Nodes (0): 
-
-### Community 89 - "MviStore Docs"
-Cohesion: 1.0
-Nodes (1): MviStore
-
-### Community 90 - "Changelog"
-Cohesion: 1.0
-Nodes (1): Changelog v0.1.0
-
-### Community 91 - "iOS StateHandle Docs"
-Cohesion: 1.0
-Nodes (1): IosStateHandle (iOS saved state)
-
-### Community 92 - "Features Guide"
-Cohesion: 1.0
-Nodes (1): Features Guide
 
 ## Knowledge Gaps
-- **84 isolated node(s):** `HiltClassNames`, `YamvClassNames`, `FeatureFqns`, `MviDispatcherConfig`, `State` (+79 more)
+- **58 isolated node(s):** `HiltClassNames`, `YamvClassNames`, `FeatureFqns`, `MviDispatcherConfig`, `State` (+53 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `HiltMviStore`** (2 nodes): `HiltMviStore.kt`, `hiltMviStore()`
+- **Thin community `Community 61`** (2 nodes): `HiltMviStore.kt`, `hiltMviStore()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `MviDispatcherConfig`** (2 nodes): `MviDispatcherConfig.kt`, `MviDispatcherConfig`
+- **Thin community `Community 62`** (2 nodes): `MviDispatcherConfig.kt`, `MviDispatcherConfig`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `State Interface`** (2 nodes): `State.kt`, `State`
+- **Thin community `Community 63`** (2 nodes): `State.kt`, `State`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `AutoDispatcherConfig Annotation`** (2 nodes): `AutoDispatcherConfig.kt`, `AutoDispatcherConfig`
+- **Thin community `Community 64`** (2 nodes): `AutoDispatcherConfig.kt`, `AutoDispatcherConfig`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Counter Screen`** (2 nodes): `CounterScreen.kt`, `CounterScreen()`
+- **Thin community `Community 65`** (2 nodes): `CounterScreen.kt`, `CounterScreen()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Counter State`** (2 nodes): `CounterState.kt`, `CounterState`
+- **Thin community `Community 66`** (2 nodes): `CounterState.kt`, `CounterState`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Flow Extensions`** (2 nodes): `FlowExtensions.kt`, `takeUntilSignal()`
+- **Thin community `Community 67`** (2 nodes): `FlowExtensions.kt`, `takeUntilSignal()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `UI Theme`** (2 nodes): `Theme.kt`, `YamvTheme()`
+- **Thin community `Community 68`** (2 nodes): `Theme.kt`, `YamvTheme()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Counter Content`** (2 nodes): `CounterContent.kt`, `CounterContent()`
+- **Thin community `Community 69`** (2 nodes): `CounterContent.kt`, `CounterContent()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `TypedFeature Wrapper`** (2 nodes): `TypedFeatureWrapper.kt`, `wrap()`
+- **Thin community `Community 70`** (2 nodes): `TypedFeatureWrapper.kt`, `wrap()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `HasFeatureScope`** (2 nodes): `HasFeatureScope.kt`, `HasFeatureScope`
+- **Thin community `Community 71`** (2 nodes): `HasFeatureScope.kt`, `HasFeatureScope`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `HasFeatureDispatcher`** (2 nodes): `HasFeatureDispatcher.kt`, `HasFeatureDispatcher`
+- **Thin community `Community 72`** (2 nodes): `HasFeatureDispatcher.kt`, `HasFeatureDispatcher`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `DefaultFeatureScope`** (2 nodes): `DefaultFeatureScope.kt`, `DefaultFeatureScope`
+- **Thin community `Community 73`** (2 nodes): `DefaultFeatureScope.kt`, `DefaultFeatureScope`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `ActionTypedFeature Wrapper`** (2 nodes): `ActionTypedFeatureWrapper.kt`, `wrap()`
+- **Thin community `Community 74`** (2 nodes): `ActionTypedFeatureWrapper.kt`, `wrap()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `YamvLogLevel`** (2 nodes): `YamvLogLevel.kt`, `YamvLogLevel`
+- **Thin community `Community 75`** (2 nodes): `YamvLogLevel.kt`, `YamvLogLevel`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `CI/CD Infrastructure`** (2 nodes): `CI/CD GitHub Actions Pipeline`, `Semantic Versioning Setup`
+- **Thin community `Community 76`** (1 nodes): `build.gradle.kts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `JitPack & Release`** (2 nodes): `JitPack Publishing`, `GitHub Release Workflow`
+- **Thin community `Community 77`** (1 nodes): `OpenForTesting.kt`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Documentation Site`** (2 nodes): `GitHub Pages Deployment`, `MkDocs Material Site`
+- **Thin community `Community 78`** (1 nodes): `AutoFeature.kt`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Root Build Config`** (1 nodes): `build.gradle.kts`
+- **Thin community `Community 79`** (1 nodes): `CounterFeaturesModule.kt`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `OpenForTesting`** (1 nodes): `OpenForTesting.kt`
+- **Thin community `Community 80`** (1 nodes): `IncreaseFeature.kt`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `AutoFeature Annotation`** (1 nodes): `AutoFeature.kt`
+- **Thin community `Community 81`** (1 nodes): `Shape.kt`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Counter Features Module`** (1 nodes): `CounterFeaturesModule.kt`
+- **Thin community `Community 82`** (1 nodes): `Color.kt`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Increase Feature`** (1 nodes): `IncreaseFeature.kt`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `UI Shape`** (1 nodes): `Shape.kt`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `UI Color`** (1 nodes): `Color.kt`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `UI Typography`** (1 nodes): `Type.kt`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `MviStore Docs`** (1 nodes): `MviStore`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Changelog`** (1 nodes): `Changelog v0.1.0`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `iOS StateHandle Docs`** (1 nodes): `IosStateHandle (iOS saved state)`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Features Guide`** (1 nodes): `Features Guide`
+- **Thin community `Community 83`** (1 nodes): `Type.kt`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `MviRuntime` connect `Architecture & Annotations` to `Dispatcher Architecture`?**
-  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `HiltClassNames`, `YamvClassNames`, `FeatureFqns` to the rest of the system?**
-  _84 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Architecture & Annotations` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
-- **Should `MviRuntime Stress Tests` be split into smaller, more focused modules?**
+  _58 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 0` be split into smaller, more focused modules?**
+  _Cohesion score 0.11 - nodes in this community are weakly interconnected._
+- **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.13 - nodes in this community are weakly interconnected._
-- **Should `Koin Dispatcher Config Tests` be split into smaller, more focused modules?**
+- **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.13 - nodes in this community are weakly interconnected._
-- **Should `Documentation & Getting Started` be split into smaller, more focused modules?**
-  _Cohesion score 0.13 - nodes in this community are weakly interconnected._
-- **Should `Features Module Generator` be split into smaller, more focused modules?**
+- **Should `Community 3` be split into smaller, more focused modules?**
+  _Cohesion score 0.14 - nodes in this community are weakly interconnected._
+- **Should `Community 4` be split into smaller, more focused modules?**
+  _Cohesion score 0.14 - nodes in this community are weakly interconnected._
+- **Should `Community 5` be split into smaller, more focused modules?**
   _Cohesion score 0.14 - nodes in this community are weakly interconnected._

@@ -1,56 +1,7 @@
 {
   "directed": false,
   "multigraph": false,
-  "graph": {
-    "hyperedges": [
-      {
-        "id": "mvi_data_flow_pipeline",
-        "label": "MVI Data Flow Pipeline",
-        "nodes": [
-          "claude_featurerouter",
-          "claude_mviruntime",
-          "claude_feature",
-          "claude_stateoutcome",
-          "claude_effectoutcome",
-          "claude_intentionoutcome"
-        ],
-        "relation": "participate_in",
-        "confidence": "EXTRACTED",
-        "confidence_score": 1.0,
-        "source_file": "CLAUDE.md"
-      },
-      {
-        "id": "feature_abstraction_hierarchy",
-        "label": "Feature Abstraction Hierarchy",
-        "nodes": [
-          "claude_feature",
-          "claude_typedfeature",
-          "claude_functiontypedfeature",
-          "features_flowfeature",
-          "features_wrap_method"
-        ],
-        "relation": "form",
-        "confidence": "EXTRACTED",
-        "confidence_score": 1.0,
-        "source_file": "site-docs/features.md"
-      },
-      {
-        "id": "code_generation_annotations",
-        "label": "KSP Code Generation Annotation Set",
-        "nodes": [
-          "claude_autostate",
-          "claude_autofeature",
-          "architecture_autodispatcherconfig",
-          "claude_ksp",
-          "readme_module_processor_hilt"
-        ],
-        "relation": "form",
-        "confidence": "EXTRACTED",
-        "confidence_score": 1.0,
-        "source_file": "site-docs/code-generation.md"
-      }
-    ]
-  },
+  "graph": {},
   "nodes": [
     {
       "label": "build.gradle.kts",
@@ -58,7 +9,7 @@
       "source_file": "yamv-koin/build.gradle.kts",
       "source_location": "L1",
       "id": "build_gradle",
-      "community": 81
+      "community": 76
     },
     {
       "label": "YamvProcessor.kt",
@@ -66,7 +17,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/YamvProcessor.kt",
       "source_location": "L1",
       "id": "yamvprocessor",
-      "community": 33
+      "community": 31
     },
     {
       "label": "YamvProcessor",
@@ -74,7 +25,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/YamvProcessor.kt",
       "source_location": "L17",
       "id": "yamvprocessor_yamvprocessor",
-      "community": 33
+      "community": 31
     },
     {
       "label": ".process()",
@@ -82,7 +33,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/YamvProcessor.kt",
       "source_location": "L22",
       "id": "yamvprocessor_yamvprocessor_process",
-      "community": 33
+      "community": 31
     },
     {
       "label": "YamvProcessorProvider",
@@ -90,7 +41,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/YamvProcessor.kt",
       "source_location": "L50",
       "id": "yamvprocessor_yamvprocessorprovider",
-      "community": 33
+      "community": 31
     },
     {
       "label": ".create()",
@@ -98,7 +49,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/YamvProcessor.kt",
       "source_location": "L51",
       "id": "yamvprocessor_yamvprocessorprovider_create",
-      "community": 33
+      "community": 31
     },
     {
       "label": "HiltClassNames.kt",
@@ -138,7 +89,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/DispatcherConfigModuleGenerator.kt",
       "source_location": "L1",
       "id": "dispatcherconfigmodulegenerator",
-      "community": 28
+      "community": 26
     },
     {
       "label": "DispatcherConfigModuleGenerator",
@@ -146,7 +97,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/DispatcherConfigModuleGenerator.kt",
       "source_location": "L38",
       "id": "dispatcherconfigmodulegenerator_dispatcherconfigmodulegenerator",
-      "community": 28
+      "community": 26
     },
     {
       "label": ".generate()",
@@ -154,7 +105,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/DispatcherConfigModuleGenerator.kt",
       "source_location": "L40",
       "id": "dispatcherconfigmodulegenerator_dispatcherconfigmodulegenerator_generate",
-      "community": 28
+      "community": 26
     },
     {
       "label": ".buildGlobalModule()",
@@ -162,7 +113,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/DispatcherConfigModuleGenerator.kt",
       "source_location": "L64",
       "id": "dispatcherconfigmodulegenerator_dispatcherconfigmodulegenerator_buildglobalmodule",
-      "community": 28
+      "community": 26
     },
     {
       "label": ".buildPerStateModule()",
@@ -170,7 +121,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/DispatcherConfigModuleGenerator.kt",
       "source_location": "L79",
       "id": "dispatcherconfigmodulegenerator_dispatcherconfigmodulegenerator_buildperstatemodule",
-      "community": 28
+      "community": 26
     },
     {
       "label": ".buildInstallInAnnotation()",
@@ -178,7 +129,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/DispatcherConfigModuleGenerator.kt",
       "source_location": "L110",
       "id": "dispatcherconfigmodulegenerator_dispatcherconfigmodulegenerator_buildinstallinannotation",
-      "community": 28
+      "community": 26
     },
     {
       "label": "FeatureFilter.kt",
@@ -186,7 +137,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeatureFilter.kt",
       "source_location": "L1",
       "id": "featurefilter",
-      "community": 15
+      "community": 14
     },
     {
       "label": "FeatureFilter",
@@ -194,7 +145,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeatureFilter.kt",
       "source_location": "L14",
       "id": "featurefilter_featurefilter",
-      "community": 15
+      "community": 14
     },
     {
       "label": ".findAll()",
@@ -202,7 +153,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeatureFilter.kt",
       "source_location": "L20",
       "id": "featurefilter_featurefilter_findall",
-      "community": 15
+      "community": 14
     },
     {
       "label": ".forState()",
@@ -210,7 +161,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeatureFilter.kt",
       "source_location": "L29",
       "id": "featurefilter_featurefilter_forstate",
-      "community": 15
+      "community": 14
     },
     {
       "label": ".isKnownFeatureClass()",
@@ -218,7 +169,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeatureFilter.kt",
       "source_location": "L34",
       "id": "featurefilter_featurefilter_isknownfeatureclass",
-      "community": 15
+      "community": 14
     },
     {
       "label": ".isKnownFeatureProperty()",
@@ -226,7 +177,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeatureFilter.kt",
       "source_location": "L37",
       "id": "featurefilter_featurefilter_isknownfeatureproperty",
-      "community": 15
+      "community": 14
     },
     {
       "label": ".matchesState()",
@@ -234,7 +185,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeatureFilter.kt",
       "source_location": "L40",
       "id": "featurefilter_featurefilter_matchesstate",
-      "community": 15
+      "community": 14
     },
     {
       "label": ".stateTypeNameMatches()",
@@ -242,7 +193,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeatureFilter.kt",
       "source_location": "L46",
       "id": "featurefilter_featurefilter_statetypenamematches",
-      "community": 15
+      "community": 14
     },
     {
       "label": "ViewModelGenerator.kt",
@@ -250,7 +201,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L1",
       "id": "viewmodelgenerator",
-      "community": 8
+      "community": 7
     },
     {
       "label": "ViewModelGenerator",
@@ -258,7 +209,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L41",
       "id": "viewmodelgenerator_viewmodelgenerator",
-      "community": 8
+      "community": 7
     },
     {
       "label": ".generate()",
@@ -266,7 +217,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L43",
       "id": "viewmodelgenerator_viewmodelgenerator_generate",
-      "community": 8
+      "community": 7
     },
     {
       "label": ".resolveDefaultState()",
@@ -274,7 +225,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L56",
       "id": "viewmodelgenerator_viewmodelgenerator_resolvedefaultstate",
-      "community": 8
+      "community": 7
     },
     {
       "label": ".buildViewModelClass()",
@@ -282,7 +233,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L69",
       "id": "viewmodelgenerator_viewmodelgenerator_buildviewmodelclass",
-      "community": 8
+      "community": 7
     },
     {
       "label": ".buildConstructor()",
@@ -290,7 +241,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L81",
       "id": "viewmodelgenerator_viewmodelgenerator_buildconstructor",
-      "community": 8
+      "community": 7
     },
     {
       "label": ".buildDispatcherConfigProperty()",
@@ -298,7 +249,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L108",
       "id": "viewmodelgenerator_viewmodelgenerator_builddispatcherconfigproperty",
-      "community": 8
+      "community": 7
     },
     {
       "label": ".buildStoreProperty()",
@@ -306,7 +257,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L117",
       "id": "viewmodelgenerator_viewmodelgenerator_buildstoreproperty",
-      "community": 8
+      "community": 7
     },
     {
       "label": "findAutoStateDefaultType()",
@@ -314,7 +265,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L131",
       "id": "viewmodelgenerator_findautostatedefaulttype",
-      "community": 8
+      "community": 7
     },
     {
       "label": "isNoDefaultState()",
@@ -322,7 +273,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/ViewModelGenerator.kt",
       "source_location": "L138",
       "id": "viewmodelgenerator_isnodefaultstate",
-      "community": 8
+      "community": 7
     },
     {
       "label": "FeaturesModuleGenerator.kt",
@@ -330,7 +281,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L1",
       "id": "featuresmodulegenerator",
-      "community": 4
+      "community": 3
     },
     {
       "label": "FeaturesModuleGenerator",
@@ -338,7 +289,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L42",
       "id": "featuresmodulegenerator_featuresmodulegenerator",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".generate()",
@@ -346,7 +297,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L44",
       "id": "featuresmodulegenerator_featuresmodulegenerator_generate",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildModuleInterface()",
@@ -354,7 +305,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L55",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildmoduleinterface",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".requiresWrap()",
@@ -362,7 +313,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L80",
       "id": "featuresmodulegenerator_featuresmodulegenerator_requireswrap",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildInstallInAnnotation()",
@@ -370,7 +321,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L83",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildinstallinannotation",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildAbstractBindsForClass()",
@@ -378,7 +329,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L88",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildabstractbindsforclass",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildCompanionObject()",
@@ -386,7 +337,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L95",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildcompanionobject",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildClassProvidesWithWrap()",
@@ -394,7 +345,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L106",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildclassprovideswithwrap",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildEmptySetProvider()",
@@ -402,7 +353,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L116",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildemptysetprovider",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildPropertyBinding()",
@@ -410,7 +361,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L125",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildpropertybinding",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildOptionalDispatcherConfigBinding()",
@@ -418,7 +369,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L138",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildoptionaldispatcherconfigbinding",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildAbstractBinds()",
@@ -426,7 +377,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L150",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildabstractbinds",
-      "community": 4
+      "community": 3
     },
     {
       "label": ".buildProvidesWithWrap()",
@@ -434,7 +385,7 @@
       "source_file": "processor-hilt/src/main/kotlin/com/ktomek/yamv/processor/hilt/FeaturesModuleGenerator.kt",
       "source_location": "L160",
       "id": "featuresmodulegenerator_featuresmodulegenerator_buildprovideswithwrap",
-      "community": 4
+      "community": 3
     },
     {
       "label": "YamvStateHandleModule.kt",
@@ -442,7 +393,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/YamvStateHandleModule.kt",
       "source_location": "L1",
       "id": "yamvstatehandlemodule",
-      "community": 51
+      "community": 49
     },
     {
       "label": "YamvStateHandleModule",
@@ -450,7 +401,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/YamvStateHandleModule.kt",
       "source_location": "L12",
       "id": "yamvstatehandlemodule_yamvstatehandlemodule",
-      "community": 51
+      "community": 49
     },
     {
       "label": ".provideStateHandle()",
@@ -458,7 +409,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/YamvStateHandleModule.kt",
       "source_location": "L15",
       "id": "yamvstatehandlemodule_yamvstatehandlemodule_providestatehandle",
-      "community": 51
+      "community": 49
     },
     {
       "label": "YamvDispatcherModule.kt",
@@ -466,7 +417,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/YamvDispatcherModule.kt",
       "source_location": "L1",
       "id": "yamvdispatchermodule",
-      "community": 52
+      "community": 50
     },
     {
       "label": "YamvDispatcherModule",
@@ -474,7 +425,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/YamvDispatcherModule.kt",
       "source_location": "L19",
       "id": "yamvdispatchermodule_yamvdispatchermodule",
-      "community": 52
+      "community": 50
     },
     {
       "label": ".bindDefaultDispatcherConfig()",
@@ -482,7 +433,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/YamvDispatcherModule.kt",
       "source_location": "L22",
       "id": "yamvdispatchermodule_yamvdispatchermodule_binddefaultdispatcherconfig",
-      "community": 52
+      "community": 50
     },
     {
       "label": "HiltMviStore.kt",
@@ -490,7 +441,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/HiltMviStore.kt",
       "source_location": "L1",
       "id": "hiltmvistore",
-      "community": 63
+      "community": 61
     },
     {
       "label": "hiltMviStore()",
@@ -498,7 +449,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/HiltMviStore.kt",
       "source_location": "L19",
       "id": "hiltmvistore_hiltmvistore",
-      "community": 63
+      "community": 61
     },
     {
       "label": "MviDispatcherConfig.kt",
@@ -506,7 +457,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/MviDispatcherConfig.kt",
       "source_location": "L1",
       "id": "mvidispatcherconfig",
-      "community": 64
+      "community": 62
     },
     {
       "label": "MviDispatcherConfig",
@@ -514,7 +465,7 @@
       "source_file": "yamv-hilt/src/main/kotlin/com/ktomek/yamv/hilt/MviDispatcherConfig.kt",
       "source_location": "L24",
       "id": "mvidispatcherconfig_mvidispatcherconfig",
-      "community": 64
+      "community": 62
     },
     {
       "label": "State.kt",
@@ -522,7 +473,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/State.kt",
       "source_location": "L1",
       "id": "state",
-      "community": 65
+      "community": 63
     },
     {
       "label": "State",
@@ -530,7 +481,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/State.kt",
       "source_location": "L6",
       "id": "state_state",
-      "community": 65
+      "community": 63
     },
     {
       "label": "Outcome.kt",
@@ -538,7 +489,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/Outcome.kt",
       "source_location": "L1",
       "id": "outcome",
-      "community": 20
+      "community": 19
     },
     {
       "label": "Outcome",
@@ -546,7 +497,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/Outcome.kt",
       "source_location": "L8",
       "id": "outcome_outcome",
-      "community": 20
+      "community": 19
     },
     {
       "label": "StateOutcome",
@@ -554,7 +505,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/Outcome.kt",
       "source_location": "L14",
       "id": "outcome_stateoutcome",
-      "community": 20
+      "community": 19
     },
     {
       "label": "EffectOutcome",
@@ -562,7 +513,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/Outcome.kt",
       "source_location": "L19",
       "id": "outcome_effectoutcome",
-      "community": 20
+      "community": 19
     },
     {
       "label": "IntentionOutcome",
@@ -570,7 +521,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/Outcome.kt",
       "source_location": "L24",
       "id": "outcome_intentionoutcome",
-      "community": 20
+      "community": 19
     },
     {
       "label": "Reducer",
@@ -578,7 +529,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/Outcome.kt",
       "source_location": "L28",
       "id": "outcome_reducer",
-      "community": 20
+      "community": 19
     },
     {
       "label": ".reduce()",
@@ -586,7 +537,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/core/Outcome.kt",
       "source_location": "L29",
       "id": "outcome_reducer_reduce",
-      "community": 20
+      "community": 19
     },
     {
       "label": "OpenForTesting.kt",
@@ -594,7 +545,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/annotations/OpenForTesting.kt",
       "source_location": "L1",
       "id": "openfortesting",
-      "community": 82
+      "community": 77
     },
     {
       "label": "AutoFeature.kt",
@@ -602,7 +553,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/annotations/AutoFeature.kt",
       "source_location": "L1",
       "id": "autofeature",
-      "community": 83
+      "community": 78
     },
     {
       "label": "AutoState.kt",
@@ -610,7 +561,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/annotations/AutoState.kt",
       "source_location": "L1",
       "id": "autostate",
-      "community": 53
+      "community": 51
     },
     {
       "label": "AutoState",
@@ -618,7 +569,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/annotations/AutoState.kt",
       "source_location": "L13",
       "id": "autostate_autostate",
-      "community": 53
+      "community": 51
     },
     {
       "label": "NoDefaultState",
@@ -626,7 +577,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/annotations/AutoState.kt",
       "source_location": "L18",
       "id": "autostate_nodefaultstate",
-      "community": 53
+      "community": 51
     },
     {
       "label": "AutoDispatcherConfig.kt",
@@ -634,7 +585,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/annotations/AutoDispatcherConfig.kt",
       "source_location": "L1",
       "id": "autodispatcherconfig",
-      "community": 66
+      "community": 64
     },
     {
       "label": "AutoDispatcherConfig",
@@ -642,7 +593,7 @@
       "source_file": "core/src/main/kotlin/com/ktomek/yamv/annotations/AutoDispatcherConfig.kt",
       "source_location": "L27",
       "id": "autodispatcherconfig_autodispatcherconfig",
-      "community": 66
+      "community": 64
     },
     {
       "label": "MainViewController.kt",
@@ -650,7 +601,7 @@
       "source_file": "app/koin/src/iosMain/kotlin/com/ktomek/yamv/koin/MainViewController.kt",
       "source_location": "L1",
       "id": "mainviewcontroller",
-      "community": 54
+      "community": 52
     },
     {
       "label": "initKoin()",
@@ -658,7 +609,7 @@
       "source_file": "app/koin/src/iosMain/kotlin/com/ktomek/yamv/koin/MainViewController.kt",
       "source_location": "L8",
       "id": "mainviewcontroller_initkoin",
-      "community": 54
+      "community": 52
     },
     {
       "label": "MainViewController()",
@@ -666,7 +617,7 @@
       "source_file": "app/koin/src/iosMain/kotlin/com/ktomek/yamv/koin/MainViewController.kt",
       "source_location": "L14",
       "id": "mainviewcontroller_mainviewcontroller",
-      "community": 54
+      "community": 52
     },
     {
       "label": "CounterScreen.kt",
@@ -674,7 +625,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/CounterScreen.kt",
       "source_location": "L1",
       "id": "counterscreen",
-      "community": 67
+      "community": 65
     },
     {
       "label": "CounterScreen()",
@@ -682,7 +633,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/CounterScreen.kt",
       "source_location": "L16",
       "id": "counterscreen_counterscreen",
-      "community": 67
+      "community": 65
     },
     {
       "label": "CounterFeaturesModule.kt",
@@ -690,7 +641,7 @@
       "source_file": "app/koin/src/commonMain/kotlin/com/ktomek/yamv/koin/counter/CounterFeaturesModule.kt",
       "source_location": "L1",
       "id": "counterfeaturesmodule",
-      "community": 84
+      "community": 79
     },
     {
       "label": "CounterState.kt",
@@ -698,7 +649,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/state/CounterState.kt",
       "source_location": "L1",
       "id": "counterstate",
-      "community": 68
+      "community": 66
     },
     {
       "label": "CounterState",
@@ -706,7 +657,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/state/CounterState.kt",
       "source_location": "L6",
       "id": "counterstate_counterstate",
-      "community": 68
+      "community": 66
     },
     {
       "label": "CounterOutcomes.kt",
@@ -714,7 +665,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/outcome/CounterOutcomes.kt",
       "source_location": "L1",
       "id": "counteroutcomes",
-      "community": 21
+      "community": 20
     },
     {
       "label": "ChangeCounterOutcome",
@@ -722,7 +673,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/outcome/CounterOutcomes.kt",
       "source_location": "L10",
       "id": "counteroutcomes_changecounteroutcome",
-      "community": 21
+      "community": 20
     },
     {
       "label": ".reduce()",
@@ -730,7 +681,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/outcome/CounterOutcomes.kt",
       "source_location": "L11",
       "id": "counteroutcomes_changecounteroutcome_reduce",
-      "community": 21
+      "community": 20
     },
     {
       "label": "AutoDecreaseCounterOutcome",
@@ -738,7 +689,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/outcome/CounterOutcomes.kt",
       "source_location": "L19",
       "id": "counteroutcomes_autodecreasecounteroutcome",
-      "community": 21
+      "community": 20
     },
     {
       "label": ".reduce()",
@@ -746,7 +697,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/outcome/CounterOutcomes.kt",
       "source_location": "L20",
       "id": "counteroutcomes_autodecreasecounteroutcome_reduce",
-      "community": 21
+      "community": 20
     },
     {
       "label": "AutoIncreaseOutcome",
@@ -754,7 +705,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/outcome/CounterOutcomes.kt",
       "source_location": "L24",
       "id": "counteroutcomes_autoincreaseoutcome",
-      "community": 21
+      "community": 20
     },
     {
       "label": ".reduce()",
@@ -762,7 +713,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/outcome/CounterOutcomes.kt",
       "source_location": "L25",
       "id": "counteroutcomes_autoincreaseoutcome_reduce",
-      "community": 21
+      "community": 20
     },
     {
       "label": "FlowExtensions.kt",
@@ -770,7 +721,7 @@
       "source_file": "app/koin/src/commonMain/kotlin/com/ktomek/yamv/koin/counter/logic/feature/FlowExtensions.kt",
       "source_location": "L1",
       "id": "flowextensions",
-      "community": 69
+      "community": 67
     },
     {
       "label": "takeUntilSignal()",
@@ -778,7 +729,7 @@
       "source_file": "app/koin/src/commonMain/kotlin/com/ktomek/yamv/koin/counter/logic/feature/FlowExtensions.kt",
       "source_location": "L8",
       "id": "flowextensions_takeuntilsignal",
-      "community": 69
+      "community": 67
     },
     {
       "label": "AutoDecreaseFeature.kt",
@@ -818,7 +769,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/feature/DecreaseFeature.kt",
       "source_location": "L1",
       "id": "decreasefeature",
-      "community": 55
+      "community": 53
     },
     {
       "label": "DecreaseFeature",
@@ -826,7 +777,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/feature/DecreaseFeature.kt",
       "source_location": "L13",
       "id": "decreasefeature_decreasefeature",
-      "community": 55
+      "community": 53
     },
     {
       "label": ".invoke()",
@@ -834,7 +785,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/feature/DecreaseFeature.kt",
       "source_location": "L16",
       "id": "decreasefeature_decreasefeature_invoke",
-      "community": 55
+      "community": 53
     },
     {
       "label": "IncreaseFeature.kt",
@@ -842,7 +793,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/counter/logic/feature/IncreaseFeature.kt",
       "source_location": "L1",
       "id": "increasefeature",
-      "community": 85
+      "community": 80
     },
     {
       "label": "AutoIncreaseFeature.kt",
@@ -882,7 +833,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/MainActivity.kt",
       "source_location": "L1",
       "id": "mainactivity",
-      "community": 56
+      "community": 54
     },
     {
       "label": "MainActivity",
@@ -890,7 +841,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/MainActivity.kt",
       "source_location": "L14",
       "id": "mainactivity_mainactivity",
-      "community": 56
+      "community": 54
     },
     {
       "label": ".onCreate()",
@@ -898,7 +849,7 @@
       "source_file": "app/hilt/src/main/kotlin/com/ktomek/yamv/MainActivity.kt",
       "source_location": "L17",
       "id": "mainactivity_mainactivity_oncreate",
-      "community": 56
+      "community": 54
     },
     {
       "label": "KoinApp.kt",
@@ -938,7 +889,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/theme/Shape.kt",
       "source_location": "L1",
       "id": "shape",
-      "community": 86
+      "community": 81
     },
     {
       "label": "Color.kt",
@@ -946,7 +897,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/theme/Color.kt",
       "source_location": "L1",
       "id": "color",
-      "community": 87
+      "community": 82
     },
     {
       "label": "Theme.kt",
@@ -954,7 +905,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/theme/Theme.kt",
       "source_location": "L1",
       "id": "theme",
-      "community": 70
+      "community": 68
     },
     {
       "label": "YamvTheme()",
@@ -962,7 +913,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/theme/Theme.kt",
       "source_location": "L19",
       "id": "theme_yamvtheme",
-      "community": 70
+      "community": 68
     },
     {
       "label": "Type.kt",
@@ -970,7 +921,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/theme/Type.kt",
       "source_location": "L1",
       "id": "type",
-      "community": 88
+      "community": 83
     },
     {
       "label": "Intentions.kt",
@@ -978,7 +929,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/logic/Intentions.kt",
       "source_location": "L1",
       "id": "intentions",
-      "community": 22
+      "community": 21
     },
     {
       "label": "IncreaseCounterIntention",
@@ -986,7 +937,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/logic/Intentions.kt",
       "source_location": "L3",
       "id": "intentions_increasecounterintention",
-      "community": 22
+      "community": 21
     },
     {
       "label": "DecreaseCounterIntention",
@@ -994,7 +945,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/logic/Intentions.kt",
       "source_location": "L4",
       "id": "intentions_decreasecounterintention",
-      "community": 22
+      "community": 21
     },
     {
       "label": "AutoDecreaseCounterIntention",
@@ -1002,7 +953,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/logic/Intentions.kt",
       "source_location": "L6",
       "id": "intentions_autodecreasecounterintention",
-      "community": 22
+      "community": 21
     },
     {
       "label": "StopAutoDecreaseCounterIntention",
@@ -1010,7 +961,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/logic/Intentions.kt",
       "source_location": "L7",
       "id": "intentions_stopautodecreasecounterintention",
-      "community": 22
+      "community": 21
     },
     {
       "label": "AutoIncreaseCounterIntention",
@@ -1018,7 +969,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/logic/Intentions.kt",
       "source_location": "L8",
       "id": "intentions_autoincreasecounterintention",
-      "community": 22
+      "community": 21
     },
     {
       "label": "StopAutoIncreaseCounterIntention",
@@ -1026,7 +977,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/logic/Intentions.kt",
       "source_location": "L9",
       "id": "intentions_stopautoincreasecounterintention",
-      "community": 22
+      "community": 21
     },
     {
       "label": "CounterContent.kt",
@@ -1034,7 +985,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/view/CounterContent.kt",
       "source_location": "L1",
       "id": "countercontent",
-      "community": 71
+      "community": 69
     },
     {
       "label": "CounterContent()",
@@ -1042,7 +993,7 @@
       "source_file": "app/common/src/commonMain/kotlin/com/ktomek/yamv/ui/counter/view/CounterContent.kt",
       "source_location": "L13",
       "id": "countercontent_countercontent",
-      "community": 71
+      "community": 69
     },
     {
       "label": "YamvApp.kt",
@@ -1114,7 +1065,7 @@
       "source_file": "iosApp/iosApp/ContentView.swift",
       "source_location": "L1",
       "id": "contentview",
-      "community": 23
+      "community": 22
     },
     {
       "label": "ContentView",
@@ -1122,7 +1073,7 @@
       "source_file": "iosApp/iosApp/ContentView.swift",
       "source_location": "L4",
       "id": "contentview_contentview",
-      "community": 23
+      "community": 22
     },
     {
       "label": "View",
@@ -1130,7 +1081,7 @@
       "source_file": "",
       "source_location": "",
       "id": "view",
-      "community": 23
+      "community": 22
     },
     {
       "label": "ComposeView",
@@ -1138,7 +1089,7 @@
       "source_file": "iosApp/iosApp/ContentView.swift",
       "source_location": "L11",
       "id": "contentview_composeview",
-      "community": 23
+      "community": 22
     },
     {
       "label": "UIViewControllerRepresentable",
@@ -1146,7 +1097,7 @@
       "source_file": "",
       "source_location": "",
       "id": "uiviewcontrollerrepresentable",
-      "community": 23
+      "community": 22
     },
     {
       "label": ".makeUIViewController()",
@@ -1154,7 +1105,7 @@
       "source_file": "iosApp/iosApp/ContentView.swift",
       "source_location": "L12",
       "id": "contentview_composeview_makeuiviewcontroller",
-      "community": 23
+      "community": 22
     },
     {
       "label": ".updateUIViewController()",
@@ -1162,7 +1113,7 @@
       "source_file": "iosApp/iosApp/ContentView.swift",
       "source_location": "L16",
       "id": "contentview_composeview_updateuiviewcontroller",
-      "community": 23
+      "community": 22
     },
     {
       "label": "FeatureRouterDispatcherTest.kt",
@@ -1170,7 +1121,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterDispatcherTest.kt",
       "source_location": "L1",
       "id": "featurerouterdispatchertest",
-      "community": 24
+      "community": 23
     },
     {
       "label": "DispatcherTestState",
@@ -1178,7 +1129,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterDispatcherTest.kt",
       "source_location": "L21",
       "id": "featurerouterdispatchertest_dispatcherteststate",
-      "community": 24
+      "community": 23
     },
     {
       "label": "FeatureRouterDispatcherTest",
@@ -1186,7 +1137,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterDispatcherTest.kt",
       "source_location": "L23",
       "id": "featurerouterdispatchertest_featurerouterdispatchertest",
-      "community": 24
+      "community": 23
     },
     {
       "label": ".`feature with HasFeatureDispatcher runs on feature dispatcher`()",
@@ -1194,7 +1145,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterDispatcherTest.kt",
       "source_location": "L26",
       "id": "featurerouterdispatchertest_featurerouterdispatchertest_feature_with_hasfeaturedispatcher_runs_on_feature_dispatcher",
-      "community": 24
+      "community": 23
     },
     {
       "label": ".`feature with HasFeatureScope runs on scope dispatcher`()",
@@ -1202,7 +1153,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterDispatcherTest.kt",
       "source_location": "L50",
       "id": "featurerouterdispatchertest_featurerouterdispatchertest_feature_with_hasfeaturescope_runs_on_scope_dispatcher",
-      "community": 24
+      "community": 23
     },
     {
       "label": ".`feature without HasFeatureDispatcher falls back to config`()",
@@ -1210,7 +1161,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterDispatcherTest.kt",
       "source_location": "L75",
       "id": "featurerouterdispatchertest_featurerouterdispatchertest_feature_without_hasfeaturedispatcher_falls_back_to_config",
-      "community": 24
+      "community": 23
     },
     {
       "label": "testDispatcherConfig()",
@@ -1218,7 +1169,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterDispatcherTest.kt",
       "source_location": "L97",
       "id": "featurerouterdispatchertest_testdispatcherconfig",
-      "community": 24
+      "community": 23
     },
     {
       "label": "FeatureRouterLoggingTest.kt",
@@ -1226,7 +1177,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterLoggingTest.kt",
       "source_location": "L1",
       "id": "featurerouterloggingtest",
-      "community": 25
+      "community": 24
     },
     {
       "label": "LoggingTestState",
@@ -1234,7 +1185,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterLoggingTest.kt",
       "source_location": "L16",
       "id": "featurerouterloggingtest_loggingteststate",
-      "community": 25
+      "community": 24
     },
     {
       "label": "FeatureRouterLoggingTest",
@@ -1242,7 +1193,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterLoggingTest.kt",
       "source_location": "L18",
       "id": "featurerouterloggingtest_featurerouterloggingtest",
-      "community": 25
+      "community": 24
     },
     {
       "label": ".tearDown()",
@@ -1250,7 +1201,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterLoggingTest.kt",
       "source_location": "L20",
       "id": "featurerouterloggingtest_featurerouterloggingtest_teardown",
-      "community": 25
+      "community": 24
     },
     {
       "label": ".`initialization is logged at INFO level`()",
@@ -1258,7 +1209,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterLoggingTest.kt",
       "source_location": "L25",
       "id": "featurerouterloggingtest_featurerouterloggingtest_initialization_is_logged_at_info_level",
-      "community": 25
+      "community": 24
     },
     {
       "label": ".`intention dispatch is logged at VERBOSE level`()",
@@ -1266,7 +1217,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterLoggingTest.kt",
       "source_location": "L42",
       "id": "featurerouterloggingtest_featurerouterloggingtest_intention_dispatch_is_logged_at_verbose_level",
-      "community": 25
+      "community": 24
     },
     {
       "label": ".`no logs emitted when log level is NONE`()",
@@ -1274,7 +1225,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterLoggingTest.kt",
       "source_location": "L60",
       "id": "featurerouterloggingtest_featurerouterloggingtest_no_logs_emitted_when_log_level_is_none",
-      "community": 25
+      "community": 24
     },
     {
       "label": "FeatureRouterTest.kt",
@@ -1282,7 +1233,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L1",
       "id": "featureroutertest",
-      "community": 5
+      "community": 4
     },
     {
       "label": "TestState",
@@ -1290,7 +1241,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L24",
       "id": "featureroutertest_teststate",
-      "community": 5
+      "community": 4
     },
     {
       "label": "testDispatcherConfig()",
@@ -1298,7 +1249,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L29",
       "id": "featureroutertest_testdispatcherconfig",
-      "community": 5
+      "community": 4
     },
     {
       "label": "FeatureRouterTest",
@@ -1306,7 +1257,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L35",
       "id": "featureroutertest_featureroutertest",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN a router with no features WHEN dispatching intentions THEN no outcomes are emitted`()",
@@ -1314,7 +1265,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L37",
       "id": "featureroutertest_featureroutertest_given_a_router_with_no_features_when_dispatching_intentions_then_no_outcomes_are_emitted",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN a router with one feature WHEN dispatching an intention THEN the feature processes it and emits an outcome`()",
@@ -1322,7 +1273,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L59",
       "id": "featureroutertest_featureroutertest_given_a_router_with_one_feature_when_dispatching_an_intention_then_the_feature_processes_it_and_emits_an_outcome",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN multiple calls to dispatchIntention WHEN starting is lazy THEN features initialize only once`()",
@@ -1330,7 +1281,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L89",
       "id": "featureroutertest_featureroutertest_given_multiple_calls_to_dispatchintention_when_starting_is_lazy_then_features_initialize_only_once",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN observeOutcomes called before dispatch WHEN init is triggered THEN outcomes are still emitted`()",
@@ -1338,7 +1289,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L116",
       "id": "featureroutertest_featureroutertest_given_observeoutcomes_called_before_dispatch_when_init_is_triggered_then_outcomes_are_still_emitted",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN dispatchIntention called before initialize WHEN dispatching THEN throws`()",
@@ -1346,7 +1297,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L144",
       "id": "featureroutertest_featureroutertest_given_dispatchintention_called_before_initialize_when_dispatching_then_throws",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN observeOutcomes called before initialize WHEN observing THEN throws`()",
@@ -1354,7 +1305,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L159",
       "id": "featureroutertest_featureroutertest_given_observeoutcomes_called_before_initialize_when_observing_then_throws",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN initialize called twice WHEN second initialize THEN throws`()",
@@ -1362,7 +1313,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L174",
       "id": "featureroutertest_featureroutertest_given_initialize_called_twice_when_second_initialize_then_throws",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN a FlowUnitFeature WHEN dispatching THEN feature is invoked and no outcomes emitted`()",
@@ -1370,7 +1321,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L190",
       "id": "featureroutertest_featureroutertest_given_a_flowunitfeature_when_dispatching_then_feature_is_invoked_and_no_outcomes_emitted",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN multiple features WHEN dispatching THEN outcomes from all features are emitted`()",
@@ -1378,7 +1329,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L215",
       "id": "featureroutertest_featureroutertest_given_multiple_features_when_dispatching_then_outcomes_from_all_features_are_emitted",
-      "community": 5
+      "community": 4
     },
     {
       "label": ".`GIVEN two collectors WHEN dispatching THEN both collectors receive outcome`()",
@@ -1386,7 +1337,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/intention/FeatureRouterTest.kt",
       "source_location": "L250",
       "id": "featureroutertest_featureroutertest_given_two_collectors_when_dispatching_then_both_collectors_receive_outcome",
-      "community": 5
+      "community": 4
     },
     {
       "label": "MviRuntimeTest.kt",
@@ -1394,7 +1345,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L1",
       "id": "mviruntimetest",
-      "community": 9
+      "community": 8
     },
     {
       "label": "TestState",
@@ -1402,7 +1353,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L19",
       "id": "mviruntimetest_teststate",
-      "community": 9
+      "community": 8
     },
     {
       "label": "TestStateImpl",
@@ -1410,7 +1361,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L23",
       "id": "mviruntimetest_teststateimpl",
-      "community": 9
+      "community": 8
     },
     {
       "label": "testDispatcherConfig()",
@@ -1418,7 +1369,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L25",
       "id": "mviruntimetest_testdispatcherconfig",
-      "community": 9
+      "community": 8
     },
     {
       "label": "MviRuntimeTest",
@@ -1426,7 +1377,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L31",
       "id": "mviruntimetest_mviruntimetest",
-      "community": 9
+      "community": 8
     },
     {
       "label": ".`GIVEN MviRuntime WHEN created THEN default state is accessible`()",
@@ -1434,7 +1385,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L33",
       "id": "mviruntimetest_mviruntimetest_given_mviruntime_when_created_then_default_state_is_accessible",
-      "community": 9
+      "community": 8
     },
     {
       "label": ".`GIVEN MviRuntime with a StateOutcome feature WHEN intention dispatched THEN state is updated`()",
@@ -1442,7 +1393,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L48",
       "id": "mviruntimetest_mviruntimetest_given_mviruntime_with_a_stateoutcome_feature_when_intention_dispatched_then_state_is_updated",
-      "community": 9
+      "community": 8
     },
     {
       "label": ".`GIVEN MviRuntime with an EffectOutcome WHEN intention dispatched THEN effect is emitted`()",
@@ -1450,7 +1401,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L74",
       "id": "mviruntimetest_mviruntimetest_given_mviruntime_with_an_effectoutcome_when_intention_dispatched_then_effect_is_emitted",
-      "community": 9
+      "community": 8
     },
     {
       "label": ".`GIVEN MviRuntime with an IntentionOutcome WHEN intention dispatched THEN intention is re-dispatched`()",
@@ -1458,7 +1409,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L101",
       "id": "mviruntimetest_mviruntimetest_given_mviruntime_with_an_intentionoutcome_when_intention_dispatched_then_intention_is_re_dispatched",
-      "community": 9
+      "community": 8
     },
     {
       "label": ".`GIVEN MviRuntime WHEN clear is called THEN no more emissions occur`()",
@@ -1466,7 +1417,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeTest.kt",
       "source_location": "L140",
       "id": "mviruntimetest_mviruntimetest_given_mviruntime_when_clear_is_called_then_no_more_emissions_occur",
-      "community": 9
+      "community": 8
     },
     {
       "label": "MviRegistryTest.kt",
@@ -1474,7 +1425,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRegistryTest.kt",
       "source_location": "L1",
       "id": "mviregistrytest",
-      "community": 16
+      "community": 15
     },
     {
       "label": "TestState1",
@@ -1482,7 +1433,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRegistryTest.kt",
       "source_location": "L15",
       "id": "mviregistrytest_teststate1",
-      "community": 16
+      "community": 15
     },
     {
       "label": "TestState1Impl",
@@ -1490,7 +1441,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRegistryTest.kt",
       "source_location": "L19",
       "id": "mviregistrytest_teststate1impl",
-      "community": 16
+      "community": 15
     },
     {
       "label": "testDispatcherConfig()",
@@ -1498,7 +1449,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRegistryTest.kt",
       "source_location": "L21",
       "id": "mviregistrytest_testdispatcherconfig",
-      "community": 16
+      "community": 15
     },
     {
       "label": "MviRegistryTest",
@@ -1506,7 +1457,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRegistryTest.kt",
       "source_location": "L27",
       "id": "mviregistrytest_mviregistrytest",
-      "community": 16
+      "community": 15
     },
     {
       "label": ".`GIVEN DefaultMviRegistry WHEN runtime registered THEN observeStates returns correct flow`()",
@@ -1514,7 +1465,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRegistryTest.kt",
       "source_location": "L29",
       "id": "mviregistrytest_mviregistrytest_given_defaultmviregistry_when_runtime_registered_then_observestates_returns_correct_flow",
-      "community": 16
+      "community": 15
     },
     {
       "label": ".`GIVEN DefaultMviRegistry WHEN runtime unregistered THEN observeStates throws`()",
@@ -1522,7 +1473,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRegistryTest.kt",
       "source_location": "L49",
       "id": "mviregistrytest_mviregistrytest_given_defaultmviregistry_when_runtime_unregistered_then_observestates_throws",
-      "community": 16
+      "community": 15
     },
     {
       "label": ".`GIVEN DefaultMviRegistry with registered runtime WHEN dispatch called THEN intention reaches runtime`()",
@@ -1530,7 +1481,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRegistryTest.kt",
       "source_location": "L69",
       "id": "mviregistrytest_mviregistrytest_given_defaultmviregistry_with_registered_runtime_when_dispatch_called_then_intention_reaches_runtime",
-      "community": 16
+      "community": 15
     },
     {
       "label": "CoroutineDispatcherConfigTest.kt",
@@ -1538,7 +1489,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfigTest.kt",
       "source_location": "L1",
       "id": "coroutinedispatcherconfigtest",
-      "community": 26
+      "community": 25
     },
     {
       "label": "CoroutineDispatcherConfigTest",
@@ -1546,7 +1497,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfigTest.kt",
       "source_location": "L8",
       "id": "coroutinedispatcherconfigtest_coroutinedispatcherconfigtest",
-      "community": 26
+      "community": 25
     },
     {
       "label": ".`GIVEN DefaultCoroutineDispatcherConfig WHEN provideIntentionDispatcher called THEN returns Main dispatcher`()",
@@ -1554,7 +1505,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfigTest.kt",
       "source_location": "L10",
       "id": "coroutinedispatcherconfigtest_coroutinedispatcherconfigtest_given_defaultcoroutinedispatcherconfig_when_provideintentiondispatcher_called_then_returns_main_dispatcher",
-      "community": 26
+      "community": 25
     },
     {
       "label": ".`GIVEN DefaultCoroutineDispatcherConfig WHEN provideIntentionDispatcher called with intention THEN returns Main dispatcher`()",
@@ -1562,7 +1513,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfigTest.kt",
       "source_location": "L22",
       "id": "coroutinedispatcherconfigtest_coroutinedispatcherconfigtest_given_defaultcoroutinedispatcherconfig_when_provideintentiondispatcher_called_with_intention_then_returns_main_dispatcher",
-      "community": 26
+      "community": 25
     },
     {
       "label": ".`GIVEN DefaultCoroutineDispatcherConfig WHEN provideReducerDispatcher called THEN returns Main dispatcher`()",
@@ -1570,7 +1521,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfigTest.kt",
       "source_location": "L34",
       "id": "coroutinedispatcherconfigtest_coroutinedispatcherconfigtest_given_defaultcoroutinedispatcherconfig_when_providereducerdispatcher_called_then_returns_main_dispatcher",
-      "community": 26
+      "community": 25
     },
     {
       "label": ".`GIVEN DefaultCoroutineDispatcherConfig WHEN provideFeatureDispatcher called THEN returns Default dispatcher`()",
@@ -1578,7 +1529,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfigTest.kt",
       "source_location": "L46",
       "id": "coroutinedispatcherconfigtest_coroutinedispatcherconfigtest_given_defaultcoroutinedispatcherconfig_when_providefeaturedispatcher_called_then_returns_default_dispatcher",
-      "community": 26
+      "community": 25
     },
     {
       "label": ".`GIVEN DefaultCoroutineDispatcherConfig with custom dispatchers WHEN dispatchers requested THEN returns custom ones`()",
@@ -1586,7 +1537,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfigTest.kt",
       "source_location": "L58",
       "id": "coroutinedispatcherconfigtest_coroutinedispatcherconfigtest_given_defaultcoroutinedispatcherconfig_with_custom_dispatchers_when_dispatchers_requested_then_returns_custom_ones",
-      "community": 26
+      "community": 25
     },
     {
       "label": "MviRuntimeLoggingTest.kt",
@@ -1594,7 +1545,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeLoggingTest.kt",
       "source_location": "L1",
       "id": "mviruntimeloggingtest",
-      "community": 17
+      "community": 16
     },
     {
       "label": "LogTestState",
@@ -1602,7 +1553,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeLoggingTest.kt",
       "source_location": "L15",
       "id": "mviruntimeloggingtest_logteststate",
-      "community": 17
+      "community": 16
     },
     {
       "label": "MviRuntimeLoggingTest",
@@ -1610,7 +1561,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeLoggingTest.kt",
       "source_location": "L17",
       "id": "mviruntimeloggingtest_mviruntimeloggingtest",
-      "community": 17
+      "community": 16
     },
     {
       "label": ".tearDown()",
@@ -1618,7 +1569,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeLoggingTest.kt",
       "source_location": "L22",
       "id": "mviruntimeloggingtest_mviruntimeloggingtest_teardown",
-      "community": 17
+      "community": 16
     },
     {
       "label": ".`runtime creation is logged at DEBUG level`()",
@@ -1626,7 +1577,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeLoggingTest.kt",
       "source_location": "L27",
       "id": "mviruntimeloggingtest_mviruntimeloggingtest_runtime_creation_is_logged_at_debug_level",
-      "community": 17
+      "community": 16
     },
     {
       "label": ".`clear is logged at INFO level`()",
@@ -1634,7 +1585,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeLoggingTest.kt",
       "source_location": "L43",
       "id": "mviruntimeloggingtest_mviruntimeloggingtest_clear_is_logged_at_info_level",
-      "community": 17
+      "community": 16
     },
     {
       "label": ".`state update is logged at VERBOSE level`()",
@@ -1642,7 +1593,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeLoggingTest.kt",
       "source_location": "L63",
       "id": "mviruntimeloggingtest_mviruntimeloggingtest_state_update_is_logged_at_verbose_level",
-      "community": 17
+      "community": 16
     },
     {
       "label": ".`no logs when log level is NONE`()",
@@ -1650,7 +1601,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/state/MviRuntimeLoggingTest.kt",
       "source_location": "L87",
       "id": "mviruntimeloggingtest_mviruntimeloggingtest_no_logs_when_log_level_is_none",
-      "community": 17
+      "community": 16
     },
     {
       "label": "DefaultFeatureScopeTest.kt",
@@ -1658,7 +1609,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/DefaultFeatureScopeTest.kt",
       "source_location": "L1",
       "id": "defaultfeaturescopetest",
-      "community": 18
+      "community": 17
     },
     {
       "label": "ScopedFeatureState",
@@ -1666,7 +1617,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/DefaultFeatureScopeTest.kt",
       "source_location": "L19",
       "id": "defaultfeaturescopetest_scopedfeaturestate",
-      "community": 18
+      "community": 17
     },
     {
       "label": "DefaultFeatureScopeTest",
@@ -1674,7 +1625,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/DefaultFeatureScopeTest.kt",
       "source_location": "L21",
       "id": "defaultfeaturescopetest_defaultfeaturescopetest",
-      "community": 18
+      "community": 17
     },
     {
       "label": ".`DefaultFeatureScope creates an active scope`()",
@@ -1682,7 +1633,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/DefaultFeatureScopeTest.kt",
       "source_location": "L26",
       "id": "defaultfeaturescopetest_defaultfeaturescopetest_defaultfeaturescope_creates_an_active_scope",
-      "community": 18
+      "community": 17
     },
     {
       "label": ".`DefaultFeatureScope with custom dispatcher creates an active scope`()",
@@ -1690,7 +1641,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/DefaultFeatureScopeTest.kt",
       "source_location": "L32",
       "id": "defaultfeaturescopetest_defaultfeaturescopetest_defaultfeaturescope_with_custom_dispatcher_creates_an_active_scope",
-      "community": 18
+      "community": 17
     },
     {
       "label": ".`featureScope launches background coroutines that emit outcomes`()",
@@ -1698,7 +1649,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/DefaultFeatureScopeTest.kt",
       "source_location": "L39",
       "id": "defaultfeaturescopetest_defaultfeaturescopetest_featurescope_launches_background_coroutines_that_emit_outcomes",
-      "community": 18
+      "community": 17
     },
     {
       "label": ".`featureScope is cancelled when MviRuntime is cleared`()",
@@ -1706,7 +1657,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/DefaultFeatureScopeTest.kt",
       "source_location": "L70",
       "id": "defaultfeaturescopetest_defaultfeaturescopetest_featurescope_is_cancelled_when_mviruntime_is_cleared",
-      "community": 18
+      "community": 17
     },
     {
       "label": ".`features without HasFeatureScope are unaffected by shutdown`()",
@@ -1714,7 +1665,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/DefaultFeatureScopeTest.kt",
       "source_location": "L99",
       "id": "defaultfeaturescopetest_defaultfeaturescopetest_features_without_hasfeaturescope_are_unaffected_by_shutdown",
-      "community": 18
+      "community": 17
     },
     {
       "label": "FunctionTypedFeatureConcurrencyTest.kt",
@@ -1722,7 +1673,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureConcurrencyTest.kt",
       "source_location": "L1",
       "id": "functiontypedfeatureconcurrencytest",
-      "community": 29
+      "community": 27
     },
     {
       "label": "ConcurrencyTestState",
@@ -1730,7 +1681,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureConcurrencyTest.kt",
       "source_location": "L14",
       "id": "functiontypedfeatureconcurrencytest_concurrencyteststate",
-      "community": 29
+      "community": 27
     },
     {
       "label": "FunctionTypedFeatureConcurrencyTest",
@@ -1738,7 +1689,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureConcurrencyTest.kt",
       "source_location": "L16",
       "id": "functiontypedfeatureconcurrencytest_functiontypedfeatureconcurrencytest",
-      "community": 29
+      "community": 27
     },
     {
       "label": ".`concurrent intentions are processed concurrently not sequentially`()",
@@ -1746,7 +1697,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureConcurrencyTest.kt",
       "source_location": "L19",
       "id": "functiontypedfeatureconcurrencytest_functiontypedfeatureconcurrencytest_concurrent_intentions_are_processed_concurrently_not_sequentially",
-      "community": 29
+      "community": 27
     },
     {
       "label": ".`outcomes from concurrent intentions all reach state`()",
@@ -1754,7 +1705,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureConcurrencyTest.kt",
       "source_location": "L54",
       "id": "functiontypedfeatureconcurrencytest_functiontypedfeatureconcurrencytest_outcomes_from_concurrent_intentions_all_reach_state",
-      "community": 29
+      "community": 27
     },
     {
       "label": ".`single slow intention does not block unrelated intentions from other features`()",
@@ -1762,7 +1713,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureConcurrencyTest.kt",
       "source_location": "L82",
       "id": "functiontypedfeatureconcurrencytest_functiontypedfeatureconcurrencytest_single_slow_intention_does_not_block_unrelated_intentions_from_other_features",
-      "community": 29
+      "community": 27
     },
     {
       "label": "ActionTypedFeatureWrapperTest.kt",
@@ -1770,7 +1721,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L1",
       "id": "actiontypedfeaturewrappertest",
-      "community": 10
+      "community": 9
     },
     {
       "label": "ActionTestState",
@@ -1778,7 +1729,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L13",
       "id": "actiontypedfeaturewrappertest_actionteststate",
-      "community": 10
+      "community": 9
     },
     {
       "label": "DoAction",
@@ -1786,7 +1737,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L14",
       "id": "actiontypedfeaturewrappertest_doaction",
-      "community": 10
+      "community": 9
     },
     {
       "label": "OtherAction",
@@ -1794,7 +1745,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L15",
       "id": "actiontypedfeaturewrappertest_otheraction",
-      "community": 10
+      "community": 9
     },
     {
       "label": "ActionTypedFeatureWrapperTest",
@@ -1802,7 +1753,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L17",
       "id": "actiontypedfeaturewrappertest_actiontypedfeaturewrappertest",
-      "community": 10
+      "community": 9
     },
     {
       "label": ".`action is invoked when matching intention is dispatched`()",
@@ -1810,7 +1761,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L20",
       "id": "actiontypedfeaturewrappertest_actiontypedfeaturewrappertest_action_is_invoked_when_matching_intention_is_dispatched",
-      "community": 10
+      "community": 9
     },
     {
       "label": ".`non-matching intentions are ignored`()",
@@ -1818,7 +1769,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L43",
       "id": "actiontypedfeaturewrappertest_actiontypedfeaturewrappertest_non_matching_intentions_are_ignored",
-      "community": 10
+      "community": 9
     },
     {
       "label": ".`multiple intentions each trigger the action`()",
@@ -1826,7 +1777,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L66",
       "id": "actiontypedfeaturewrappertest_actiontypedfeaturewrappertest_multiple_intentions_each_trigger_the_action",
-      "community": 10
+      "community": 9
     },
     {
       "label": ".`concurrent slow actions do not block each other`()",
@@ -1834,7 +1785,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L91",
       "id": "actiontypedfeaturewrappertest_actiontypedfeaturewrappertest_concurrent_slow_actions_do_not_block_each_other",
-      "community": 10
+      "community": 9
     },
     {
       "label": ".`wrap produces a TypedUnitFeatureHolder`()",
@@ -1842,7 +1793,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapperTest.kt",
       "source_location": "L120",
       "id": "actiontypedfeaturewrappertest_actiontypedfeaturewrappertest_wrap_produces_a_typedunitfeatureholder",
-      "community": 10
+      "community": 9
     },
     {
       "label": "HasFeatureDispatcherTest.kt",
@@ -1882,7 +1833,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L1",
       "id": "yamvloggertest",
-      "community": 11
+      "community": 10
     },
     {
       "label": "YamvLoggerTest",
@@ -1890,7 +1841,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L7",
       "id": "yamvloggertest_yamvloggertest",
-      "community": 11
+      "community": 10
     },
     {
       "label": ".tearDown()",
@@ -1898,7 +1849,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L9",
       "id": "yamvloggertest_yamvloggertest_teardown",
-      "community": 11
+      "community": 10
     },
     {
       "label": ".`log levels are ordered from verbose to none`()",
@@ -1906,7 +1857,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L14",
       "id": "yamvloggertest_yamvloggertest_log_levels_are_ordered_from_verbose_to_none",
-      "community": 11
+      "community": 10
     },
     {
       "label": ".`NONE ordinal is greater than ERROR ordinal`()",
@@ -1914,7 +1865,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L27",
       "id": "yamvloggertest_yamvloggertest_none_ordinal_is_greater_than_error_ordinal",
-      "community": 11
+      "community": 10
     },
     {
       "label": ".`default log level is NONE`()",
@@ -1922,7 +1873,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L32",
       "id": "yamvloggertest_yamvloggertest_default_log_level_is_none",
-      "community": 11
+      "community": 10
     },
     {
       "label": ".`logger is not called when level is below configured threshold`()",
@@ -1930,7 +1881,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L37",
       "id": "yamvloggertest_yamvloggertest_logger_is_not_called_when_level_is_below_configured_threshold",
-      "community": 11
+      "community": 10
     },
     {
       "label": ".`logger is called when level meets configured threshold`()",
@@ -1938,7 +1889,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L49",
       "id": "yamvloggertest_yamvloggertest_logger_is_called_when_level_meets_configured_threshold",
-      "community": 11
+      "community": 10
     },
     {
       "label": ".`logger receives correct level tag and message`()",
@@ -1946,7 +1897,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L61",
       "id": "yamvloggertest_yamvloggertest_logger_receives_correct_level_tag_and_message",
-      "community": 11
+      "community": 10
     },
     {
       "label": ".`NONE level never logs`()",
@@ -1954,7 +1905,7 @@
       "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/logging/YamvLoggerTest.kt",
       "source_location": "L75",
       "id": "yamvloggertest_yamvloggertest_none_level_never_logs",
-      "community": 11
+      "community": 10
     },
     {
       "label": "MviRuntimeStressTest.kt",
@@ -2077,76 +2028,220 @@
       "community": 1
     },
     {
+      "label": "MviRuntimeLifecycleStressTest.kt",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L1",
+      "id": "mviruntimelifecyclestresstest",
+      "community": 0
+    },
+    {
+      "label": "LifecycleState",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L26",
+      "id": "mviruntimelifecyclestresstest_lifecyclestate",
+      "community": 0
+    },
+    {
+      "label": "LifecycleIntention",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L31",
+      "id": "mviruntimelifecyclestresstest_lifecycleintention",
+      "community": 0
+    },
+    {
+      "label": "Increment",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L32",
+      "id": "mviruntimelifecyclestresstest_increment",
+      "community": 0
+    },
+    {
+      "label": "Crash",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L33",
+      "id": "mviruntimelifecyclestresstest_crash",
+      "community": 0
+    },
+    {
+      "label": "ChainTo",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L34",
+      "id": "mviruntimelifecyclestresstest_chainto",
+      "community": 0
+    },
+    {
+      "label": "realDispatcherConfig()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L37",
+      "id": "mviruntimelifecyclestresstest_realdispatcherconfig",
+      "community": 0
+    },
+    {
+      "label": "awaitState()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L47",
+      "id": "mviruntimelifecyclestresstest_awaitstate",
+      "community": 0
+    },
+    {
+      "label": "MviRuntimeLifecycleStressTest",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L59",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "community": 0
+    },
+    {
+      "label": ".`clear during active feature processing does not crash`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L62",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_clear_during_active_feature_processing_does_not_crash",
+      "community": 0
+    },
+    {
+      "label": ".`concurrent dispatch and clear does not crash`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L90",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_concurrent_dispatch_and_clear_does_not_crash",
+      "community": 0
+    },
+    {
+      "label": ".`reducer exception triggers exception handler with REDUCER source`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L127",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_reducer_exception_triggers_exception_handler_with_reducer_source",
+      "community": 0
+    },
+    {
+      "label": ".`feature exception triggers exception handler with FEATURE source`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L155",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_feature_exception_triggers_exception_handler_with_feature_source",
+      "community": 0
+    },
+    {
+      "label": ".`default exception handler cancels scope on reducer failure`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L183",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_default_exception_handler_cancels_scope_on_reducer_failure",
+      "community": 0
+    },
+    {
+      "label": ".`custom exception handler allows degraded operation`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L215",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_custom_exception_handler_allows_degraded_operation",
+      "community": 0
+    },
+    {
+      "label": ".`state transitions are recorded in order`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L251",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_state_transitions_are_recorded_in_order",
+      "community": 0
+    },
+    {
+      "label": ".`no state emissions occur after clear`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L281",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_no_state_emissions_occur_after_clear",
+      "community": 0
+    },
+    {
+      "label": ".`intention re-dispatch chain completes without stack overflow`()",
+      "file_type": "code",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L315",
+      "id": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_intention_re_dispatch_chain_completes_without_stack_overflow",
+      "community": 0
+    },
+    {
       "label": "FeatureRouter.kt",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
       "source_location": "L1",
       "id": "featurerouter",
-      "community": 12
+      "community": 11
     },
     {
       "label": "FeatureRouter",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L31",
+      "source_location": "L34",
       "id": "featurerouter_featurerouter",
-      "community": 12
+      "community": 11
     },
     {
       "label": ".dispatchIntention()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L45",
+      "source_location": "L49",
       "id": "featurerouter_featurerouter_dispatchintention",
-      "community": 12
+      "community": 11
     },
     {
       "label": ".initialize()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L53",
+      "source_location": "L57",
       "id": "featurerouter_featurerouter_initialize",
-      "community": 12
+      "community": 11
     },
     {
       "label": ".observeOutcomes()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L83",
+      "source_location": "L100",
       "id": "featurerouter_featurerouter_observeoutcomes",
-      "community": 12
+      "community": 11
     },
     {
       "label": ".processFeature()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L89",
+      "source_location": "L106",
       "id": "featurerouter_featurerouter_processfeature",
-      "community": 12
+      "community": 11
     },
     {
       "label": ".markSubscribed()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L102",
+      "source_location": "L119",
       "id": "featurerouter_featurerouter_marksubscribed",
-      "community": 12
+      "community": 11
     },
     {
       "label": ".shutdown()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L111",
+      "source_location": "L128",
       "id": "featurerouter_featurerouter_shutdown",
-      "community": 12
+      "community": 11
     },
     {
       "label": ".isDisposed()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L129",
+      "source_location": "L146",
       "id": "featurerouter_featurerouter_isdisposed",
-      "community": 12
+      "community": 11
     },
     {
       "label": "IntentionRouter.kt",
@@ -2154,39 +2249,39 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
       "source_location": "L1",
       "id": "intentionrouter",
-      "community": 34
+      "community": 32
     },
     {
       "label": "IntentionRouter",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
-      "source_location": "L9",
+      "source_location": "L10",
       "id": "intentionrouter_intentionrouter",
-      "community": 34
+      "community": 32
     },
     {
       "label": ".observeOutcomes()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
-      "source_location": "L10",
+      "source_location": "L11",
       "id": "intentionrouter_intentionrouter_observeoutcomes",
-      "community": 34
+      "community": 32
     },
     {
       "label": ".dispatchIntention()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
-      "source_location": "L11",
+      "source_location": "L12",
       "id": "intentionrouter_intentionrouter_dispatchintention",
-      "community": 34
+      "community": 32
     },
     {
       "label": ".initialize()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
-      "source_location": "L12",
+      "source_location": "L13",
       "id": "intentionrouter_intentionrouter_initialize",
-      "community": 34
+      "community": 32
     },
     {
       "label": "MviRuntimeConfig.kt",
@@ -2194,7 +2289,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntimeConfig.kt",
       "source_location": "L1",
       "id": "mviruntimeconfig",
-      "community": 19
+      "community": 18
     },
     {
       "label": "MviRuntimeConfig",
@@ -2202,7 +2297,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntimeConfig.kt",
       "source_location": "L7",
       "id": "mviruntimeconfig_mviruntimeconfig",
-      "community": 19
+      "community": 18
     },
     {
       "label": "MviRuntimeBuilder",
@@ -2210,7 +2305,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntimeConfig.kt",
       "source_location": "L16",
       "id": "mviruntimeconfig_mviruntimebuilder",
-      "community": 19
+      "community": 18
     },
     {
       "label": ".feature()",
@@ -2218,7 +2313,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntimeConfig.kt",
       "source_location": "L24",
       "id": "mviruntimeconfig_mviruntimebuilder_feature",
-      "community": 19
+      "community": 18
     },
     {
       "label": ".features()",
@@ -2226,7 +2321,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntimeConfig.kt",
       "source_location": "L29",
       "id": "mviruntimeconfig_mviruntimebuilder_features",
-      "community": 19
+      "community": 18
     },
     {
       "label": ".dispatcher()",
@@ -2234,7 +2329,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntimeConfig.kt",
       "source_location": "L34",
       "id": "mviruntimeconfig_mviruntimebuilder_dispatcher",
-      "community": 19
+      "community": 18
     },
     {
       "label": ".defaultState()",
@@ -2242,7 +2337,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntimeConfig.kt",
       "source_location": "L39",
       "id": "mviruntimeconfig_mviruntimebuilder_defaultstate",
-      "community": 19
+      "community": 18
     },
     {
       "label": ".build()",
@@ -2250,7 +2345,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntimeConfig.kt",
       "source_location": "L44",
       "id": "mviruntimeconfig_mviruntimebuilder_build",
-      "community": 19
+      "community": 18
     },
     {
       "label": "MviRuntime.kt",
@@ -2258,31 +2353,79 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
       "source_location": "L1",
       "id": "mviruntime",
-      "community": 46
+      "community": 33
     },
     {
       "label": "MviRuntime",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
-      "source_location": "L25",
+      "source_location": "L26",
       "id": "mviruntime_mviruntime",
-      "community": 46
+      "community": 33
     },
     {
       "label": ".dispatch()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
-      "source_location": "L75",
+      "source_location": "L106",
       "id": "mviruntime_mviruntime_dispatch",
-      "community": 46
+      "community": 33
     },
     {
       "label": ".clear()",
       "file_type": "code",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
-      "source_location": "L82",
+      "source_location": "L113",
       "id": "mviruntime_mviruntime_clear",
-      "community": 46
+      "community": 33
+    },
+    {
+      "label": ".handleException()",
+      "file_type": "code",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
+      "source_location": "L122",
+      "id": "mviruntime_mviruntime_handleexception",
+      "community": 33
+    },
+    {
+      "label": "MviExceptionHandler.kt",
+      "file_type": "code",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L1",
+      "id": "mviexceptionhandler",
+      "community": 34
+    },
+    {
+      "label": "MviExceptionHandler",
+      "file_type": "code",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L15",
+      "id": "mviexceptionhandler_mviexceptionhandler",
+      "community": 34
+    },
+    {
+      "label": ".handle()",
+      "file_type": "code",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L23",
+      "id": "mviexceptionhandler_mviexceptionhandler_handle",
+      "community": 34
+    },
+    {
+      "label": "MviErrorContext",
+      "file_type": "code",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L34",
+      "id": "mviexceptionhandler_mvierrorcontext",
+      "community": 34
+    },
+    {
+      "label": "ErrorSource",
+      "file_type": "code",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L43",
+      "id": "mviexceptionhandler_errorsource",
+      "community": 34
     },
     {
       "label": "StateHandle.kt",
@@ -2290,7 +2433,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L1",
       "id": "statehandle",
-      "community": 7
+      "community": 6
     },
     {
       "label": "StateHandle",
@@ -2298,7 +2441,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L6",
       "id": "statehandle_statehandle",
-      "community": 7
+      "community": 6
     },
     {
       "label": ".get()",
@@ -2306,7 +2449,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L7",
       "id": "statehandle_statehandle_get",
-      "community": 7
+      "community": 6
     },
     {
       "label": ".set()",
@@ -2314,7 +2457,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L8",
       "id": "statehandle_statehandle_set",
-      "community": 7
+      "community": 6
     },
     {
       "label": ".contains()",
@@ -2322,7 +2465,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L9",
       "id": "statehandle_statehandle_contains",
-      "community": 7
+      "community": 6
     },
     {
       "label": ".getStateFlow()",
@@ -2330,7 +2473,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L10",
       "id": "statehandle_statehandle_getstateflow",
-      "community": 7
+      "community": 6
     },
     {
       "label": "EmptyStateHandle",
@@ -2338,7 +2481,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L13",
       "id": "statehandle_emptystatehandle",
-      "community": 7
+      "community": 6
     },
     {
       "label": ".get()",
@@ -2346,7 +2489,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L14",
       "id": "statehandle_emptystatehandle_get",
-      "community": 7
+      "community": 6
     },
     {
       "label": ".set()",
@@ -2354,7 +2497,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L15",
       "id": "statehandle_emptystatehandle_set",
-      "community": 7
+      "community": 6
     },
     {
       "label": ".contains()",
@@ -2362,7 +2505,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L16",
       "id": "statehandle_emptystatehandle_contains",
-      "community": 7
+      "community": 6
     },
     {
       "label": ".getStateFlow()",
@@ -2370,7 +2513,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/StateHandle.kt",
       "source_location": "L17",
       "id": "statehandle_emptystatehandle_getstateflow",
-      "community": 7
+      "community": 6
     },
     {
       "label": "CoroutineDispatcherConfig.kt",
@@ -2378,7 +2521,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L1",
       "id": "coroutinedispatcherconfig",
-      "community": 13
+      "community": 12
     },
     {
       "label": "CoroutineDispatcherConfig",
@@ -2386,7 +2529,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L6",
       "id": "coroutinedispatcherconfig_coroutinedispatcherconfig",
-      "community": 13
+      "community": 12
     },
     {
       "label": ".provideIntentionDispatcher()",
@@ -2394,7 +2537,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L7",
       "id": "coroutinedispatcherconfig_coroutinedispatcherconfig_provideintentiondispatcher",
-      "community": 13
+      "community": 12
     },
     {
       "label": ".provideReducerDispatcher()",
@@ -2402,7 +2545,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L8",
       "id": "coroutinedispatcherconfig_coroutinedispatcherconfig_providereducerdispatcher",
-      "community": 13
+      "community": 12
     },
     {
       "label": ".provideFeatureDispatcher()",
@@ -2410,7 +2553,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L9",
       "id": "coroutinedispatcherconfig_coroutinedispatcherconfig_providefeaturedispatcher",
-      "community": 13
+      "community": 12
     },
     {
       "label": "DefaultCoroutineDispatcherConfig",
@@ -2418,7 +2561,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L12",
       "id": "coroutinedispatcherconfig_defaultcoroutinedispatcherconfig",
-      "community": 13
+      "community": 12
     },
     {
       "label": ".provideIntentionDispatcher()",
@@ -2426,7 +2569,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L16",
       "id": "coroutinedispatcherconfig_defaultcoroutinedispatcherconfig_provideintentiondispatcher",
-      "community": 13
+      "community": 12
     },
     {
       "label": ".provideReducerDispatcher()",
@@ -2434,7 +2577,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L17",
       "id": "coroutinedispatcherconfig_defaultcoroutinedispatcherconfig_providereducerdispatcher",
-      "community": 13
+      "community": 12
     },
     {
       "label": ".provideFeatureDispatcher()",
@@ -2442,7 +2585,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/CoroutineDispatcherConfig.kt",
       "source_location": "L18",
       "id": "coroutinedispatcherconfig_defaultcoroutinedispatcherconfig_providefeaturedispatcher",
-      "community": 13
+      "community": 12
     },
     {
       "label": "MviStore.kt",
@@ -2450,7 +2593,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviStore.kt",
       "source_location": "L1",
       "id": "mvistore",
-      "community": 47
+      "community": 46
     },
     {
       "label": "MviStore",
@@ -2458,7 +2601,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviStore.kt",
       "source_location": "L8",
       "id": "mvistore_mvistore",
-      "community": 47
+      "community": 46
     },
     {
       "label": ".dispatch()",
@@ -2466,7 +2609,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviStore.kt",
       "source_location": "L11",
       "id": "mvistore_mvistore_dispatch",
-      "community": 47
+      "community": 46
     },
     {
       "label": ".clear()",
@@ -2474,7 +2617,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviStore.kt",
       "source_location": "L12",
       "id": "mvistore_mvistore_clear",
-      "community": 47
+      "community": 46
     },
     {
       "label": "MviRegistry.kt",
@@ -2482,7 +2625,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L1",
       "id": "mviregistry",
-      "community": 6
+      "community": 5
     },
     {
       "label": "MviRegistry",
@@ -2490,7 +2633,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L7",
       "id": "mviregistry_mviregistry",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".observeStates()",
@@ -2498,7 +2641,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L8",
       "id": "mviregistry_mviregistry_observestates",
-      "community": 6
+      "community": 5
     },
     {
       "label": "MutableMviRegistry",
@@ -2506,7 +2649,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L11",
       "id": "mviregistry_mutablemviregistry",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".register()",
@@ -2514,7 +2657,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L12",
       "id": "mviregistry_mutablemviregistry_register",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".unregister()",
@@ -2522,7 +2665,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L13",
       "id": "mviregistry_mutablemviregistry_unregister",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".invoke()",
@@ -2530,7 +2673,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L14",
       "id": "mviregistry_mutablemviregistry_invoke",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".dispatch()",
@@ -2538,7 +2681,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L15",
       "id": "mviregistry_mutablemviregistry_dispatch",
-      "community": 6
+      "community": 5
     },
     {
       "label": "DefaultMviRegistry",
@@ -2546,7 +2689,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L18",
       "id": "mviregistry_defaultmviregistry",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".register()",
@@ -2554,7 +2697,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L22",
       "id": "mviregistry_defaultmviregistry_register",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".unregister()",
@@ -2562,7 +2705,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L26",
       "id": "mviregistry_defaultmviregistry_unregister",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".invoke()",
@@ -2570,7 +2713,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L30",
       "id": "mviregistry_defaultmviregistry_invoke",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".dispatch()",
@@ -2578,7 +2721,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L34",
       "id": "mviregistry_defaultmviregistry_dispatch",
-      "community": 6
+      "community": 5
     },
     {
       "label": ".observeStates()",
@@ -2586,7 +2729,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRegistry.kt",
       "source_location": "L38",
       "id": "mviregistry_defaultmviregistry_observestates",
-      "community": 6
+      "community": 5
     },
     {
       "label": "TypedFeatureWrapper.kt",
@@ -2594,7 +2737,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/TypedFeatureWrapper.kt",
       "source_location": "L1",
       "id": "typedfeaturewrapper",
-      "community": 72
+      "community": 70
     },
     {
       "label": "wrap()",
@@ -2602,7 +2745,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/TypedFeatureWrapper.kt",
       "source_location": "L7",
       "id": "typedfeaturewrapper_wrap",
-      "community": 72
+      "community": 70
     },
     {
       "label": "TypedFeature.kt",
@@ -2650,7 +2793,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/HasFeatureScope.kt",
       "source_location": "L1",
       "id": "hasfeaturescope",
-      "community": 73
+      "community": 71
     },
     {
       "label": "HasFeatureScope",
@@ -2658,7 +2801,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/HasFeatureScope.kt",
       "source_location": "L23",
       "id": "hasfeaturescope_hasfeaturescope",
-      "community": 73
+      "community": 71
     },
     {
       "label": "FunctionTypedFeature.kt",
@@ -2666,7 +2809,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/FunctionTypedFeature.kt",
       "source_location": "L1",
       "id": "functiontypedfeature",
-      "community": 57
+      "community": 55
     },
     {
       "label": "FunctionTypedFeature",
@@ -2674,7 +2817,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/FunctionTypedFeature.kt",
       "source_location": "L12",
       "id": "functiontypedfeature_functiontypedfeature",
-      "community": 57
+      "community": 55
     },
     {
       "label": ".invoke()",
@@ -2682,7 +2825,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/FunctionTypedFeature.kt",
       "source_location": "L19",
       "id": "functiontypedfeature_functiontypedfeature_invoke",
-      "community": 57
+      "community": 55
     },
     {
       "label": "ActionTypedFeature.kt",
@@ -2690,7 +2833,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/ActionTypedFeature.kt",
       "source_location": "L1",
       "id": "actiontypedfeature",
-      "community": 58
+      "community": 56
     },
     {
       "label": "ActionTypedFeature",
@@ -2698,7 +2841,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/ActionTypedFeature.kt",
       "source_location": "L11",
       "id": "actiontypedfeature_actiontypedfeature",
-      "community": 58
+      "community": 56
     },
     {
       "label": ".invoke()",
@@ -2706,7 +2849,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/ActionTypedFeature.kt",
       "source_location": "L19",
       "id": "actiontypedfeature_actiontypedfeature_invoke",
-      "community": 58
+      "community": 56
     },
     {
       "label": "HasFeatureDispatcher.kt",
@@ -2714,7 +2857,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/HasFeatureDispatcher.kt",
       "source_location": "L1",
       "id": "hasfeaturedispatcher",
-      "community": 74
+      "community": 72
     },
     {
       "label": "HasFeatureDispatcher",
@@ -2722,7 +2865,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/HasFeatureDispatcher.kt",
       "source_location": "L22",
       "id": "hasfeaturedispatcher_hasfeaturedispatcher",
-      "community": 74
+      "community": 72
     },
     {
       "label": "DefaultFeatureScope.kt",
@@ -2730,7 +2873,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/DefaultFeatureScope.kt",
       "source_location": "L1",
       "id": "defaultfeaturescope",
-      "community": 75
+      "community": 73
     },
     {
       "label": "DefaultFeatureScope",
@@ -2738,7 +2881,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/DefaultFeatureScope.kt",
       "source_location": "L18",
       "id": "defaultfeaturescope_defaultfeaturescope",
-      "community": 75
+      "community": 73
     },
     {
       "label": "Feature.kt",
@@ -2746,7 +2889,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/Feature.kt",
       "source_location": "L1",
       "id": "feature",
-      "community": 30
+      "community": 28
     },
     {
       "label": "Feature",
@@ -2754,7 +2897,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/Feature.kt",
       "source_location": "L7",
       "id": "feature_feature",
-      "community": 30
+      "community": 28
     },
     {
       "label": "FlowFeature",
@@ -2762,7 +2905,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/Feature.kt",
       "source_location": "L8",
       "id": "feature_flowfeature",
-      "community": 30
+      "community": 28
     },
     {
       "label": ".invoke()",
@@ -2770,7 +2913,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/Feature.kt",
       "source_location": "L9",
       "id": "feature_flowfeature_invoke",
-      "community": 30
+      "community": 28
     },
     {
       "label": "FlowUnitFeature",
@@ -2778,7 +2921,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/Feature.kt",
       "source_location": "L12",
       "id": "feature_flowunitfeature",
-      "community": 30
+      "community": 28
     },
     {
       "label": ".invoke()",
@@ -2786,7 +2929,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/Feature.kt",
       "source_location": "L13",
       "id": "feature_flowunitfeature_invoke",
-      "community": 30
+      "community": 28
     },
     {
       "label": "FunctionTypedFeatureWrapper.kt",
@@ -2794,7 +2937,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureWrapper.kt",
       "source_location": "L1",
       "id": "functiontypedfeaturewrapper",
-      "community": 59
+      "community": 57
     },
     {
       "label": "wrap()",
@@ -2802,7 +2945,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureWrapper.kt",
       "source_location": "L10",
       "id": "functiontypedfeaturewrapper_wrap",
-      "community": 59
+      "community": 57
     },
     {
       "label": "functionTypedFeature()",
@@ -2810,7 +2953,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/FunctionTypedFeatureWrapper.kt",
       "source_location": "L38",
       "id": "functiontypedfeaturewrapper_functiontypedfeature",
-      "community": 59
+      "community": 57
     },
     {
       "label": "ActionTypedFeatureWrapper.kt",
@@ -2818,7 +2961,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapper.kt",
       "source_location": "L1",
       "id": "actiontypedfeaturewrapper",
-      "community": 76
+      "community": 74
     },
     {
       "label": "wrap()",
@@ -2826,7 +2969,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/feature/ActionTypedFeatureWrapper.kt",
       "source_location": "L11",
       "id": "actiontypedfeaturewrapper_wrap",
-      "community": 76
+      "community": 74
     },
     {
       "label": "YamvLogLevel.kt",
@@ -2834,7 +2977,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/YamvLogLevel.kt",
       "source_location": "L1",
       "id": "yamvloglevel",
-      "community": 77
+      "community": 75
     },
     {
       "label": "YamvLogLevel",
@@ -2842,7 +2985,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/YamvLogLevel.kt",
       "source_location": "L3",
       "id": "yamvloglevel_yamvloglevel",
-      "community": 77
+      "community": 75
     },
     {
       "label": "YamvLogger.kt",
@@ -2850,7 +2993,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/YamvLogger.kt",
       "source_location": "L1",
       "id": "yamvlogger",
-      "community": 60
+      "community": 58
     },
     {
       "label": "YamvLogger",
@@ -2858,7 +3001,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/YamvLogger.kt",
       "source_location": "L3",
       "id": "yamvlogger_yamvlogger",
-      "community": 60
+      "community": 58
     },
     {
       "label": ".log()",
@@ -2866,7 +3009,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/YamvLogger.kt",
       "source_location": "L4",
       "id": "yamvlogger_yamvlogger_log",
-      "community": 60
+      "community": 58
     },
     {
       "label": "Yamv.kt",
@@ -2874,7 +3017,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/Yamv.kt",
       "source_location": "L1",
       "id": "yamv",
-      "community": 48
+      "community": 47
     },
     {
       "label": "Yamv",
@@ -2882,7 +3025,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/Yamv.kt",
       "source_location": "L3",
       "id": "yamv_yamv",
-      "community": 48
+      "community": 47
     },
     {
       "label": ".log()",
@@ -2890,7 +3033,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/Yamv.kt",
       "source_location": "L9",
       "id": "yamv_yamv_log",
-      "community": 48
+      "community": 47
     },
     {
       "label": ".reset()",
@@ -2898,7 +3041,7 @@
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/logging/Yamv.kt",
       "source_location": "L17",
       "id": "yamv_yamv_reset",
-      "community": 48
+      "community": 47
     },
     {
       "label": "AutoStateDiscovery.kt",
@@ -2906,7 +3049,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoStateDiscovery.kt",
       "source_location": "L1",
       "id": "autostatediscovery",
-      "community": 61
+      "community": 59
     },
     {
       "label": "AutoStateDiscovery",
@@ -2914,7 +3057,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoStateDiscovery.kt",
       "source_location": "L8",
       "id": "autostatediscovery_autostatediscovery",
-      "community": 61
+      "community": 59
     },
     {
       "label": ".findAnnotatedClasses()",
@@ -2922,7 +3065,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoStateDiscovery.kt",
       "source_location": "L12",
       "id": "autostatediscovery_autostatediscovery_findannotatedclasses",
-      "community": 61
+      "community": 59
     },
     {
       "label": "AutoDispatcherConfigDiscovery.kt",
@@ -2930,7 +3073,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoDispatcherConfigDiscovery.kt",
       "source_location": "L1",
       "id": "autodispatcherconfigdiscovery",
-      "community": 62
+      "community": 60
     },
     {
       "label": "AutoDispatcherConfigDiscovery",
@@ -2938,7 +3081,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoDispatcherConfigDiscovery.kt",
       "source_location": "L8",
       "id": "autodispatcherconfigdiscovery_autodispatcherconfigdiscovery",
-      "community": 62
+      "community": 60
     },
     {
       "label": ".findAnnotatedClasses()",
@@ -2946,7 +3089,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoDispatcherConfigDiscovery.kt",
       "source_location": "L12",
       "id": "autodispatcherconfigdiscovery_autodispatcherconfigdiscovery_findannotatedclasses",
-      "community": 62
+      "community": 60
     },
     {
       "label": "AutoFeatureDiscovery.kt",
@@ -2954,7 +3097,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoFeatureDiscovery.kt",
       "source_location": "L1",
       "id": "autofeaturediscovery",
-      "community": 49
+      "community": 48
     },
     {
       "label": "AutoFeatureDiscovery",
@@ -2962,7 +3105,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoFeatureDiscovery.kt",
       "source_location": "L9",
       "id": "autofeaturediscovery_autofeaturediscovery",
-      "community": 49
+      "community": 48
     },
     {
       "label": ".findAnnotatedClasses()",
@@ -2970,7 +3113,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoFeatureDiscovery.kt",
       "source_location": "L13",
       "id": "autofeaturediscovery_autofeaturediscovery_findannotatedclasses",
-      "community": 49
+      "community": 48
     },
     {
       "label": ".findAnnotatedProperties()",
@@ -2978,7 +3121,7 @@
       "source_file": "processor-core/src/main/kotlin/com/ktomek/yamv/processor/core/AutoFeatureDiscovery.kt",
       "source_location": "L19",
       "id": "autofeaturediscovery_autofeaturediscovery_findannotatedproperties",
-      "community": 49
+      "community": 48
     },
     {
       "label": "MviRetainedStoreTest.kt",
@@ -2986,7 +3129,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L1",
       "id": "mviretainedstoretest",
-      "community": 14
+      "community": 13
     },
     {
       "label": "TestState",
@@ -2994,7 +3137,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L14",
       "id": "mviretainedstoretest_teststate",
-      "community": 14
+      "community": 13
     },
     {
       "label": "TestStateImpl",
@@ -3002,7 +3145,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L18",
       "id": "mviretainedstoretest_teststateimpl",
-      "community": 14
+      "community": 13
     },
     {
       "label": "TestMviRetainedStore",
@@ -3010,7 +3153,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L20",
       "id": "mviretainedstoretest_testmviretainedstore",
-      "community": 14
+      "community": 13
     },
     {
       "label": "MviRetainedStoreTest",
@@ -3018,7 +3161,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L23",
       "id": "mviretainedstoretest_mviretainedstoretest",
-      "community": 14
+      "community": 13
     },
     {
       "label": ".`GIVEN MviRetainedStore with store WHEN accessing state THEN delegates to store state`()",
@@ -3026,7 +3169,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L25",
       "id": "mviretainedstoretest_mviretainedstoretest_given_mviretainedstore_with_store_when_accessing_state_then_delegates_to_store_state",
-      "community": 14
+      "community": 13
     },
     {
       "label": ".`GIVEN MviRetainedStore with store WHEN accessing effects THEN delegates to store effects`()",
@@ -3034,7 +3177,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L38",
       "id": "mviretainedstoretest_mviretainedstoretest_given_mviretainedstore_with_store_when_accessing_effects_then_delegates_to_store_effects",
-      "community": 14
+      "community": 13
     },
     {
       "label": ".`GIVEN MviRetainedStore with store WHEN dispatch is called THEN delegates to store dispatch`()",
@@ -3042,7 +3185,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L51",
       "id": "mviretainedstoretest_mviretainedstoretest_given_mviretainedstore_with_store_when_dispatch_is_called_then_delegates_to_store_dispatch",
-      "community": 14
+      "community": 13
     },
     {
       "label": ".`GIVEN MviRetainedStore with store WHEN clear is called THEN delegates to store clear`()",
@@ -3050,7 +3193,7 @@
       "source_file": "yamv-retainer/src/androidUnitTest/kotlin/com/ktomek/yamv/retainer/MviRetainedStoreTest.kt",
       "source_location": "L65",
       "id": "mviretainedstoretest_mviretainedstoretest_given_mviretainedstore_with_store_when_clear_is_called_then_delegates_to_store_clear",
-      "community": 14
+      "community": 13
     },
     {
       "label": "IosStateHandle.kt",
@@ -3058,7 +3201,7 @@
       "source_file": "yamv-retainer/src/iosMain/kotlin/com/ktomek/yamv/retainer/IosStateHandle.kt",
       "source_location": "L1",
       "id": "iosstatehandle",
-      "community": 31
+      "community": 29
     },
     {
       "label": "IosStateHandle",
@@ -3066,7 +3209,7 @@
       "source_file": "yamv-retainer/src/iosMain/kotlin/com/ktomek/yamv/retainer/IosStateHandle.kt",
       "source_location": "L8",
       "id": "iosstatehandle_iosstatehandle",
-      "community": 31
+      "community": 29
     },
     {
       "label": ".get()",
@@ -3074,7 +3217,7 @@
       "source_file": "yamv-retainer/src/iosMain/kotlin/com/ktomek/yamv/retainer/IosStateHandle.kt",
       "source_location": "L13",
       "id": "iosstatehandle_iosstatehandle_get",
-      "community": 31
+      "community": 29
     },
     {
       "label": ".set()",
@@ -3082,7 +3225,7 @@
       "source_file": "yamv-retainer/src/iosMain/kotlin/com/ktomek/yamv/retainer/IosStateHandle.kt",
       "source_location": "L16",
       "id": "iosstatehandle_iosstatehandle_set",
-      "community": 31
+      "community": 29
     },
     {
       "label": ".contains()",
@@ -3090,7 +3233,7 @@
       "source_file": "yamv-retainer/src/iosMain/kotlin/com/ktomek/yamv/retainer/IosStateHandle.kt",
       "source_location": "L22",
       "id": "iosstatehandle_iosstatehandle_contains",
-      "community": 31
+      "community": 29
     },
     {
       "label": ".getStateFlow()",
@@ -3098,7 +3241,7 @@
       "source_file": "yamv-retainer/src/iosMain/kotlin/com/ktomek/yamv/retainer/IosStateHandle.kt",
       "source_location": "L24",
       "id": "iosstatehandle_iosstatehandle_getstateflow",
-      "community": 31
+      "community": 29
     },
     {
       "label": "MviRetainedStore.kt",
@@ -3146,7 +3289,7 @@
       "source_file": "yamv-retainer/src/androidMain/kotlin/com/ktomek/yamv/retainer/AndroidStateHandle.kt",
       "source_location": "L1",
       "id": "androidstatehandle",
-      "community": 32
+      "community": 30
     },
     {
       "label": "AndroidStateHandle",
@@ -3154,7 +3297,7 @@
       "source_file": "yamv-retainer/src/androidMain/kotlin/com/ktomek/yamv/retainer/AndroidStateHandle.kt",
       "source_location": "L7",
       "id": "androidstatehandle_androidstatehandle",
-      "community": 32
+      "community": 30
     },
     {
       "label": ".get()",
@@ -3162,7 +3305,7 @@
       "source_file": "yamv-retainer/src/androidMain/kotlin/com/ktomek/yamv/retainer/AndroidStateHandle.kt",
       "source_location": "L8",
       "id": "androidstatehandle_androidstatehandle_get",
-      "community": 32
+      "community": 30
     },
     {
       "label": ".set()",
@@ -3170,7 +3313,7 @@
       "source_file": "yamv-retainer/src/androidMain/kotlin/com/ktomek/yamv/retainer/AndroidStateHandle.kt",
       "source_location": "L9",
       "id": "androidstatehandle_androidstatehandle_set",
-      "community": 32
+      "community": 30
     },
     {
       "label": ".contains()",
@@ -3178,7 +3321,7 @@
       "source_file": "yamv-retainer/src/androidMain/kotlin/com/ktomek/yamv/retainer/AndroidStateHandle.kt",
       "source_location": "L10",
       "id": "androidstatehandle_androidstatehandle_contains",
-      "community": 32
+      "community": 30
     },
     {
       "label": ".getStateFlow()",
@@ -3186,7 +3329,7 @@
       "source_file": "yamv-retainer/src/androidMain/kotlin/com/ktomek/yamv/retainer/AndroidStateHandle.kt",
       "source_location": "L11",
       "id": "androidstatehandle_androidstatehandle_getstateflow",
-      "community": 32
+      "community": 30
     },
     {
       "label": "KoinMviRetainedStoreDispatcherConfigTest.kt",
@@ -3387,774 +3530,6 @@
       "source_location": "L92",
       "id": "koinmviretainedstore_koinmvistore",
       "community": 38
-    },
-    {
-      "label": "YAMV Framework",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": "https://github.com/ktomek/yamv",
-      "captured_at": null,
-      "author": "Tomasz Kaszkowiak",
-      "contributor": null,
-      "id": "readme_yamv_framework",
-      "community": 3
-    },
-    {
-      "label": "MVI (Model-View-Intent) Pattern",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 7",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_mvi_pattern",
-      "community": 3
-    },
-    {
-      "label": "Distributed Reducers Design",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 19-41",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_distributed_reducers",
-      "community": 50
-    },
-    {
-      "label": "Forced Modularity Design",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 57-58",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_forced_modularity",
-      "community": 50
-    },
-    {
-      "label": "Module: core",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 157",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_module_core",
-      "community": 3
-    },
-    {
-      "label": "Module: yamv",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 158",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_module_yamv",
-      "community": 3
-    },
-    {
-      "label": "Module: yamv-retainer",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 159",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_module_yamv_retainer",
-      "community": 3
-    },
-    {
-      "label": "Module: yamv-hilt",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 160",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_module_yamv_hilt",
-      "community": 3
-    },
-    {
-      "label": "Module: yamv-koin",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 161",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_module_yamv_koin",
-      "community": 3
-    },
-    {
-      "label": "Module: processor-core",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 162",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_module_processor_core",
-      "community": 3
-    },
-    {
-      "label": "Module: processor-hilt",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 163",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_module_processor_hilt",
-      "community": 3
-    },
-    {
-      "label": "MviRuntime",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 35",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_mviruntime",
-      "community": 0
-    },
-    {
-      "label": "MviStore",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 35",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_mvistore",
-      "community": 89
-    },
-    {
-      "label": "FeatureRouter",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 35",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_featurerouter",
-      "community": 0
-    },
-    {
-      "label": "MviRetainedStore",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 36",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_mviretainedstore",
-      "community": 0
-    },
-    {
-      "label": "StateOutcome",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 62",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_stateoutcome",
-      "community": 0
-    },
-    {
-      "label": "EffectOutcome",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 63",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_effectoutcome",
-      "community": 0
-    },
-    {
-      "label": "IntentionOutcome",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 64",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_intentionoutcome",
-      "community": 0
-    },
-    {
-      "label": "Feature (sealed)",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 67",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_feature",
-      "community": 0
-    },
-    {
-      "label": "TypedFeature",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 68",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_typedfeature",
-      "community": 0
-    },
-    {
-      "label": "FunctionTypedFeature",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 69",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_functiontypedfeature",
-      "community": 0
-    },
-    {
-      "label": "@AutoState Annotation",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 81",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_autostate",
-      "community": 0
-    },
-    {
-      "label": "@AutoFeature Annotation",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 83",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_autofeature",
-      "community": 0
-    },
-    {
-      "label": "CoroutineDispatcherConfig",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 71",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_coroutinedispatcherconfig",
-      "community": 27
-    },
-    {
-      "label": "CompletableDeferred Subscription Safety",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 89",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_completabledeferred_safety",
-      "community": 0
-    },
-    {
-      "label": "KSP Code Generation",
-      "file_type": "document",
-      "source_file": "CLAUDE.md",
-      "source_location": "line 79-85",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "claude_ksp",
-      "community": 0
-    },
-    {
-      "label": "iOS App Example",
-      "file_type": "document",
-      "source_file": "iosApp/README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "iosapp_readme",
-      "community": 3
-    },
-    {
-      "label": "YamvLogger Logging System",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 1-4",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_logging_yamvlogger",
-      "community": 0
-    },
-    {
-      "label": "YamvLogLevel Enum",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 1",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_logging_yamvloglevel",
-      "community": 0
-    },
-    {
-      "label": "Yamv Singleton (Logger Config)",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 2",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_logging_yamv_singleton",
-      "community": 0
-    },
-    {
-      "label": "FunctionTypedFeature Concurrency Fix",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 5",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_concurrency_fix",
-      "community": 0
-    },
-    {
-      "label": "typedFeatureWithScope Builder",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 6",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_scoped_feature_builder",
-      "community": 0
-    },
-    {
-      "label": "CI/CD GitHub Actions Pipeline",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-infrastructure-ci-versioning-jitpack.md",
-      "source_location": "Task 4",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_infra_ci",
-      "community": 78
-    },
-    {
-      "label": "Semantic Versioning Setup",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-infrastructure-ci-versioning-jitpack.md",
-      "source_location": "Task 1",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_infra_versioning",
-      "community": 78
-    },
-    {
-      "label": "JitPack Publishing",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-infrastructure-ci-versioning-jitpack.md",
-      "source_location": "Task 7",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_infra_jitpack",
-      "community": 79
-    },
-    {
-      "label": "GitHub Release Workflow",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-infrastructure-ci-versioning-jitpack.md",
-      "source_location": "Task 6",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_infra_release_workflow",
-      "community": 79
-    },
-    {
-      "label": "README Documentation Plan",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-documentation-readme-pages.md",
-      "source_location": "Task 1",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_docs_readme",
-      "community": 3
-    },
-    {
-      "label": "MkDocs Material Site",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-documentation-readme-pages.md",
-      "source_location": "Task 2",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_docs_mkdocs",
-      "community": 80
-    },
-    {
-      "label": "GitHub Pages Deployment",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-documentation-readme-pages.md",
-      "source_location": "Task 9",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_docs_ghpages",
-      "community": 80
-    },
-    {
-      "label": "Unidirectional Data Flow",
-      "file_type": "document",
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 1-17",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "architecture_unidirectional_flow",
-      "community": 0
-    },
-    {
-      "label": "Dispatcher Architecture",
-      "file_type": "document",
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 54-78",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "architecture_dispatcher_architecture",
-      "community": 27
-    },
-    {
-      "label": "@AutoDispatcherConfig Annotation",
-      "file_type": "document",
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 109-126",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "architecture_autodispatcherconfig",
-      "community": 27
-    },
-    {
-      "label": "HasFeatureScope / HasFeatureDispatcher",
-      "file_type": "document",
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 98-107",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "architecture_hasfeaturescope",
-      "community": 27
-    },
-    {
-      "label": "Store Lifecycle (init-dispatch-clear)",
-      "file_type": "document",
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 132-164",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "architecture_lifecycle",
-      "community": 0
-    },
-    {
-      "label": "Changelog v0.1.0",
-      "file_type": "document",
-      "source_file": "site-docs/changelog.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "changelog_010",
-      "community": 90
-    },
-    {
-      "label": "Kotlin Multiplatform Support",
-      "file_type": "document",
-      "source_file": "site-docs/multiplatform.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "multiplatform_kmp_support",
-      "community": 3
-    },
-    {
-      "label": "Koin mviStore DSL",
-      "file_type": "document",
-      "source_file": "site-docs/multiplatform.md",
-      "source_location": "line 32-43",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "multiplatform_koin_dsl",
-      "community": 0
-    },
-    {
-      "label": "IosStateHandle (iOS saved state)",
-      "file_type": "document",
-      "source_file": "site-docs/multiplatform.md",
-      "source_location": "line 79-80",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "multiplatform_ios_statehandle",
-      "community": 91
-    },
-    {
-      "label": "Hilt Setup Guide",
-      "file_type": "document",
-      "source_file": "site-docs/getting-started.md",
-      "source_location": "line 38-47",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "getting_started_hilt_setup",
-      "community": 3
-    },
-    {
-      "label": "Koin Setup Guide",
-      "file_type": "document",
-      "source_file": "site-docs/getting-started.md",
-      "source_location": "line 50-59",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "getting_started_koin_setup",
-      "community": 3
-    },
-    {
-      "label": "Outcomes as Standalone Classes Pattern",
-      "file_type": "document",
-      "source_file": "site-docs/getting-started.md",
-      "source_location": "line 86-107",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "getting_started_outcomes_as_classes",
-      "community": 50
-    },
-    {
-      "label": "Site Documentation Home",
-      "file_type": "document",
-      "source_file": "site-docs/index.md",
-      "source_location": null,
-      "source_url": "https://ktomek.github.io/yamv",
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "index_site_home",
-      "community": 3
-    },
-    {
-      "label": "Features Guide",
-      "file_type": "document",
-      "source_file": "site-docs/features.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "features_guide",
-      "community": 92
-    },
-    {
-      "label": "FlowFeature (low-level)",
-      "file_type": "document",
-      "source_file": "site-docs/features.md",
-      "source_location": "line 108-119",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "features_flowfeature",
-      "community": 0
-    },
-    {
-      "label": ".wrap() Conversion Method",
-      "file_type": "document",
-      "source_file": "site-docs/features.md",
-      "source_location": "line 60-76",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "features_wrap_method",
-      "community": 0
-    },
-    {
-      "label": "Code Generation Guide",
-      "file_type": "document",
-      "source_file": "site-docs/code-generation.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "codegen_guide",
-      "community": 0
-    },
-    {
-      "label": "@AutoDispatcherConfig Code Generation",
-      "file_type": "document",
-      "source_file": "site-docs/code-generation.md",
-      "source_location": "line 82-126",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "codegen_autodispatcherconfig",
-      "community": 27
-    },
-    {
-      "label": "Manual Wiring (without KSP)",
-      "file_type": "document",
-      "source_file": "site-docs/code-generation.md",
-      "source_location": "line 136-157",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "codegen_manual_wiring",
-      "community": 0
-    },
-    {
-      "label": "Rationale: No Central Reducer",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 14-18",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_rationale_no_central_reducer",
-      "community": 50
-    },
-    {
-      "label": "Rationale: Separation of When from What",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 52-55",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_rationale_separation_when_what",
-      "community": 0
-    },
-    {
-      "label": "Rationale: Multithreading by Convention",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "line 65-66",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_rationale_multithreading",
-      "community": 27
-    },
-    {
-      "label": "Rationale: CompletableDeferred Subscription Safety",
-      "file_type": "document",
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 129-131",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "architecture_rationale_subscription_safety",
-      "community": 0
-    },
-    {
-      "label": "Rationale: Default Dispatcher Assignment",
-      "file_type": "document",
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 72-78",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "architecture_rationale_dispatcher_defaults",
-      "community": 27
-    },
-    {
-      "label": "Rationale: FunctionTypedFeature map-to-launch Fix",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 5, line 584",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "plan_concurrency_rationale",
-      "community": 0
     }
   ],
   "links": [
@@ -6585,8 +5960,212 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_lifecyclestate",
+      "source": "mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_lifecyclestate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
       "source_location": "L31",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_lifecycleintention",
+      "source": "mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_lifecycleintention",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_increment",
+      "source": "mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_increment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_crash",
+      "source": "mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_crash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_chainto",
+      "source": "mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_chainto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_realdispatcherconfig",
+      "source": "mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_realdispatcherconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_awaitstate",
+      "source": "mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_awaitstate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "source": "mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L62",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_clear_during_active_feature_processing_does_not_crash",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_clear_during_active_feature_processing_does_not_crash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L90",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_concurrent_dispatch_and_clear_does_not_crash",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_concurrent_dispatch_and_clear_does_not_crash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_reducer_exception_triggers_exception_handler_with_reducer_source",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_reducer_exception_triggers_exception_handler_with_reducer_source",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_feature_exception_triggers_exception_handler_with_feature_source",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_feature_exception_triggers_exception_handler_with_feature_source",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L183",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_default_exception_handler_cancels_scope_on_reducer_failure",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_default_exception_handler_cancels_scope_on_reducer_failure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L215",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_custom_exception_handler_allows_degraded_operation",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_custom_exception_handler_allows_degraded_operation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L251",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_state_transitions_are_recorded_in_order",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_state_transitions_are_recorded_in_order",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L281",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_no_state_emissions_occur_after_clear",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_no_state_emissions_occur_after_clear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/test/kotlin/com/ktomek/yamv/stress/MviRuntimeLifecycleStressTest.kt",
+      "source_location": "L315",
+      "weight": 1.0,
+      "_src": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "_tgt": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_intention_re_dispatch_chain_completes_without_stack_overflow",
+      "source": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest",
+      "target": "mviruntimelifecyclestresstest_mviruntimelifecyclestresstest_intention_re_dispatch_chain_completes_without_stack_overflow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
+      "source_location": "L34",
       "weight": 1.0,
       "_src": "featurerouter",
       "_tgt": "featurerouter_featurerouter",
@@ -6598,7 +6177,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L45",
+      "source_location": "L49",
       "weight": 1.0,
       "_src": "featurerouter_featurerouter",
       "_tgt": "featurerouter_featurerouter_dispatchintention",
@@ -6610,7 +6189,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L53",
+      "source_location": "L57",
       "weight": 1.0,
       "_src": "featurerouter_featurerouter",
       "_tgt": "featurerouter_featurerouter_initialize",
@@ -6622,7 +6201,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L83",
+      "source_location": "L100",
       "weight": 1.0,
       "_src": "featurerouter_featurerouter",
       "_tgt": "featurerouter_featurerouter_observeoutcomes",
@@ -6634,7 +6213,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L89",
+      "source_location": "L106",
       "weight": 1.0,
       "_src": "featurerouter_featurerouter",
       "_tgt": "featurerouter_featurerouter_processfeature",
@@ -6646,7 +6225,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L102",
+      "source_location": "L119",
       "weight": 1.0,
       "_src": "featurerouter_featurerouter",
       "_tgt": "featurerouter_featurerouter_marksubscribed",
@@ -6658,7 +6237,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L111",
+      "source_location": "L128",
       "weight": 1.0,
       "_src": "featurerouter_featurerouter",
       "_tgt": "featurerouter_featurerouter_shutdown",
@@ -6670,7 +6249,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/FeatureRouter.kt",
-      "source_location": "L129",
+      "source_location": "L146",
       "weight": 1.0,
       "_src": "featurerouter_featurerouter",
       "_tgt": "featurerouter_featurerouter_isdisposed",
@@ -6682,7 +6261,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_src": "intentionrouter",
       "_tgt": "intentionrouter_intentionrouter",
@@ -6694,7 +6273,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_src": "intentionrouter_intentionrouter",
       "_tgt": "intentionrouter_intentionrouter_observeoutcomes",
@@ -6706,7 +6285,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_src": "intentionrouter_intentionrouter",
       "_tgt": "intentionrouter_intentionrouter_dispatchintention",
@@ -6718,7 +6297,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/intention/IntentionRouter.kt",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_src": "intentionrouter_intentionrouter",
       "_tgt": "intentionrouter_intentionrouter_initialize",
@@ -6814,7 +6393,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
-      "source_location": "L100",
+      "source_location": "L145",
       "weight": 1.0,
       "_src": "mviruntime",
       "_tgt": "mviruntime_mviruntime",
@@ -6826,7 +6405,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
-      "source_location": "L75",
+      "source_location": "L106",
       "weight": 1.0,
       "_src": "mviruntime_mviruntime",
       "_tgt": "mviruntime_mviruntime_dispatch",
@@ -6838,12 +6417,72 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
-      "source_location": "L82",
+      "source_location": "L113",
       "weight": 1.0,
       "_src": "mviruntime_mviruntime",
       "_tgt": "mviruntime_mviruntime_clear",
       "source": "mviruntime_mviruntime",
       "target": "mviruntime_mviruntime_clear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviRuntime.kt",
+      "source_location": "L122",
+      "weight": 1.0,
+      "_src": "mviruntime_mviruntime",
+      "_tgt": "mviruntime_mviruntime_handleexception",
+      "source": "mviruntime_mviruntime",
+      "target": "mviruntime_mviruntime_handleexception",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_src": "mviexceptionhandler",
+      "_tgt": "mviexceptionhandler_mviexceptionhandler",
+      "source": "mviexceptionhandler",
+      "target": "mviexceptionhandler_mviexceptionhandler",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_src": "mviexceptionhandler",
+      "_tgt": "mviexceptionhandler_mvierrorcontext",
+      "source": "mviexceptionhandler",
+      "target": "mviexceptionhandler_mvierrorcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_src": "mviexceptionhandler",
+      "_tgt": "mviexceptionhandler_errorsource",
+      "source": "mviexceptionhandler",
+      "target": "mviexceptionhandler_errorsource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "yamv/src/main/kotlin/com/ktomek/yamv/state/MviExceptionHandler.kt",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_src": "mviexceptionhandler_mviexceptionhandler",
+      "_tgt": "mviexceptionhandler_mviexceptionhandler_handle",
+      "source": "mviexceptionhandler_mviexceptionhandler",
+      "target": "mviexceptionhandler_mviexceptionhandler_handle",
       "confidence_score": 1.0
     },
     {
@@ -8177,810 +7816,7 @@
       "source": "koinmviretainedstore",
       "target": "koinmviretainedstore_koinmvistore",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 7",
-      "weight": 1.0,
-      "_src": "readme_yamv_framework",
-      "_tgt": "readme_mvi_pattern",
-      "source": "readme_yamv_framework",
-      "target": "readme_mvi_pattern"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 157",
-      "weight": 0.8,
-      "_src": "readme_yamv_framework",
-      "_tgt": "readme_module_core",
-      "source": "readme_yamv_framework",
-      "target": "readme_module_core"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 158",
-      "weight": 0.8,
-      "_src": "readme_yamv_framework",
-      "_tgt": "readme_module_yamv",
-      "source": "readme_yamv_framework",
-      "target": "readme_module_yamv"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 159",
-      "weight": 0.8,
-      "_src": "readme_yamv_framework",
-      "_tgt": "readme_module_yamv_retainer",
-      "source": "readme_yamv_framework",
-      "target": "readme_module_yamv_retainer"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 160",
-      "weight": 0.8,
-      "_src": "readme_yamv_framework",
-      "_tgt": "readme_module_yamv_hilt",
-      "source": "readme_yamv_framework",
-      "target": "readme_module_yamv_hilt"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 161",
-      "weight": 0.8,
-      "_src": "readme_yamv_framework",
-      "_tgt": "readme_module_yamv_koin",
-      "source": "readme_yamv_framework",
-      "target": "readme_module_yamv_koin"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 162",
-      "weight": 0.8,
-      "_src": "readme_yamv_framework",
-      "_tgt": "readme_module_processor_core",
-      "source": "readme_yamv_framework",
-      "target": "readme_module_processor_core"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 163",
-      "weight": 0.8,
-      "_src": "readme_yamv_framework",
-      "_tgt": "readme_module_processor_hilt",
-      "source": "readme_yamv_framework",
-      "target": "readme_module_processor_hilt"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-documentation-readme-pages.md",
-      "source_location": "Task 1",
-      "weight": 1.0,
-      "_src": "plan_docs_readme",
-      "_tgt": "readme_yamv_framework",
-      "source": "readme_yamv_framework",
-      "target": "plan_docs_readme"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.9,
-      "source_file": "site-docs/index.md",
-      "source_location": null,
-      "weight": 0.8,
-      "_src": "index_site_home",
-      "_tgt": "readme_yamv_framework",
-      "source": "readme_yamv_framework",
-      "target": "index_site_home"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 14-18",
-      "weight": 1.0,
-      "_src": "readme_rationale_no_central_reducer",
-      "_tgt": "readme_distributed_reducers",
-      "source": "readme_distributed_reducers",
-      "target": "readme_rationale_no_central_reducer"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "site-docs/getting-started.md",
-      "source_location": "line 86-107",
-      "weight": 0.8,
-      "_src": "getting_started_outcomes_as_classes",
-      "_tgt": "readme_distributed_reducers",
-      "source": "readme_distributed_reducers",
-      "target": "getting_started_outcomes_as_classes"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "README.md",
-      "source_location": "line 57-58",
-      "weight": 0.7,
-      "_src": "readme_forced_modularity",
-      "_tgt": "readme_rationale_no_central_reducer",
-      "source": "readme_forced_modularity",
-      "target": "readme_rationale_no_central_reducer"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "iosApp/README.md",
-      "source_location": "line 14",
-      "weight": 0.7,
-      "_src": "iosapp_readme",
-      "_tgt": "readme_module_yamv",
-      "source": "readme_module_yamv",
-      "target": "iosapp_readme"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/getting-started.md",
-      "source_location": "line 45",
-      "weight": 1.0,
-      "_src": "getting_started_hilt_setup",
-      "_tgt": "readme_module_yamv_hilt",
-      "source": "readme_module_yamv_hilt",
-      "target": "getting_started_hilt_setup"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/multiplatform.md",
-      "source_location": "line 15-27",
-      "weight": 1.0,
-      "_src": "multiplatform_kmp_support",
-      "_tgt": "readme_module_yamv_koin",
-      "source": "readme_module_yamv_koin",
-      "target": "multiplatform_kmp_support"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/getting-started.md",
-      "source_location": "line 58",
-      "weight": 1.0,
-      "_src": "getting_started_koin_setup",
-      "_tgt": "readme_module_yamv_koin",
-      "source": "readme_module_yamv_koin",
-      "target": "getting_started_koin_setup"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 49-50",
-      "weight": 1.0,
-      "_src": "claude_mviruntime",
-      "_tgt": "claude_featurerouter",
-      "source": "claude_mviruntime",
-      "target": "claude_featurerouter"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 53",
-      "weight": 1.0,
-      "_src": "claude_mviruntime",
-      "_tgt": "claude_stateoutcome",
-      "source": "claude_mviruntime",
-      "target": "claude_stateoutcome"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 54",
-      "weight": 1.0,
-      "_src": "claude_mviruntime",
-      "_tgt": "claude_effectoutcome",
-      "source": "claude_mviruntime",
-      "target": "claude_effectoutcome"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 55",
-      "weight": 1.0,
-      "_src": "claude_mviruntime",
-      "_tgt": "claude_intentionoutcome",
-      "source": "claude_mviruntime",
-      "target": "claude_intentionoutcome"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 76-77",
-      "weight": 1.0,
-      "_src": "claude_mviretainedstore",
-      "_tgt": "claude_mviruntime",
-      "source": "claude_mviruntime",
-      "target": "claude_mviretainedstore"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 71-73",
-      "weight": 0.9,
-      "_src": "claude_mviruntime",
-      "_tgt": "claude_coroutinedispatcherconfig",
-      "source": "claude_mviruntime",
-      "target": "claude_coroutinedispatcherconfig"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 4",
-      "weight": 1.0,
-      "_src": "plan_logging_yamvlogger",
-      "_tgt": "claude_mviruntime",
-      "source": "claude_mviruntime",
-      "target": "plan_logging_yamvlogger"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 58",
-      "weight": 1.0,
-      "_src": "architecture_unidirectional_flow",
-      "_tgt": "claude_mviruntime",
-      "source": "claude_mviruntime",
-      "target": "architecture_unidirectional_flow"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 138",
-      "weight": 1.0,
-      "_src": "architecture_lifecycle",
-      "_tgt": "claude_mviruntime",
-      "source": "claude_mviruntime",
-      "target": "architecture_lifecycle"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/multiplatform.md",
-      "source_location": "line 51",
-      "weight": 0.9,
-      "_src": "multiplatform_koin_dsl",
-      "_tgt": "claude_mviruntime",
-      "source": "claude_mviruntime",
-      "target": "multiplatform_koin_dsl"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 89",
-      "weight": 1.0,
-      "_src": "claude_featurerouter",
-      "_tgt": "claude_completabledeferred_safety",
-      "source": "claude_featurerouter",
-      "target": "claude_completabledeferred_safety"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 3",
-      "weight": 1.0,
-      "_src": "plan_logging_yamvlogger",
-      "_tgt": "claude_featurerouter",
-      "source": "claude_featurerouter",
-      "target": "plan_logging_yamvlogger"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 64",
-      "weight": 1.0,
-      "_src": "architecture_unidirectional_flow",
-      "_tgt": "claude_featurerouter",
-      "source": "claude_featurerouter",
-      "target": "architecture_unidirectional_flow"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 139",
-      "weight": 1.0,
-      "_src": "architecture_lifecycle",
-      "_tgt": "claude_featurerouter",
-      "source": "claude_featurerouter",
-      "target": "architecture_lifecycle"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 81",
-      "weight": 1.0,
-      "_src": "claude_autostate",
-      "_tgt": "claude_mviretainedstore",
-      "source": "claude_mviretainedstore",
-      "target": "claude_autostate"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 137",
-      "weight": 1.0,
-      "_src": "architecture_lifecycle",
-      "_tgt": "claude_mviretainedstore",
-      "source": "claude_mviretainedstore",
-      "target": "architecture_lifecycle"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/code-generation.md",
-      "source_location": "line 138",
-      "weight": 0.8,
-      "_src": "codegen_manual_wiring",
-      "_tgt": "claude_mviretainedstore",
-      "source": "claude_mviretainedstore",
-      "target": "codegen_manual_wiring"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 52-55",
-      "weight": 1.0,
-      "_src": "readme_rationale_separation_when_what",
-      "_tgt": "claude_stateoutcome",
-      "source": "claude_stateoutcome",
-      "target": "readme_rationale_separation_when_what"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 68",
-      "weight": 1.0,
-      "_src": "claude_typedfeature",
-      "_tgt": "claude_feature",
-      "source": "claude_feature",
-      "target": "claude_typedfeature"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 69",
-      "weight": 1.0,
-      "_src": "claude_functiontypedfeature",
-      "_tgt": "claude_feature",
-      "source": "claude_feature",
-      "target": "claude_functiontypedfeature"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 83",
-      "weight": 1.0,
-      "_src": "claude_autofeature",
-      "_tgt": "claude_feature",
-      "source": "claude_feature",
-      "target": "claude_autofeature"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/features.md",
-      "source_location": "line 108",
-      "weight": 1.0,
-      "_src": "features_flowfeature",
-      "_tgt": "claude_feature",
-      "source": "claude_feature",
-      "target": "features_flowfeature"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 52-55",
-      "weight": 1.0,
-      "_src": "readme_rationale_separation_when_what",
-      "_tgt": "claude_feature",
-      "source": "claude_feature",
-      "target": "readme_rationale_separation_when_what"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 6, line 766",
-      "weight": 0.9,
-      "_src": "plan_scoped_feature_builder",
-      "_tgt": "claude_typedfeature",
-      "source": "claude_typedfeature",
-      "target": "plan_scoped_feature_builder"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/features.md",
-      "source_location": "line 60-62",
-      "weight": 1.0,
-      "_src": "features_wrap_method",
-      "_tgt": "claude_typedfeature",
-      "source": "claude_typedfeature",
-      "target": "features_wrap_method"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 5",
-      "weight": 1.0,
-      "_src": "plan_concurrency_fix",
-      "_tgt": "claude_functiontypedfeature",
-      "source": "claude_functiontypedfeature",
-      "target": "plan_concurrency_fix"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/features.md",
-      "source_location": "line 60-62",
-      "weight": 1.0,
-      "_src": "features_wrap_method",
-      "_tgt": "claude_functiontypedfeature",
-      "source": "claude_functiontypedfeature",
-      "target": "features_wrap_method"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 79-81",
-      "weight": 1.0,
-      "_src": "claude_autostate",
-      "_tgt": "claude_ksp",
-      "source": "claude_autostate",
-      "target": "claude_ksp"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/code-generation.md",
-      "source_location": "line 5-31",
-      "weight": 1.0,
-      "_src": "codegen_guide",
-      "_tgt": "claude_autostate",
-      "source": "claude_autostate",
-      "target": "codegen_guide"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
-      "source_location": "line 79-83",
-      "weight": 1.0,
-      "_src": "claude_autofeature",
-      "_tgt": "claude_ksp",
-      "source": "claude_autofeature",
-      "target": "claude_ksp"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/code-generation.md",
-      "source_location": "line 35-65",
-      "weight": 1.0,
-      "_src": "codegen_guide",
-      "_tgt": "claude_autofeature",
-      "source": "claude_autofeature",
-      "target": "codegen_guide"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 55",
-      "weight": 1.0,
-      "_src": "architecture_dispatcher_architecture",
-      "_tgt": "claude_coroutinedispatcherconfig",
-      "source": "claude_coroutinedispatcherconfig",
-      "target": "architecture_dispatcher_architecture"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 109",
-      "weight": 1.0,
-      "_src": "architecture_autodispatcherconfig",
-      "_tgt": "claude_coroutinedispatcherconfig",
-      "source": "claude_coroutinedispatcherconfig",
-      "target": "architecture_autodispatcherconfig"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 98-107",
-      "weight": 0.9,
-      "_src": "architecture_hasfeaturescope",
-      "_tgt": "claude_coroutinedispatcherconfig",
-      "source": "claude_coroutinedispatcherconfig",
-      "target": "architecture_hasfeaturescope"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 65-66",
-      "weight": 1.0,
-      "_src": "readme_rationale_multithreading",
-      "_tgt": "claude_coroutinedispatcherconfig",
-      "source": "claude_coroutinedispatcherconfig",
-      "target": "readme_rationale_multithreading"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 129-131",
-      "weight": 1.0,
-      "_src": "architecture_rationale_subscription_safety",
-      "_tgt": "claude_completabledeferred_safety",
-      "source": "claude_completabledeferred_safety",
-      "target": "architecture_rationale_subscription_safety"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 1-2",
-      "weight": 1.0,
-      "_src": "plan_logging_yamvlogger",
-      "_tgt": "plan_logging_yamvloglevel",
-      "source": "plan_logging_yamvlogger",
-      "target": "plan_logging_yamvloglevel"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 2",
-      "weight": 1.0,
-      "_src": "plan_logging_yamvlogger",
-      "_tgt": "plan_logging_yamv_singleton",
-      "source": "plan_logging_yamvlogger",
-      "target": "plan_logging_yamv_singleton"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 5, line 584",
-      "weight": 1.0,
-      "_src": "plan_concurrency_rationale",
-      "_tgt": "plan_concurrency_fix",
-      "source": "plan_concurrency_fix",
-      "target": "plan_concurrency_rationale"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.7,
-      "source_file": "docs/superpowers/plans/2026-04-09-framework-logging-feature-scope-concurrency.md",
-      "source_location": "Task 6",
-      "weight": 0.6,
-      "_src": "plan_scoped_feature_builder",
-      "_tgt": "features_flowfeature",
-      "source": "plan_scoped_feature_builder",
-      "target": "features_flowfeature"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-infrastructure-ci-versioning-jitpack.md",
-      "source_location": "Task 4 depends on Task 1",
-      "weight": 0.8,
-      "_src": "plan_infra_ci",
-      "_tgt": "plan_infra_versioning",
-      "source": "plan_infra_ci",
-      "target": "plan_infra_versioning"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-infrastructure-ci-versioning-jitpack.md",
-      "source_location": "Task 6-7",
-      "weight": 0.9,
-      "_src": "plan_infra_release_workflow",
-      "_tgt": "plan_infra_jitpack",
-      "source": "plan_infra_jitpack",
-      "target": "plan_infra_release_workflow"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/superpowers/plans/2026-04-09-documentation-readme-pages.md",
-      "source_location": "Task 9",
-      "weight": 1.0,
-      "_src": "plan_docs_mkdocs",
-      "_tgt": "plan_docs_ghpages",
-      "source": "plan_docs_mkdocs",
-      "target": "plan_docs_ghpages"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/architecture.md",
-      "source_location": "line 72-78",
-      "weight": 1.0,
-      "_src": "architecture_rationale_dispatcher_defaults",
-      "_tgt": "architecture_dispatcher_architecture",
-      "source": "architecture_dispatcher_architecture",
-      "target": "architecture_rationale_dispatcher_defaults"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/code-generation.md",
-      "source_location": "line 82",
-      "weight": 1.0,
-      "_src": "codegen_autodispatcherconfig",
-      "_tgt": "architecture_autodispatcherconfig",
-      "source": "architecture_autodispatcherconfig",
-      "target": "codegen_autodispatcherconfig"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.75,
-      "source_file": "site-docs/multiplatform.md",
-      "source_location": "line 48-59",
-      "weight": 0.7,
-      "_src": "multiplatform_koin_dsl",
-      "_tgt": "codegen_manual_wiring",
-      "source": "multiplatform_koin_dsl",
-      "target": "codegen_manual_wiring"
     }
   ],
-  "hyperedges": [
-    {
-      "id": "mvi_data_flow_pipeline",
-      "label": "MVI Data Flow Pipeline",
-      "nodes": [
-        "claude_featurerouter",
-        "claude_mviruntime",
-        "claude_feature",
-        "claude_stateoutcome",
-        "claude_effectoutcome",
-        "claude_intentionoutcome"
-      ],
-      "relation": "participate_in",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "feature_abstraction_hierarchy",
-      "label": "Feature Abstraction Hierarchy",
-      "nodes": [
-        "claude_feature",
-        "claude_typedfeature",
-        "claude_functiontypedfeature",
-        "features_flowfeature",
-        "features_wrap_method"
-      ],
-      "relation": "form",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/features.md"
-    },
-    {
-      "id": "code_generation_annotations",
-      "label": "KSP Code Generation Annotation Set",
-      "nodes": [
-        "claude_autostate",
-        "claude_autofeature",
-        "architecture_autodispatcherconfig",
-        "claude_ksp",
-        "readme_module_processor_hilt"
-      ],
-      "relation": "form",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "site-docs/code-generation.md"
-    }
-  ]
+  "hyperedges": []
 }
