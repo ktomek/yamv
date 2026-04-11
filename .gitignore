@@ -19,3 +19,13 @@ local.properties
 /.kotlin/
 /.worktrees/
 /docs/superpowers/
+
+graphify-out/graph.html
+graphify-out/cache/
+graphify-out/transcripts/
+graphify-out/.graphify_*
+graphify-out/cost.json
+graphify-out/manifest.json
+graphify-out/graph.html
+graphify-out/cache/
+graphify-out/transcripts/
