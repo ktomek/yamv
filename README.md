@@ -12,7 +12,7 @@ A Kotlin-first **MVI (Model-View-Intent)** framework for Android & Kotlin Multip
 - **Zero boilerplate** — `@AutoState` + `@AutoFeature` generate the retained store and Hilt/Koin modules
 
 <p align="center">
-  <img src="site-docs/resources/yamv-mvi.gif" alt="YAMV MVI Data Flow" width="700"/>
+  <img src="site-docs/resources/yamv-mvi-flow.gif" alt="YAMV MVI Data Flow" width="700"/>
 </p>
 
 ## Why YAMV?
