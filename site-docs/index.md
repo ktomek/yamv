@@ -15,7 +15,7 @@ MVI architecture brings predictability to UI state. YAMV makes it production-rea
 ## Core Concepts
 
 <p align="center">
-  <img src="resources/yamv-mvi-flow.gif.gif" alt="YAMV MVI Data Flow" width="700"/>
+  <img src="resources/yamv-mvi-flow.gif" alt="YAMV MVI Data Flow" width="700"/>
 </p>
 
 ## Modules at a Glance
