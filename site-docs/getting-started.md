@@ -24,11 +24,11 @@ plugins {
 
     ```kotlin
     dependencies {
-        implementation("io.github.ktomek:core:VERSION")
+        implementation("io.github.ktomek:yamv-core:VERSION")
         implementation("io.github.ktomek:yamv:VERSION")
         implementation("io.github.ktomek:yamv-retainer:VERSION")
         implementation("io.github.ktomek:yamv-hilt:VERSION")
-        ksp("io.github.ktomek:processor-hilt:VERSION")
+        ksp("io.github.ktomek:yamv-processor-hilt:VERSION")
     }
     ```
 
@@ -37,7 +37,7 @@ plugins {
     ```kotlin
     // commonMain
     dependencies {
-        implementation("io.github.ktomek:core:VERSION")
+        implementation("io.github.ktomek:yamv-core:VERSION")
         implementation("io.github.ktomek:yamv:VERSION")
         implementation("io.github.ktomek:yamv-retainer:VERSION")
         implementation("io.github.ktomek:yamv-koin:VERSION")

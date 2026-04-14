@@ -31,11 +31,11 @@ YAMV (Yet Another MVI framework) is a Kotlin-first MVI (Model-View-Intent) archi
 
 ## Module Structure
 
-- **`:core`** — Marker interfaces and annotations (`State`, `Outcome` hierarchy, `@AutoState`, `@AutoFeature`)
+- **`:yamv-core`** — Marker interfaces and annotations (`State`, `Outcome` hierarchy, `@AutoState`, `@AutoFeature`)
 - **`:yamv`** — Core framework (pure Kotlin, no Android deps): `MviRuntime`, `MviStore`, `MviRegistry`, `FeatureRouter`, Feature wrappers
 - **`:yamv-retainer`** — Lifecycle-retained MviStore: `MviRetainedStore`, `hiltMviStore()` Compose helper
-- **`:processor-core`** — DI-agnostic KSP utilities: `AutoStateDiscovery`, `AutoFeatureDiscovery`
-- **`:processor-hilt`** — Hilt-specific KSP processor: generates `*Store` retained stores and `*FeaturesModule` Hilt modules
+- **`:yamv-processor-core`** — DI-agnostic KSP utilities: `AutoStateDiscovery`, `AutoFeatureDiscovery`
+- **`:yamv-processor-hilt`** — Hilt-specific KSP processor: generates `*Store` retained stores and `*FeaturesModule` Hilt modules
 - **`:app`** — Counter demo app showing framework usage end-to-end
 
 ## Architecture
@@ -58,7 +58,7 @@ StateFlow<S> (observed by UI)
 
 ### Key Abstractions
 
-**Outcomes** (`core/Outcome.kt`):
+**Outcomes** (`yamv-core/Outcome.kt`):
 - `StateOutcome<S>` — SAM type: `(prevState: S) -> S`
 - `EffectOutcome<S>` — side effect marker
 - `IntentionOutcome<S>` — triggers another intention dispatch

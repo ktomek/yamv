@@ -88,7 +88,7 @@ dependencies {
     implementation("io.github.ktomek:yamv-koin:VERSION")   // Koin (multiplatform)
 
     // KSP code generation (Hilt only)
-    ksp("io.github.ktomek:processor-hilt:VERSION")
+    ksp("io.github.ktomek:yamv-processor-hilt:VERSION")
 }
 ```
 
@@ -147,13 +147,13 @@ That's it. `@AutoState` generates `CounterStateStore` and `@AutoFeature` generat
 
 | Module | Description | Platform |
 |--------|-------------|----------|
-| `core` | Marker interfaces & annotations (`State`, `Outcome`, `@AutoState`, `@AutoFeature`) | Pure Kotlin |
+| `yamv-core` | Marker interfaces & annotations (`State`, `Outcome`, `@AutoState`, `@AutoFeature`) | Pure Kotlin |
 | `yamv` | Core runtime (`MviRuntime`, `MviStore`, `FeatureRouter`) | Kotlin Multiplatform |
 | `yamv-retainer` | `MviRetainedStore` — lifecycle-retained ViewModel base | Android + iOS |
 | `yamv-hilt` | `hiltMviStore()` Compose helper | Android |
 | `yamv-koin` | `koinMviStore()` / `mviStore {}` DSL | Kotlin Multiplatform |
-| `processor-core` | KSP utilities (DI-agnostic) | JVM |
-| `processor-hilt` | Hilt KSP processor — generates `*Store` + `*FeaturesModule` | JVM |
+| `yamv-processor-core` | KSP utilities (DI-agnostic) | JVM |
+| `yamv-processor-hilt` | Hilt KSP processor — generates `*Store` + `*FeaturesModule` | JVM |
 
 ## Documentation
 

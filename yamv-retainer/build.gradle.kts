@@ -29,7 +29,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":yamv"))
-            implementation(project(":core"))
+            implementation(project(":yamv-core"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.androidx.lifecycle.viewmodel)
         }
