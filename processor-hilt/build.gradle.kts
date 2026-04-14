@@ -4,7 +4,6 @@ plugins {
     id("java-library")
     kotlin("jvm")
     alias(libs.plugins.ksp)
-    `maven-publish`
 }
 
 java {
@@ -28,14 +27,4 @@ dependencies {
     implementation(libs.javapoet)
     implementation(libs.kotlinpoet.ksp)
     implementation(libs.javax.annotation.api)
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.ktomek.yamv"
-            artifactId = project.name
-            version = rootProject.version.toString()
-        }
-    }
 }

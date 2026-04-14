@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
 //    `kotlin-dsl` version "2.0.21"
     kotlin("jvm") version "2.0.21" apply false
@@ -10,12 +12,75 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.allopen) apply false
-    `maven-publish`
+    alias(libs.plugins.vanniktech.maven.publish) apply false
+    alias(libs.plugins.dokka) apply false
 }
 
+fun getGitTagVersion(): String =
+    try {
+        ProcessBuilder("git", "describe", "--tags", "--abbrev=0")
+            .start()
+            .inputStream.bufferedReader().readText()
+            .trim().removePrefix("v")
+    } catch (_: Exception) {
+        "0.1.0"
+    }
+
 allprojects {
-    group = "com.ktomek.yamv"
-    version = properties["VERSION_NAME"] as? String ?: "0.0.1"
+    group = "io.github.ktomek"
+    version = project.findProperty("publishVersion") as String? ?: getGitTagVersion()
+}
+
+// Publishing configuration for library modules
+val publishableModules = setOf(
+    "core",
+    "yamv",
+    "yamv-retainer",
+    "yamv-hilt",
+    "yamv-koin",
+    "processor-core",
+    "processor-hilt"
+)
+
+subprojects {
+    if (name in publishableModules) {
+        apply(plugin = "com.vanniktech.maven.publish")
+        apply(plugin = "org.jetbrains.dokka")
+
+        extensions.configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+            signAllPublications()
+
+            coordinates("io.github.ktomek", project.name, project.version.toString())
+
+            pom {
+                name.set("YAMV ${project.name}")
+                description.set("Yet Another MVI Framework — Kotlin-first MVI for Android & KMP")
+                url.set("https://github.com/ktomek/yamv")
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("ktomek")
+                        name.set("Tomasz Kaszkowiak")
+                        url.set("https://github.com/ktomek")
+                    }
+                }
+
+                scm {
+                    url.set("https://github.com/ktomek/yamv")
+                    connection.set("scm:git:git://github.com/ktomek/yamv.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/ktomek/yamv.git")
+                }
+            }
+        }
+    }
 }
 
 detekt {

@@ -19,6 +19,8 @@ kotlin = "2.3.20"
 ksp = "2.3.2"
 detekt = "1.23.8"
 detekt-compose = "0.5.7"
+vanniktech-maven-publish = "0.30.0"
+dokka = "2.2.0"
 coroutines = "1.10.2"
 compose-multiplatform = "1.10.3"
 
@@ -43,6 +45,8 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
 [libraries]
 # Kotlin standard library
