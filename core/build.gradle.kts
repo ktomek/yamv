@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     kotlin("multiplatform")
-    `maven-publish`
 }
 
 kotlin {
@@ -26,15 +25,5 @@ kotlin {
 
     compilerOptions {
         apiVersion.set(KotlinVersion.KOTLIN_2_1)
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.ktomek.yamv"
-            artifactId = project.name
-            version = rootProject.version.toString()
-        }
     }
 }

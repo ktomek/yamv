@@ -1,7 +1,7 @@
 # YAMV — Yet Another MVI Framework
 
 [![Build, Test](https://github.com/ktomek/yamv/actions/workflows/ci.yml/badge.svg)](https://github.com/ktomek/yamv/actions/workflows/ci.yml)
-[![JitPack](https://jitpack.io/v/ktomek/yamv.svg)](https://jitpack.io/#ktomek/yamv)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ktomek/yamv.svg)](https://central.sonatype.com/namespace/io.github.ktomek)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 A Kotlin-first **MVI (Model-View-Intent)** framework for Android & Kotlin Multiplatform with compile-time code generation via KSP.
@@ -71,41 +71,30 @@ Features run on `Dispatchers.Default` (concurrent), reducers apply on `Dispatche
 
 ## Quick Start
 
-### 1. Add JitPack repository
-
-```kotlin
-// settings.gradle.kts
-dependencyResolutionManagement {
-    repositories {
-        maven { url = uri("https://jitpack.io") }
-    }
-}
-```
-
-### 2. Add dependencies
+### 1. Add dependencies
 
 ```kotlin
 // build.gradle.kts (app module)
 dependencies {
     // Core framework
-    implementation("com.github.ktomek.yamv:yamv:VERSION")
+    implementation("io.github.ktomek:yamv:VERSION")
 
     // Android ViewModel integration
-    implementation("com.github.ktomek.yamv:yamv-retainer:VERSION")
+    implementation("io.github.ktomek:yamv-retainer:VERSION")
 
     // Choose your DI integration:
-    implementation("com.github.ktomek.yamv:yamv-hilt:VERSION")   // Hilt
+    implementation("io.github.ktomek:yamv-hilt:VERSION")   // Hilt
     // or
-    implementation("com.github.ktomek.yamv:yamv-koin:VERSION")   // Koin (multiplatform)
+    implementation("io.github.ktomek:yamv-koin:VERSION")   // Koin (multiplatform)
 
     // KSP code generation (Hilt only)
-    ksp("com.github.ktomek.yamv:processor-hilt:VERSION")
+    ksp("io.github.ktomek:processor-hilt:VERSION")
 }
 ```
 
 Replace `VERSION` with the latest badge version above.
 
-### 3. Define your state and intentions
+### 2. Define your state and intentions
 
 ```kotlin
 @AutoState
@@ -117,7 +106,7 @@ sealed class CounterIntention {
 }
 ```
 
-### 4. Define reducers and features
+### 3. Define reducers and features
 
 Declare reducers as separate classes — decoupled from features, independently testable:
 
@@ -136,7 +125,7 @@ class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> 
 }
 ```
 
-### 5. Collect state in your Composable
+### 4. Collect state in your Composable
 
 ```kotlin
 @Composable

@@ -6,7 +6,6 @@ plugins {
     id("org.jetbrains.compose")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.allopen)
-    `maven-publish`
 }
 
 android {
@@ -53,14 +52,4 @@ kotlin {
 
 allOpen {
     annotation("com.ktomek.yamv.annotations.OpenForTesting")
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.ktomek.yamv"
-            artifactId = project.name
-            version = rootProject.version.toString()
-        }
-    }
 }

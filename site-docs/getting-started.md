@@ -8,22 +8,7 @@
 
 ## Installation
 
-### Step 1: Add JitPack repository
-
-In your project's `settings.gradle.kts`:
-
-```kotlin
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven { url = uri("https://jitpack.io") }
-    }
-}
-```
-
-### Step 2: Add KSP plugin
+### Step 1: Add KSP plugin
 
 In your app module's `build.gradle.kts`:
 
@@ -33,17 +18,17 @@ plugins {
 }
 ```
 
-### Step 3: Add dependencies
+### Step 2: Add dependencies
 
 === "Hilt (Android)"
 
     ```kotlin
     dependencies {
-        implementation("com.github.ktomek.yamv:core:VERSION")
-        implementation("com.github.ktomek.yamv:yamv:VERSION")
-        implementation("com.github.ktomek.yamv:yamv-retainer:VERSION")
-        implementation("com.github.ktomek.yamv:yamv-hilt:VERSION")
-        ksp("com.github.ktomek.yamv:processor-hilt:VERSION")
+        implementation("io.github.ktomek:core:VERSION")
+        implementation("io.github.ktomek:yamv:VERSION")
+        implementation("io.github.ktomek:yamv-retainer:VERSION")
+        implementation("io.github.ktomek:yamv-hilt:VERSION")
+        ksp("io.github.ktomek:processor-hilt:VERSION")
     }
     ```
 
@@ -52,10 +37,10 @@ plugins {
     ```kotlin
     // commonMain
     dependencies {
-        implementation("com.github.ktomek.yamv:core:VERSION")
-        implementation("com.github.ktomek.yamv:yamv:VERSION")
-        implementation("com.github.ktomek.yamv:yamv-retainer:VERSION")
-        implementation("com.github.ktomek.yamv:yamv-koin:VERSION")
+        implementation("io.github.ktomek:core:VERSION")
+        implementation("io.github.ktomek:yamv:VERSION")
+        implementation("io.github.ktomek:yamv-retainer:VERSION")
+        implementation("io.github.ktomek:yamv-koin:VERSION")
     }
     ```
 

@@ -1,7 +1,6 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    `maven-publish`
 }
 
 android {
@@ -42,16 +41,6 @@ kotlin {
         }
         androidUnitTest.dependencies {
             implementation(libs.bundles.testing.unit)
-        }
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.ktomek.yamv"
-            artifactId = project.name
-            version = rootProject.version.toString()
         }
     }
 }
