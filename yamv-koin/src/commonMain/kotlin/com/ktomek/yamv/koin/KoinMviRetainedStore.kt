@@ -20,19 +20,26 @@ import org.koin.core.qualifier.named
  *
  * Replaces per-state generated classes (e.g. `CounterStateStore`). Register it via [mviStore]
  * and retrieve it via [koinMviStore] — both derive the Koin qualifier from [S] automatically.
+ *
+ * @param S state type
+ * @param I intention type — narrows [MviStore.dispatch] at compile time. Use [Any] for untyped.
  */
 @OpenForTesting
-class KoinMviRetainedStore<S : State>(
+class KoinMviRetainedStore<S : State, I : Any>(
     features: Set<Feature<S>>,
     defaultState: S,
     dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig(),
-) : MviRetainedStore<S, Any>() {
+) : MviRetainedStore<S, I>() {
     override val dispatcherConfig: CoroutineDispatcherConfig = dispatcherConfig
-    override val store: MviStore<S, Any> = MviRuntime(
-        features = features,
-        defaultState = defaultState,
-        dispatcherConfig = dispatcherConfig,
-    )
+    override val store: MviStore<S, I> =
+        @Suppress("UNCHECKED_CAST")
+        (
+            MviRuntime(
+                features = features,
+                defaultState = defaultState,
+                dispatcherConfig = dispatcherConfig,
+            ) as MviStore<S, I>
+            )
 }
 
 /**
@@ -44,7 +51,8 @@ class KoinMviRetainedStore<S : State>(
 inline fun <reified S : State> stateQualifier(): Qualifier = named(S::class.simpleName!!)
 
 /**
- * Registers a [KoinMviRetainedStore] for state type [S] as a Koin ViewModel, qualified by [stateQualifier].
+ * Registers a [KoinMviRetainedStore] for state type [S] and intention type [I] as a Koin
+ * ViewModel, qualified by [stateQualifier].
  *
  * Call this inside a `module { }` block. The [features] lambda receives a [FeatureRegistrar]
  * so `add(feature)` and `get<T>()` are available without calling `.wrap()` manually.
@@ -55,14 +63,14 @@ inline fun <reified S : State> stateQualifier(): Qualifier = named(S::class.simp
  *     factory { AutoDecreaseFeature() }
  *     factory { DecreaseFeature() }
  *
- *     mviStore(defaultState = CounterState()) {
- *         add(get<AutoDecreaseFeature>())   // FlowFeature — passed through
- *         add(get<DecreaseFeature>())       // FunctionTypedFeature — wrapped automatically
+ *     mviStore<CounterState, CounterIntention>(defaultState = CounterState()) {
+ *         add(get<AutoDecreaseFeature>())
+ *         add(get<DecreaseFeature>())
  *     }
  * }
  * ```
  */
-inline fun <reified S : State> Module.mviStore(
+inline fun <reified S : State, reified I : Any> Module.mviStore(
     defaultState: S,
     dispatcherConfig: CoroutineDispatcherConfig = DefaultCoroutineDispatcherConfig(),
     crossinline features: FeatureRegistrar<S>.() -> Unit,
@@ -70,7 +78,7 @@ inline fun <reified S : State> Module.mviStore(
     viewModel(stateQualifier<S>()) {
         val registrar = FeatureRegistrar<S>(this)
         registrar.features()
-        KoinMviRetainedStore(
+        KoinMviRetainedStore<S, I>(
             features = registrar.build(),
             defaultState = defaultState,
             dispatcherConfig = dispatcherConfig,
@@ -79,16 +87,28 @@ inline fun <reified S : State> Module.mviStore(
 }
 
 /**
- * Returns the [KoinMviRetainedStore] for state type [S] scoped to the current navigation back-stack entry.
+ * Returns the [MviStore] for state type [S] and intention type [I], scoped to [storeOwner].
  *
- * The qualifier is derived from [S] automatically — no string literals needed at call sites.
+ * By default [storeOwner] is `LocalViewModelStoreOwner.current`, which in Compose Multiplatform's
+ * Navigation is overridden per `NavBackStackEntry` — so each navigation destination gets its own
+ * store instance. For app-lifetime state (auth, session, preferences) pass an app-level owner,
+ * or use [koinMviAppStore] together with [ProvideAppMviStoreOwner].
  *
  * Usage:
  * ```kotlin
  * @Composable
- * fun CounterScreen(store: KoinMviRetainedStore<CounterState> = koinMviStore()) { ... }
+ * fun CounterScreen(
+ *     store: MviStore<CounterState, CounterIntention> = koinMviStore(),
+ * ) { ... }
  * ```
  */
 @Composable
-inline fun <reified S : State> koinMviStore(): KoinMviRetainedStore<S> =
-    koinViewModel(stateQualifier<S>())
+inline fun <reified S : State, reified I : Any> koinMviStore(
+    storeOwner: MviStoreOwner = checkNotNull(LocalMviStoreOwner.current) {
+        "No MviStoreOwner in composition (LocalMviStoreOwner.current was null)"
+    },
+): MviStore<S, I> =
+    koinViewModel<KoinMviRetainedStore<S, I>>(
+        qualifier = stateQualifier<S>(),
+        viewModelStoreOwner = storeOwner,
+    )
