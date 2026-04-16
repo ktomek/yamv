@@ -13,7 +13,7 @@ val counterModule = module {
     factory { DecreaseFeature() }
     factory { AutoIncreaseFeature(get()) }
 
-    mviStore(defaultState = CounterState()) {
+    mviStore<CounterState, Any>(defaultState = CounterState()) {
         add(get<AutoDecreaseFeature>())
         add(get<AutoIncreaseFeature>())
         add(get<DecreaseFeature>())
