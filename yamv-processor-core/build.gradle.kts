@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("java-library")
     kotlin("jvm")
-    alias(libs.plugins.ksp)
 }
 
 java {
@@ -19,12 +18,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":processor-core"))
+    implementation(project(":yamv-core"))
     implementation(libs.ksp.api)
-
-    annotationProcessor(libs.auto.service)
-    implementation(libs.javapoet)
     implementation(libs.kotlinpoet.ksp)
-    implementation(libs.javax.annotation.api)
 }

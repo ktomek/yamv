@@ -22,7 +22,7 @@ kotlin {
         val commonMain by getting {
             kotlin.srcDirs("src/main/kotlin")
             dependencies {
-                implementation(project(":core"))
+                implementation(project(":yamv-core"))
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.atomicfu)
             }

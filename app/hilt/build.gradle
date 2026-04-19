@@ -48,7 +48,7 @@ kotlin {
 
 dependencies {
     implementation project(':app:common')
-    implementation project(':core')
+    implementation project(':yamv-core')
     implementation project(':yamv')
     implementation project(':yamv-hilt')
 
@@ -62,8 +62,8 @@ dependencies {
     implementation libs.dagger.hilt.android
     ksp libs.dagger.hilt.compiler
     ksp libs.dagger.hilt.android.compiler
-    ksp project(':processor-core')
-    ksp project(':processor-hilt')
+    ksp project(':yamv-processor-core')
+    ksp project(':yamv-processor-hilt')
 
     implementation libs.timber
 

@@ -31,7 +31,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":core"))
+            api(project(":yamv-core"))
             api(project(":yamv"))
             api(compose.material3)
             api(compose.runtime)

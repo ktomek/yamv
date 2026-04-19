@@ -129,9 +129,9 @@ Precedence: per-state > global default > `DefaultCoroutineDispatcherConfig()`
 
 | Module | Annotation | Output |
 |--------|-----------|--------|
-| `processor-hilt` | `@AutoState` | `{Name}Store` (`@HiltViewModel`) |
-| `processor-hilt` | `@AutoFeature` | `{Name}FeaturesModule` (Hilt `@Module`) |
-| `processor-hilt` | `@AutoDispatcherConfig` | `{Name}Module` (Dagger `@Module` with `@Provides`) |
+| `yamv-processor-hilt` | `@AutoState` | `{Name}Store` (`@HiltViewModel`) |
+| `yamv-processor-hilt` | `@AutoFeature` | `{Name}FeaturesModule` (Hilt `@Module`) |
+| `yamv-processor-hilt` | `@AutoDispatcherConfig` | `{Name}Module` (Dagger `@Module` with `@Provides`) |
 
 ## Without Code Generation
 
