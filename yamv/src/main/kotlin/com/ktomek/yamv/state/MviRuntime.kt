@@ -9,6 +9,8 @@ import com.ktomek.yamv.intention.FeatureRouter
 import com.ktomek.yamv.intention.IntentionRouter
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
+import kotlinx.atomicfu.atomic
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -48,11 +51,21 @@ class MviRuntime<S : State>(
 
     init {
         Yamv.log(YamvLogLevel.DEBUG, TAG, "MviRuntime created with defaultState=$defaultState")
-        intentionRouter.initialize(scope, dispatcherConfig, exceptionHandler)
+
+        // Gate feature initialization on all outcome collectors being subscribed to
+        // outcomeFlow. Without this, a FlowFeature returning a flow that emits eagerly
+        // (e.g. `flowOf(StateOutcome(...))`) would emit before collectors attach, and
+        // the outcomes would be silently dropped by the replay=0 SharedFlow.
+        val outcomeCollectorsReady = CompletableDeferred<Unit>()
+        val remainingCollectors = atomic(OUTCOME_COLLECTOR_COUNT)
+        val markReady = {
+            if (remainingCollectors.decrementAndGet() == 0) outcomeCollectorsReady.complete(Unit)
+        }
 
         scope.launch(dispatcherConfig.provideReducerDispatcher()) {
             intentionRouter
                 .observeOutcomes()
+                .onSubscription { markReady() }
                 .filterIsInstance<Reducer<S>>()
                 .scan(defaultState) { state, reducer ->
                     try {
@@ -71,6 +84,7 @@ class MviRuntime<S : State>(
         scope.launch(dispatcherConfig.provideReducerDispatcher()) {
             intentionRouter
                 .observeOutcomes()
+                .onSubscription { markReady() }
                 .filterIsInstance<EffectOutcome<S>>()
                 .collect { effect ->
                     try {
@@ -85,6 +99,7 @@ class MviRuntime<S : State>(
         scope.launch(dispatcherConfig.provideIntentionDispatcher(null)) {
             intentionRouter
                 .observeOutcomes()
+                .onSubscription { markReady() }
                 .filterIsInstance<IntentionOutcome<S>>()
                 .map { it.intention }
                 .collect { intention ->
@@ -100,6 +115,11 @@ class MviRuntime<S : State>(
                         )
                     }
                 }
+        }
+
+        scope.launch(dispatcherConfig.provideReducerDispatcher()) {
+            outcomeCollectorsReady.await()
+            intentionRouter.initialize(scope, dispatcherConfig, exceptionHandler)
         }
     }
 
@@ -130,6 +150,13 @@ class MviRuntime<S : State>(
 
     companion object {
         private const val TAG = "MviRuntime"
+
+        /**
+         * Number of outcome collectors launched in [init] (reducer, effect,
+         * intention-redispatch). Must match the number of `scope.launch` blocks
+         * that call [onSubscription] with `markReady`.
+         */
+        private const val OUTCOME_COLLECTOR_COUNT = 3
     }
 }
 

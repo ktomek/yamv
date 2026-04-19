@@ -96,6 +96,13 @@ Annotate feature classes/properties with `@AutoFeature` to generate `{StateName}
 
 `FeatureRouter` uses `CompletableDeferred` to ensure all features are subscribed before the first intention is dispatched. `MviRuntime` manages three independent coroutine collectors (reducers, effects, intention re-dispatch) and is cancelled via `clear()`.
 
+### Koin integration
+
+- `koinMviStore<S, I>()` returns `MviStore<S, I>` (narrow interface, not the internal `KoinMviRetainedStore`). `I` is the intention type — use a sealed class for type safety, or `Any` for untyped dispatch.
+- `mviStore<S, I>(...)` DSL registers the store in a Koin module with matching types.
+- `MviStoreOwner` is a typealias for `ViewModelStoreOwner`. `LocalMviStoreOwner` mirrors `LocalViewModelStoreOwner` with the aliased type.
+- For app-lifetime state across navigation, wrap the `NavHost` in `ProvideAppMviStoreOwner { ... }` and resolve stores via `koinMviAppStore<S, I>()`.
+
 ## Testing
 
 Tests use JUnit 5, MockK, Turbine (Flow testing), and Truth assertions. See `yamv/src/test/` for examples.

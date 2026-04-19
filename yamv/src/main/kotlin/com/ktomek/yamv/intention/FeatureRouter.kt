@@ -99,7 +99,6 @@ internal class FeatureRouter<S : State>(
 
     override fun observeOutcomes(): SharedFlow<Outcome<S>> {
         if (isDisposed.value) error("Router has been disposed")
-        if (!isInitialized.value) error("Router has not been initialized")
         return outcomeFlow.asSharedFlow()
     }
 

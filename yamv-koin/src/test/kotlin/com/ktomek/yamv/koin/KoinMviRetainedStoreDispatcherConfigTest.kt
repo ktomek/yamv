@@ -55,7 +55,7 @@ private class InspectableMviRetainedStore<S : State>(
     features: Set<Feature<S>>,
     defaultState: S,
     config: CoroutineDispatcherConfig,
-) : KoinMviRetainedStore<S>(
+) : KoinMviRetainedStore<S, Any>(
     features = features,
     defaultState = defaultState,
     dispatcherConfig = config,
@@ -157,12 +157,12 @@ class KoinMviRetainedStoreDispatcherConfigTest {
         // Arrange
         val customConfig = TrackingCoroutineDispatcherConfig()
         val koinModule = module {
-            mviStore(defaultState = TestState(), dispatcherConfig = customConfig) {}
+            mviStore<TestState, Any>(defaultState = TestState(), dispatcherConfig = customConfig) {}
         }
 
         // Act
         val koinApp = KoinApplication.init().modules(koinModule)
-        koinApp.koin.get<KoinMviRetainedStore<TestState>>(stateQualifier<TestState>())
+        koinApp.koin.get<KoinMviRetainedStore<TestState, Any>>(stateQualifier<TestState>())
 
         // Assert — MviRuntime calls provideReducerDispatcher on init using the custom config
         assertTrue(
