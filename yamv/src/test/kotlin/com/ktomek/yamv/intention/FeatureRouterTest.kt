@@ -18,6 +18,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.fail
 
 // Stub State type for testing
@@ -157,18 +158,15 @@ class FeatureRouterTest {
         }
 
     @Test
-    fun `GIVEN observeOutcomes called before initialize WHEN observing THEN throws`() =
+    fun `GIVEN observeOutcomes called before initialize WHEN observing THEN returns flow without throwing`() =
         runTest {
-            // Arrange
+            // Subscribing to outcomes must be safe before initialize — MviRuntime relies
+            // on this ordering so the outcome collectors attach before feature emissions start.
             val router = FeatureRouter<TestState>(features = emptySet())
 
-            // Act / Assert
-            try {
-                router.observeOutcomes()
-                fail("Expected IllegalStateException when observing before initialize")
-            } catch (ignored: IllegalStateException) {
-                // expected
-            }
+            val flow = router.observeOutcomes()
+
+            assertNotNull(flow)
         }
 
     @Test
