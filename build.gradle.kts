@@ -33,13 +33,13 @@ allprojects {
 
 // Publishing configuration for library modules
 val publishableModules = setOf(
-    "core",
+    "yamv-core",
     "yamv",
     "yamv-retainer",
     "yamv-hilt",
     "yamv-koin",
-    "processor-core",
-    "processor-hilt"
+    "yamv-processor-core",
+    "yamv-processor-hilt"
 )
 
 subprojects {
