@@ -38,15 +38,18 @@ Declare outcome subclasses as **standalone classes** — they are decoupled from
 
 ## Feature Abstraction Levels
 
-Three abstraction levels (choose the simplest one that fits):
+Sealed `Feature<S>` has two raw shapes; four typed wrappers cover the common cases. Choose the simplest one that fits:
 
 | Type | API | When to use |
 |------|-----|-------------|
-| `Feature.FlowFeature<S>` | `(Flow<Any>) -> Flow<Outcome<S>>` | Low-level; handles multiple intention types |
-| `TypedFeature<S, I>` | `(Flow<I>) -> Flow<Outcome<S>>` | Typed; one feature per intention type |
-| `FunctionTypedFeature<S, I>` | `suspend (I) -> Outcome<S>` | Simplest; one outcome per intention |
+| `Feature.FlowFeature<S>` | `(Flow<Any>) -> Flow<Outcome<S>>` | Low-level; multi-intention or untyped |
+| `Feature.FlowUnitFeature<S>` | `(Flow<Any>) -> Flow<Unit>` | Low-level fire-and-forget (no state contribution) |
+| `TypedFeature<S, I>` | `(Flow<I>) -> Flow<Outcome<S>>` | Typed stream → outcomes |
+| `FunctionTypedFeature<S, I>` | `suspend (I) -> Outcome<S>` | One outcome per intention |
+| `ActionTypedFeature<S, I>` | `suspend (I) -> Unit` | One side effect per intention, no state contribution |
+| `TypedUnitFeature<S, I>` | `(Flow<I>) -> Flow<Unit>` | Typed streamed side effects, no state contribution |
 
-Use `.wrap()` to convert `TypedFeature` or `FunctionTypedFeature` to `Feature<S>` when wiring manually. With `@AutoFeature` (Hilt) or `mviStore {}` DSL (Koin), wrapping is automatic.
+All four typed wrappers call `.wrap()` to become a `Feature<S>` — automatic with `@AutoFeature` (Hilt) or the Koin `mviStore { add(…) }` DSL, manual otherwise.
 
 Use `functionTypedFeature<S, I> { }` builder for inline definitions.
 

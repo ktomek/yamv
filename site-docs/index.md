@@ -26,8 +26,9 @@ MVI architecture brings predictability to UI state. YAMV makes it production-rea
 | `yamv` | `MviRuntime`, `MviStore`, `FeatureRouter`, feature builders |
 | `yamv-retainer` | `MviRetainedStore` (Android ViewModel + iOS) |
 | `yamv-hilt` | `hiltMviStore()` Compose helper |
-| `yamv-koin` | `koinMviStore()` / `mviStore {}` DSL |
-| `yamv-processor-hilt` | KSP: generates `*Store` retained store + `*FeaturesModule` |
+| `yamv-koin` | `koinMviStore<S, I>()` / `mviStore {}` DSL |
+| `yamv-processor-core` | DI-agnostic KSP utilities (`AutoStateDiscovery`, `AutoFeatureDiscovery`) |
+| `yamv-processor-hilt` | Hilt KSP: generates `*Store` retained store + `*FeaturesModule` |
 
 ## Quick Install
 

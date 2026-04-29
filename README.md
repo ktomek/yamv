@@ -125,6 +125,17 @@ class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> 
 }
 ```
 
+YAMV provides four typed feature shapes — pick the simplest that fits:
+
+| Shape | Signature | Best for |
+|---|---|---|
+| `FunctionTypedFeature<S, I>` | `suspend (I) -> Outcome<S>` | One outcome per intention |
+| `TypedFeature<S, I>` | `Flow<I> -> Flow<Outcome<S>>` | Stream transforms (`flatMapMerge`, `flatMapLatest`, …) |
+| `ActionTypedFeature<S, I>` | `suspend (I) -> Unit` | Fire-and-forget side effects, no state contribution |
+| `TypedUnitFeature<S, I>` | `Flow<I> -> Flow<Unit>` | Streamed side effects, no state contribution |
+
+All four call `.wrap()` when bound — automatically with `@AutoFeature` (Hilt) or the Koin `mviStore { add(…) }` DSL, manually otherwise.
+
 ### 4. Collect state in your Composable
 
 ```kotlin
