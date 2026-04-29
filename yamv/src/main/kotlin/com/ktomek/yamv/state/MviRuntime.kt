@@ -10,6 +10,7 @@ import com.ktomek.yamv.intention.IntentionRouter
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
 import kotlinx.atomicfu.atomic
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -70,6 +71,8 @@ class MviRuntime<S : State>(
                 .scan(defaultState) { state, reducer ->
                     try {
                         reducer.reduce(state)
+                    } catch (e: CancellationException) {
+                        throw e
                     } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
                         handleException(MviErrorContext(source = ErrorSource.REDUCER), e)
                         state
@@ -90,6 +93,8 @@ class MviRuntime<S : State>(
                     try {
                         Yamv.log(YamvLogLevel.DEBUG, TAG, "Effect emitted: $effect")
                         effectsFlow.emit(effect)
+                    } catch (e: CancellationException) {
+                        throw e
                     } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
                         handleException(MviErrorContext(source = ErrorSource.EFFECT), e)
                     }
@@ -105,6 +110,8 @@ class MviRuntime<S : State>(
                 .collect { intention ->
                     try {
                         intentionRouter.dispatchIntention(intention)
+                    } catch (e: CancellationException) {
+                        throw e
                     } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
                         handleException(
                             MviErrorContext(
