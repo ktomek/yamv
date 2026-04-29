@@ -32,11 +32,14 @@ YAMV (Yet Another MVI framework) is a Kotlin-first MVI (Model-View-Intent) archi
 ## Module Structure
 
 - **`:yamv-core`** — Marker interfaces and annotations (`State`, `Outcome` hierarchy, `@AutoState`, `@AutoFeature`)
-- **`:yamv`** — Core framework (pure Kotlin, no Android deps): `MviRuntime`, `MviStore`, `MviRegistry`, `FeatureRouter`, Feature wrappers
-- **`:yamv-retainer`** — Lifecycle-retained MviStore: `MviRetainedStore`, `hiltMviStore()` Compose helper
+- **`:yamv`** — Core framework (Kotlin Multiplatform, no Android deps): `MviRuntime`, `MviStore`, `MviRegistry`, `FeatureRouter`, Feature wrappers
+- **`:yamv-retainer`** — Lifecycle-retained MviStore: `MviRetainedStore` base class
+- **`:yamv-hilt`** — Hilt integration: `hiltMviStore()` Compose helper, `MviDispatcherConfig`
+- **`:yamv-koin`** — Koin integration (KMP): `koinMviStore<S, I>()`, `mviStore {}` DSL, `ProvideAppMviStoreOwner`
 - **`:yamv-processor-core`** — DI-agnostic KSP utilities: `AutoStateDiscovery`, `AutoFeatureDiscovery`
 - **`:yamv-processor-hilt`** — Hilt-specific KSP processor: generates `*Store` retained stores and `*FeaturesModule` Hilt modules
-- **`:app`** — Counter demo app showing framework usage end-to-end
+- **`:yamv-processor-hilt-fixtures`** — KSP coverage fixtures (not published) — synthetic `@AutoState`/`@AutoFeature` per feature shape, with assertions on the generated module
+- **`:app:hilt`** / **`:app:koin`** / **`:app:koin-android`** / **`:app:common`** — counter demo apps end-to-end (Hilt, Koin Android, Koin Multiplatform)
 
 ## Architecture
 
@@ -63,10 +66,12 @@ StateFlow<S> (observed by UI)
 - `EffectOutcome<S>` — side effect marker
 - `IntentionOutcome<S>` — triggers another intention dispatch
 
-**Features** — three levels of abstraction:
-- `Feature<S>` (sealed) — low-level, untyped `Flow<Any> → Flow<Outcome<S>>`
-- `TypedFeature<S, I>` — typed intentions `Flow<I> → Flow<Outcome<S>>`; use `.wrap()` to convert to `Feature<S>`
-- `FunctionTypedFeature<S, I>` — single-intention handler `(I) -> Outcome<S>`; use `functionTypedFeature<S, I> { }` builder
+**Features** — sealed `Feature<S>` has two raw shapes (`Feature.FlowFeature<S>` returning `Flow<Outcome<S>>`, `Feature.FlowUnitFeature<S>` returning `Flow<Unit>` for fire-and-forget). Four typed wrappers cover the common cases — call `.wrap()` to convert to `Feature<S>` (automatic with `@AutoFeature` / Koin `mviStore { add(…) }`):
+
+- `TypedFeature<S, I>` — typed `Flow<I> → Flow<Outcome<S>>` (wraps to `FlowFeature`)
+- `FunctionTypedFeature<S, I>` — single-intention `suspend (I) -> Outcome<S>` (wraps to `FlowFeature`); also `functionTypedFeature<S, I> { }` builder
+- `ActionTypedFeature<S, I>` — single-intention `suspend (I) -> Unit` (wraps to a unit holder)
+- `TypedUnitFeature<S, I>` — typed `Flow<I> → Flow<Unit>` (wraps to `FlowUnitFeature`)
 
 **Dispatcher Strategy** (`CoroutineDispatcherConfig`):
 - Intentions & Reducers → `Dispatchers.Main`

@@ -46,20 +46,22 @@ class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> 
 @Module
 @InstallIn(ViewModelComponent::class)
 interface CounterStateFeaturesModule {
+    // Direct Feature<S> subtypes (FlowFeature, FlowUnitFeature) are bound abstractly:
     @Binds @IntoSet @ViewModelScoped
-    fun bindIncrementFeature(feature: IncrementFeature): Feature<CounterState>
+    fun bindsAutoIncreaseFeature(it: AutoIncreaseFeature): Feature<CounterState>
 
     @BindsOptionalOf @MviDispatcherConfig(CounterState::class)
     fun bindOptionalDispatcherConfig(): CoroutineDispatcherConfig
 
-    // @Multibinds declares the empty set so Dagger doesn't fail when no features are bound
-    @Multibinds
-    fun featureSet(): Set<Feature<CounterState>>
-
     companion object {
-        // FunctionTypedFeature classes need .wrap() — goes in companion:
+        // Empty-set seed so Dagger doesn't fail when no features are bound:
+        @Provides @ElementsIntoSet @ViewModelScoped
+        fun provideDefaults(): Set<Feature<CounterState>> = emptySet()
+
+        // Typed feature classes (TypedFeature, FunctionTypedFeature, ActionTypedFeature,
+        // TypedUnitFeature) need .wrap() — they go in the companion object:
         @Provides @IntoSet @ViewModelScoped
-        fun provideDecreaseFeature(it: DecreaseFeature): Feature<CounterState> = it.wrap()
+        fun providesIncrementFeature(it: IncrementFeature): Feature<CounterState> = it.wrap()
     }
 }
 ```

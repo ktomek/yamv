@@ -59,7 +59,7 @@ class IncrementFeature : FunctionTypedFeature<CounterState, CounterIntention.Inc
 
 ### Using `.wrap()`
 
-`FunctionTypedFeature` and `TypedFeature` must be converted to `Feature<S>` before passing to `MviRuntime`. If you're **not** using Hilt code generation (`@AutoFeature`) or the Koin `mviStore {}` DSL, call `.wrap()` manually:
+All four typed feature shapes — `FunctionTypedFeature`, `TypedFeature`, `ActionTypedFeature`, `TypedUnitFeature` — must be converted to `Feature<S>` before passing to `MviRuntime`. If you're **not** using Hilt code generation (`@AutoFeature`) or the Koin `mviStore {}` DSL, call `.wrap()` manually:
 
 ```kotlin
 val runtime = MviRuntime(
@@ -105,6 +105,37 @@ class IncrementFeature : TypedFeature<CounterState, CounterIntention.Increment> 
 }
 ```
 
+## ActionTypedFeature — typed fire-and-forget
+
+For typed side effects that contribute *no* state — analytics, logging, navigation triggers:
+
+```kotlin
+class TrackEventFeature(
+    private val analytics: Analytics,
+) : ActionTypedFeature<AppState, AppIntention.Track> {
+    override suspend fun invoke(intention: AppIntention.Track) {
+        analytics.log(intention.event)
+    }
+}
+```
+
+Each matching intention spawns its own coroutine, so slow actions do not block each other. The wrapped result is routed through the `FlowUnitFeature` branch — outcomes are not collected.
+
+## TypedUnitFeature — typed streaming side effects
+
+Like `TypedFeature`, but returns `Flow<Unit>` for streaming side effects with no state contribution:
+
+```kotlin
+class ConnectivityWatcherFeature(
+    private val connectivity: Connectivity,
+) : TypedUnitFeature<AppState, AppIntention.WatchConnectivity> {
+    override fun invoke(intentions: Flow<AppIntention.WatchConnectivity>): Flow<Unit> =
+        intentions
+            .flatMapLatest { connectivity.observe() }
+            .map { /* push to a tracker, no Outcome */ }
+}
+```
+
 ## FlowFeature — low-level
 
 For features that need to handle multiple intention types or work with the raw `Flow<Any>`:
@@ -117,6 +148,8 @@ class LoggingFeature : Feature.FlowUnitFeature<AppState> {
         }
 }
 ```
+
+`Feature.FlowFeature<S>` (returns `Flow<Outcome<S>>`) and `Feature.FlowUnitFeature<S>` (returns `Flow<Unit>`) are the two raw shapes; the four typed wrappers above sugar these for the common cases.
 
 ## Combining Outcomes
 

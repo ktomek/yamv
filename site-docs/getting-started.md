@@ -3,8 +3,8 @@
 ## Prerequisites
 
 - Android Studio Hedgehog or newer
-- Kotlin 2.0+
-- KSP plugin (for `@AutoState`/`@AutoFeature` code generation)
+- Kotlin 2.1+ (project itself builds on 2.3.20)
+- KSP plugin (for `@AutoState`/`@AutoFeature` code generation) — pin a version that matches your Kotlin version
 
 ## Installation
 
@@ -14,7 +14,8 @@ In your app module's `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("com.google.devtools.ksp") version "2.0.21-1.0.28"
+    // Use a KSP version that matches your Kotlin version (e.g. "2.3.20-2.3.2")
+    id("com.google.devtools.ksp") version "<KSP_VERSION>"
 }
 ```
 

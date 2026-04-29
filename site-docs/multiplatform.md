@@ -19,9 +19,10 @@ YAMV supports Kotlin Multiplatform for sharing state logic between Android and i
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.github.ktomek.yamv:yamv:VERSION")
-            implementation("com.github.ktomek.yamv:yamv-retainer:VERSION")
-            implementation("com.github.ktomek.yamv:yamv-koin:VERSION")
+            implementation("io.github.ktomek:yamv-core:VERSION")
+            implementation("io.github.ktomek:yamv:VERSION")
+            implementation("io.github.ktomek:yamv-retainer:VERSION")
+            implementation("io.github.ktomek:yamv-koin:VERSION")
         }
     }
 }
