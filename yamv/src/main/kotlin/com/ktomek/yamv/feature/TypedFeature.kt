@@ -28,3 +28,16 @@ interface TypedFeatureHolder<S : State> : Feature.FlowFeature<S> {
 interface TypedUnitFeatureHolder<S : State> : Feature.FlowFeature<S> {
     val feature: Any
 }
+
+/**
+ * Typed counterpart of [Feature.FlowUnitFeature]: receives a strongly-typed [Flow] of intentions
+ * and produces a [Flow] of [Unit] (fire-and-forget side effects, no state contribution).
+ *
+ * Use [wrap] to turn a [TypedUnitFeature] into a [Feature] that the runtime can dispatch.
+ *
+ * @param S The state type the owning store works with.
+ * @param INTENTION The intention type this feature reacts to.
+ */
+fun interface TypedUnitFeature<S : State, INTENTION> {
+    operator fun invoke(intention: Flow<INTENTION>): Flow<Unit>
+}
