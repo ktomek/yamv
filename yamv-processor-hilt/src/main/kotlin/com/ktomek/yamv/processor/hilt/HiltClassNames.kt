@@ -32,8 +32,18 @@ internal object YamvClassNames {
 internal object FeatureFqns {
     const val FEATURE = "com.ktomek.yamv.feature.Feature"
     const val FLOW_FEATURE = "com.ktomek.yamv.feature.Feature.FlowFeature"
+    const val FLOW_UNIT_FEATURE = "com.ktomek.yamv.feature.Feature.FlowUnitFeature"
     const val FUNCTION_TYPED_FEATURE = "com.ktomek.yamv.feature.FunctionTypedFeature"
     const val TYPED_FEATURE = "com.ktomek.yamv.feature.TypedFeature"
+    const val ACTION_TYPED_FEATURE = "com.ktomek.yamv.feature.ActionTypedFeature"
+    const val TYPED_UNIT_FEATURE = "com.ktomek.yamv.feature.TypedUnitFeature"
+
+    val WRAP_REQUIRED: Set<String> = setOf(
+        FUNCTION_TYPED_FEATURE,
+        TYPED_FEATURE,
+        ACTION_TYPED_FEATURE,
+        TYPED_UNIT_FEATURE,
+    )
 }
 
 internal const val NO_DEFAULT_STATE_NAME = "NoDefaultState"

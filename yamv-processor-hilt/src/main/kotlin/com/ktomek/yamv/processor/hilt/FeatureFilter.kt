@@ -14,8 +14,10 @@ import com.squareup.kotlinpoet.ksp.toClassName
 internal class FeatureFilter(private val resolver: Resolver) {
 
     /**
-     * Returns all valid `@AutoFeature` declarations that are recognized feature types
-     * (either [FeatureFqns.FLOW_FEATURE] classes or [FeatureFqns.FUNCTION_TYPED_FEATURE] classes/properties).
+     * Returns all valid `@AutoFeature` declarations that are recognized feature types —
+     * any direct [Feature][FeatureFqns.FEATURE] subtype (for classes: [FeatureFqns.FLOW_FEATURE] or
+     * [FeatureFqns.FLOW_UNIT_FEATURE]) or any of the typed feature wrappers
+     * ([FeatureFqns.WRAP_REQUIRED]).
      */
     fun findAll(): List<KSDeclaration> {
         val classes = AutoFeatureDiscovery.findAnnotatedClasses(resolver).filter { it.isKnownFeatureClass() }
@@ -47,13 +49,14 @@ internal class FeatureFilter(private val resolver: Resolver) {
         resolve().arguments.firstOrNull()?.type?.resolve()?.declaration?.simpleName?.asString() == stateName
 
     companion object {
-        private val KNOWN_CLASS_FEATURE_FQNS = setOf(
-            FeatureFqns.FLOW_FEATURE,
-            FeatureFqns.FUNCTION_TYPED_FEATURE,
-        )
-        private val KNOWN_PROPERTY_FEATURE_FQNS = setOf(
-            FeatureFqns.FUNCTION_TYPED_FEATURE,
-            FeatureFqns.FEATURE,
-        )
+        private val KNOWN_CLASS_FEATURE_FQNS: Set<String> = buildSet {
+            add(FeatureFqns.FLOW_FEATURE)
+            add(FeatureFqns.FLOW_UNIT_FEATURE)
+            addAll(FeatureFqns.WRAP_REQUIRED)
+        }
+        private val KNOWN_PROPERTY_FEATURE_FQNS: Set<String> = buildSet {
+            add(FeatureFqns.FEATURE)
+            addAll(FeatureFqns.WRAP_REQUIRED)
+        }
     }
 }

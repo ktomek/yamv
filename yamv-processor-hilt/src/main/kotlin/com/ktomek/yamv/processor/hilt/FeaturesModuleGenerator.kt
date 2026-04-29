@@ -76,9 +76,12 @@ internal class FeaturesModuleGenerator(private val codeGenerator: CodeGenerator)
             .build()
     }
 
-    /** Returns true if this class feature needs `.wrap()` (i.e. it is a FunctionTypedFeature). */
+    /**
+     * Returns true if this class feature needs `.wrap()` — i.e. it implements one of the typed
+     * feature interfaces ([FeatureFqns.WRAP_REQUIRED]) rather than `Feature<S>` directly.
+     */
     private fun KSClassDeclaration.requiresWrap(): Boolean =
-        superTypes.any { it.resolve().declaration.qualifiedName?.asString() == FeatureFqns.FUNCTION_TYPED_FEATURE }
+        superTypes.any { it.resolve().declaration.qualifiedName?.asString() in FeatureFqns.WRAP_REQUIRED }
 
     private fun buildInstallInAnnotation(): AnnotationSpec =
         AnnotationSpec.builder(HiltClassNames.InstallIn)
