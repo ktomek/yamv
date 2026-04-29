@@ -5,6 +5,7 @@ import com.ktomek.yamv.feature.ActionTypedFeature
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.FunctionTypedFeature
 import com.ktomek.yamv.feature.TypedFeature
+import com.ktomek.yamv.feature.TypedUnitFeature
 import com.ktomek.yamv.feature.wrap
 import org.koin.core.scope.Scope
 
@@ -12,8 +13,8 @@ import org.koin.core.scope.Scope
  * Builder that assembles a [Set]<[Feature]<[S]>> for use in [mviStore].
  *
  * Call [add] for each feature. For typed feature interfaces ([FunctionTypedFeature],
- * [ActionTypedFeature], [TypedFeature]) the required `.wrap()` is applied automatically —
- * no call sites need to know about it.
+ * [ActionTypedFeature], [TypedFeature], [TypedUnitFeature]) the required `.wrap()` is applied
+ * automatically — no call sites need to know about it.
  *
  * Koin dependency resolution is forwarded via the inline [get] function, keeping the same
  * ergonomics as a plain `Scope.() -> ...` lambda.
@@ -39,6 +40,11 @@ class FeatureRegistrar<S : State>(@PublishedApi internal val scope: Scope) {
 
     /** Adds a [TypedFeature], applying [wrap] internally. */
     inline fun <reified I : Any> add(feature: TypedFeature<S, I>) {
+        features.add(feature.wrap())
+    }
+
+    /** Adds a [TypedUnitFeature], applying [wrap] internally. */
+    inline fun <reified I : Any> add(feature: TypedUnitFeature<S, I>) {
         features.add(feature.wrap())
     }
 
