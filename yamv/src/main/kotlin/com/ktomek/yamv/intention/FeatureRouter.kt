@@ -17,6 +17,7 @@ import com.ktomek.yamv.state.MviExceptionHandler
 import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.AtomicInt
 import kotlinx.atomicfu.atomic
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -86,6 +87,8 @@ internal class FeatureRouter<S : State>(
             scope.launch(dispatcher) {
                 try {
                     processFeature(feature)
+                } catch (e: CancellationException) {
+                    throw e
                 } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
                     Yamv.log(YamvLogLevel.ERROR, TAG, "Feature $feature failed: $e")
                     exceptionHandler.handle(
@@ -133,13 +136,7 @@ internal class FeatureRouter<S : State>(
             (f as? HasFeatureScope)?.featureScope?.cancel()
         }
 
-        featureJobs.forEach { job ->
-            try {
-                job.cancel()
-            } catch (e: Exception) {
-                Yamv.log(YamvLogLevel.WARN, TAG, "Error cancelling feature job: ${e.message}")
-            }
-        }
+        featureJobs.forEach(Job::cancel)
     }
 
     fun isDisposed(): Boolean = isDisposed.value
