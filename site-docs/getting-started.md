@@ -156,7 +156,9 @@ By default both `hiltMviStore()` and `koinMviStore()` resolve through `LocalView
     fun AuthScreen(store: AuthStateStore = hiltMviAppStore()) { ... }
     ```
 
-    Resolves the host `ComponentActivity` from `LocalContext` and uses it as the `ViewModelStoreOwner` — so the same instance is shared across the activity's lifetime.
+    Resolves the host `ComponentActivity` automatically and uses it as the `MviStoreOwner` — same instance shared across the activity's lifetime, no setup required.
+
+    For non-default scopes (a specific Fragment, a custom `NavBackStackEntry`, tests) wrap the subtree with `ProvideAppMviStoreOwner(owner) { … }` to override `LocalAppMviStoreOwner`.
 
 === "Koin"
 
