@@ -10,11 +10,13 @@ import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.Feature.FlowFeature
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 private interface TestState : State {
     val count: Int
@@ -173,4 +175,46 @@ class MviRuntimeTest {
         // Assert
         assertEquals(emissionCountBeforeClear, emissionCount)
     }
+
+    @Test
+    fun `GIVEN MviRuntime mid-emission WHEN cleared THEN exceptionHandler is never invoked for cancellation`() =
+        runTest {
+            // Arrange — a feature whose flow is suspended (collects but never emits) so
+            // that clear() must cancel it mid-collection.
+            val testDispatcher = StandardTestDispatcher(testScheduler)
+            val defaultState = TestStateImpl(count = 0)
+            val recordedThrowables = mutableListOf<Throwable>()
+            val recordedSources = mutableListOf<ErrorSource>()
+
+            val handler = MviExceptionHandler { context, e ->
+                recordedThrowables.add(e)
+                recordedSources.add(context.source)
+                throw e
+            }
+
+            val suspendingFeature = object : FlowFeature<TestState> {
+                override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> = flow {
+                    intentions.collect { /* suspend forever */ }
+                }
+            }
+
+            val runtime = MviRuntime(
+                features = setOf<Feature<TestState>>(suspendingFeature),
+                defaultState = defaultState,
+                dispatcherConfig = testDispatcherConfig(testDispatcher),
+                exceptionHandler = handler,
+            )
+
+            // Act — get into a steady state, then dispatch + cancel mid-flight.
+            testDispatcher.scheduler.advanceUntilIdle()
+            runtime.dispatch("any")
+            runtime.clear()
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert — handler must not see anything; cancellation is not an error.
+            assertTrue(
+                recordedThrowables.isEmpty(),
+                "exceptionHandler invoked during clear() with: $recordedThrowables (sources=$recordedSources)",
+            )
+        }
 }
