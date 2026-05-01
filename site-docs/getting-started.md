@@ -145,6 +145,37 @@ class DecrementFeature : TypedFeature<CounterState, CounterIntention.Decrement> 
     }
     ```
 
+### App-lifetime state across navigation
+
+By default both `hiltMviStore()` and `koinMviStore()` resolve through `LocalViewModelStoreOwner.current`, which Compose Navigation overrides per back-stack entry — every destination gets its own store. For state that should survive navigation (auth, session, preferences):
+
+=== "Hilt"
+
+    ```kotlin
+    @Composable
+    fun AuthScreen(store: AuthStateStore = hiltMviAppStore()) { ... }
+    ```
+
+    Resolves the host `ComponentActivity` from `LocalContext` and uses it as the `ViewModelStoreOwner` — so the same instance is shared across the activity's lifetime.
+
+=== "Koin"
+
+    ```kotlin
+    @Composable
+    fun App() {
+        ProvideAppMviStoreOwner {
+            NavHost(...) { ... }
+        }
+    }
+
+    @Composable
+    fun AuthScreen(store: MviStore<AuthState, AuthIntention> = koinMviAppStore()) { ... }
+    ```
+
+    `ProvideAppMviStoreOwner` (placed above `NavHost`) captures the root owner; `koinMviAppStore` resolves through it.
+
+Both `hiltMviStore` and `koinMviStore` also accept an explicit `owner` parameter when you need to scope to something other than the default.
+
 ## Running the Sample App
 
 The `:app:hilt` module is a working counter demo:
