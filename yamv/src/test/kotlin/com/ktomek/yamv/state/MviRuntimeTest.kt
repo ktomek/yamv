@@ -217,4 +217,58 @@ class MviRuntimeTest {
                 "exceptionHandler invoked during clear() with: $recordedThrowables (sources=$recordedSources)",
             )
         }
+
+    @Test
+    fun `GIVEN MviRuntime WHEN intention dispatched via invoke operator THEN state is updated`() =
+        runTest {
+            // Arrange
+            val testDispatcher = StandardTestDispatcher(testScheduler)
+            val defaultState = TestStateImpl(count = 0)
+            val incrementReducer: StateOutcome<TestState> = StateOutcome { prev -> TestStateImpl(prev.count + 1) }
+
+            val feature = object : FlowFeature<TestState> {
+                override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> =
+                    intentions.map { incrementReducer }
+            }
+
+            val runtime = MviRuntime(
+                features = setOf<Feature<TestState>>(feature),
+                defaultState = defaultState,
+                dispatcherConfig = testDispatcherConfig(testDispatcher),
+            )
+
+            // Act — operator-invoke sugar instead of .dispatch
+            runtime("any_intention")
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert
+            assertEquals(1, runtime.state.value.count)
+        }
+
+    @Test
+    fun `GIVEN MviRuntime WHEN intention dispatched via send infix THEN state is updated`() =
+        runTest {
+            // Arrange
+            val testDispatcher = StandardTestDispatcher(testScheduler)
+            val defaultState = TestStateImpl(count = 0)
+            val incrementReducer: StateOutcome<TestState> = StateOutcome { prev -> TestStateImpl(prev.count + 1) }
+
+            val feature = object : FlowFeature<TestState> {
+                override fun invoke(intentions: Flow<Any>): Flow<Outcome<TestState>> =
+                    intentions.map { incrementReducer }
+            }
+
+            val runtime = MviRuntime(
+                features = setOf<Feature<TestState>>(feature),
+                defaultState = defaultState,
+                dispatcherConfig = testDispatcherConfig(testDispatcher),
+            )
+
+            // Act — infix-send sugar instead of .dispatch
+            runtime send "any_intention"
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert
+            assertEquals(1, runtime.state.value.count)
+        }
 }
