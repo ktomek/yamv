@@ -145,6 +145,8 @@ class DecrementFeature : TypedFeature<CounterState, CounterIntention.Decrement> 
     }
     ```
 
+`store.dispatch(intention)`, `store(intention)` (operator), and `store send intention` (infix) are equivalent — pick whichever reads best at the call site.
+
 ### App-lifetime state across navigation
 
 By default both `hiltMviStore()` and `koinMviStore()` resolve through `LocalViewModelStoreOwner.current`, which Compose Navigation overrides per back-stack entry — every destination gets its own store. For state that should survive navigation (auth, session, preferences):

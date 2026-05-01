@@ -10,4 +10,10 @@ interface MviStore<S : State, I : Any> {
     val effects: Flow<EffectOutcome<S>>
     fun dispatch(intention: I)
     fun clear()
+
+    /** Sugar — `store(intention)` is equivalent to `store.dispatch(intention)`. */
+    operator fun invoke(intention: I) = dispatch(intention)
+
+    /** Sugar — `store send intention` is equivalent to `store.dispatch(intention)`. */
+    infix fun send(intention: I) = dispatch(intention)
 }
