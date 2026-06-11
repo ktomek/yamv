@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -32,6 +33,17 @@ kotlin {
         }
     }
 
+    // Browser demo: `./gradlew :app:koin:wasmJsBrowserDevelopmentRun` serves the counter at localhost.
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser {
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+            }
+        }
+        binaries.executable()
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(project(":app:common"))
@@ -39,6 +51,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.coroutines.core)
+        }
+        wasmJsMain.dependencies {
+            implementation(compose.ui)
         }
         androidMain.dependencies {
             implementation(compose.material3)
