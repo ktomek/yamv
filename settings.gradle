@@ -7,11 +7,61 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // PREFER_SETTINGS (instead of FAIL_ON_PROJECT_REPOS): the Kotlin/Wasm toolchain registers its
+    // Node.js/Yarn/Binaryen download repositories on the root project for the wasmJs target. Under
+    // FAIL_ON_PROJECT_REPOS that registration aborts the build, so we ignore project repositories
+    // and instead declare those distribution repositories here (below) so the toolchain resolves
+    // from settings. Module dependency resolution still prefers the settings repositories.
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
         mavenLocal()
+        // Kotlin/Wasm toolchain: Node.js distribution download (wasmJs target).
+        exclusiveContent {
+            forRepository {
+                ivy {
+                    name = "Node.js Distributions"
+                    setUrl("https://nodejs.org/dist")
+                    patternLayout {
+                        artifact("v[revision]/[artifact](-v[revision]-[classifier]).[ext]")
+                    }
+                    metadataSources { artifact() }
+                    content { includeModule("org.nodejs", "node") }
+                }
+            }
+            filter { includeGroup("org.nodejs") }
+        }
+        // Kotlin/Wasm toolchain: Yarn distribution download (wasmJs browser tests).
+        exclusiveContent {
+            forRepository {
+                ivy {
+                    name = "Yarn Distributions"
+                    setUrl("https://github.com/yarnpkg/yarn/releases/download")
+                    patternLayout {
+                        artifact("v[revision]/[artifact](-v[revision]).[ext]")
+                    }
+                    metadataSources { artifact() }
+                    content { includeModule("com.yarnpkg", "yarn") }
+                }
+            }
+            filter { includeGroup("com.yarnpkg") }
+        }
+        // Kotlin/Wasm toolchain: Binaryen (wasm-opt) download for wasmJs production/browser bundles.
+        exclusiveContent {
+            forRepository {
+                ivy {
+                    name = "Binaryen Distributions"
+                    setUrl("https://github.com/WebAssembly/binaryen/releases/download")
+                    patternLayout {
+                        artifact("version_[revision]/[artifact]-version_[revision]-[classifier].[ext]")
+                    }
+                    metadataSources { artifact() }
+                    content { includeModule("com.github.webassembly", "binaryen") }
+                }
+            }
+            filter { includeGroup("com.github.webassembly") }
+        }
     }
 }
 rootProject.name = "yamv"
