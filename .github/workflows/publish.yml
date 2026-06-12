@@ -32,6 +32,17 @@ jobs:
       - name: Run Tests
         run: ./gradlew jvmTest --no-daemon
 
+      # Web (wasmJs) artifacts are published by publishToMavenCentral together with all other
+      # targets; this step fails fast if the wasmJs klibs of the published modules don't compile.
+      - name: Verify wasmJs targets
+        run: >-
+          ./gradlew
+          :yamv-core:compileKotlinWasmJs
+          :yamv:compileKotlinWasmJs
+          :yamv-retainer:compileKotlinWasmJs
+          :yamv-koin:compileKotlinWasmJs
+          --no-daemon
+
       - name: Publish to Maven Central
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
