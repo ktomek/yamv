@@ -172,3 +172,83 @@ class LoginFeature(
             .catch { e -> emit(LoginErrorOutcome(e.message)) }
 }
 ```
+
+## UI State Projection
+
+`store.state` exposes the full business-logic `State`. In real apps that state often
+carries internal bookkeeping the UI never renders — retry counters, validation tokens,
+pagination cursors. Because Compose recomposes whenever the collected value changes, a
+screen observing the full state recomposes on every internal change, even when nothing
+visible moved.
+
+YAMV offers an **opt-in** projection from `State` to a UI-only type. `store.state`
+remains the default path; reach for projection only when internal churn causes wasted
+recompositions.
+
+### `UiMappable` + `uiState()`
+
+Have the state declare its UI projection by implementing `UiMappable<UiS>`:
+
+```kotlin
+data class ProfileState(
+    val name: String = "",
+    val email: String = "",
+    val isSaving: Boolean = false,
+    // internal — never rendered:
+    val saveAttempts: Int = 0,
+    val lastValidationToken: Long = 0L,
+) : State, UiMappable<ProfileUiState> {
+    override fun toUiState() = ProfileUiState(
+        name = name,
+        email = email,
+        isSaving = isSaving,
+        canSave = name.isNotBlank() && email.contains("@") && !isSaving, // derived
+    )
+}
+
+data class ProfileUiState(
+    val name: String,
+    val email: String,
+    val isSaving: Boolean,
+    val canSave: Boolean,
+)
+```
+
+In Compose, collect the projection with the type-safe `uiState()` shorthand. It applies
+`distinctUntilChanged`, so the screen only recomposes when a projected value actually
+changes — bumping `saveAttempts` re-emits `State` but does **not** recompose the UI:
+
+```kotlin
+@Composable
+fun ProfileScreen(store: ProfileStateStore = hiltMviStore()) {
+    val scope = rememberCoroutineScope()
+    val ui by remember(store, scope) {
+        store.uiState<ProfileState, ProfileUiState>(scope)
+    }.collectAsState()
+
+    // ui.name, ui.email, ui.canSave, ui.isSaving
+}
+```
+
+### `mapToUiState()` — any mapper
+
+When the state does not implement `UiMappable` (or you want a screen-specific
+projection), map the `StateFlow` directly:
+
+```kotlin
+val ui by remember(store, scope) {
+    store.state.mapToUiState(scope) { state ->
+        ProfileUiState(
+            name = state.name,
+            email = state.email,
+            isSaving = state.isSaving,
+            canSave = state.name.isNotBlank() && state.email.contains("@"),
+        )
+    }
+}.collectAsState()
+```
+
+Both helpers live in `:yamv` and work on every Kotlin Multiplatform target, so the same
+projection applies under Hilt or Koin. A runnable end-to-end demo lives in the Hilt
+sample app (`app/hilt`, the **Profile** screen), which shows a projected collector and a
+raw-state collector side by side so the difference in recompositions is visible.
