@@ -42,6 +42,8 @@ class MviRuntime<S : State>(
             },
     )
 
+    private val initialized = CompletableDeferred<Unit>()
+
     private val effectsFlow: MutableSharedFlow<EffectOutcome<S>> = MutableSharedFlow()
     override val effects: Flow<EffectOutcome<S>>
         get() = effectsFlow
@@ -127,12 +129,17 @@ class MviRuntime<S : State>(
         scope.launch(dispatcherConfig.provideReducerDispatcher()) {
             outcomeCollectorsReady.await()
             intentionRouter.initialize(scope, dispatcherConfig, exceptionHandler)
+            initialized.complete(Unit)
         }
     }
 
     override fun dispatch(intention: Any) {
         Yamv.log(YamvLogLevel.VERBOSE, TAG, "dispatch($intention)")
         scope.launch(dispatcherConfig.provideIntentionDispatcher(intention)) {
+            // Wait until the router is initialized before dispatching. Otherwise an intention
+            // dispatched right after construction can race ahead of initialize() and be dropped
+            // by FeatureRouter.dispatchIntention's "not initialized" guard (see #69).
+            initialized.await()
             intentionRouter.dispatchIntention(intention)
         }
     }
