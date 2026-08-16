@@ -8,6 +8,7 @@ import com.ktomek.yamv.feature.Feature.FlowUnitFeature
 import com.ktomek.yamv.feature.HasFeatureDispatcher
 import com.ktomek.yamv.feature.HasFeatureScope
 import com.ktomek.yamv.feature.TypedFeatureHolder
+import com.ktomek.yamv.feature.WrappedFeature
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
 import com.ktomek.yamv.state.CoroutineDispatcherConfig
@@ -22,6 +23,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -91,9 +93,10 @@ internal class FeatureRouter<S : State>(
                 val markOnce = { if (!marked.getAndSet(true)) markSubscribed() }
                 try {
                     processFeature(feature, markOnce)
-                    // Reached only if the feature flow completed normally without ever subscribing
-                    // to intentionFlow (e.g. an eager `flowOf(...)` feature). Mark it so the gate
-                    // does not wait forever on a feature that will never subscribe.
+                    // Idempotent safety net: reached only if the feature's flow completes. Raw
+                    // features are already marked eagerly and framework wrappers always subscribe,
+                    // so this normally no-ops — it just guards a hypothetical wrapper that completes
+                    // without ever subscribing.
                     markOnce()
                 } catch (e: CancellationException) {
                     throw e
@@ -114,26 +117,35 @@ internal class FeatureRouter<S : State>(
     }
 
     /**
-     * Collects [feature], invoking [markOnce] the moment it actually subscribes to [intentionFlow]
-     * (via [onSubscription] on the gated flow handed to it). This is what fixes the
-     * dropped-first-intention race (#69): the typed-feature wrappers subscribe to [intentionFlow]
-     * inside a `channelFlow`, strictly after the outer flow starts, so the previous
-     * `onStart`-on-the-outer-flow signal opened the readiness gate before the feature was actually
-     * collecting — and an intention emitted in that window was dropped by the `replay = 0`
-     * SharedFlow.
+     * Collects [feature] and marks it toward the readiness gate ([markOnce]) at the correct moment.
      *
-     * The signal must ride on [intentionFlow] itself (not on an operator wrapped around the
-     * feature's returned flow, e.g. `onCompletion`, which perturbs the collector and reintroduces
-     * the race). Features that never subscribe are marked by the caller once this function returns.
+     * For a framework wrapper ([WrappedFeature]) the subscription to [intentionFlow] is deferred
+     * inside a `channelFlow`, so the mark rides on [onSubscription] of the intentions flow — i.e. it
+     * fires the moment the wrapper actually subscribes. This is what fixes the dropped-first-intention
+     * race (#69): the previous `onStart`-on-the-outer-flow signal opened the gate before the feature
+     * was collecting, and an intention emitted in that window was dropped by the `replay = 0`
+     * SharedFlow. (The signal must ride on [intentionFlow] itself, not on an operator wrapped around
+     * the feature's returned flow such as `onCompletion`, which perturbs the collector and reintroduces
+     * the race.)
+     *
+     * A raw feature is marked **eagerly** instead: it either consumes intentions synchronously at
+     * collect, or ignores them entirely (a source-driven observer that never subscribes and never
+     * completes). Gating on such a feature would stall the readiness gate forever — the regression
+     * fixed in #71.
      */
     private suspend fun processFeature(feature: Feature<S>, markOnce: () -> Unit) {
-        val gated = intentionFlow.onSubscription { markOnce() }
+        val intentions: Flow<Any> = if (feature is WrappedFeature) {
+            intentionFlow.onSubscription { markOnce() }
+        } else {
+            markOnce()
+            intentionFlow
+        }
         when (feature) {
-            is FlowFeature<S> -> feature(gated)
+            is FlowFeature<S> -> feature(intentions)
                 .filterNotNull()
                 .collect(outcomeFlow::emit)
 
-            is FlowUnitFeature<S> -> feature(gated)
+            is FlowUnitFeature<S> -> feature(intentions)
                 .collect { }
         }
     }
