@@ -1,9 +1,11 @@
 package com.ktomek.yamv.stress
 
 import com.google.common.truth.Truth.assertThat
+import com.ktomek.yamv.core.Outcome
 import com.ktomek.yamv.core.State
 import com.ktomek.yamv.core.StateOutcome
 import com.ktomek.yamv.feature.ActionTypedFeature
+import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.TypedFeature
 import com.ktomek.yamv.feature.TypedUnitFeature
 import com.ktomek.yamv.feature.functionTypedFeature
@@ -11,6 +13,7 @@ import com.ktomek.yamv.feature.wrap
 import com.ktomek.yamv.state.CoroutineDispatcherConfig
 import com.ktomek.yamv.state.MviRuntime
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -149,10 +152,66 @@ class ImmediateDispatchRegressionTest {
         runtime.clear()
     }
 
+    // --- #71 regression: a store that also contains a source-driven feature which ignores
+    // intentions and never completes (e.g. `combine(sourceA, sourceB)`). Such a feature never marks
+    // itself toward the readiness gate, which must NOT stall dispatch for the OTHER features. ---
+
+    @Test
+    fun `typed feature still receives immediate dispatch when store has an infinite intention-ignoring FlowFeature`() =
+        runBlocking {
+            val typed = functionTypedFeature<RegState, RegIntention> {
+                StateOutcome<RegState> { state -> state.copy(applied = true) }
+            }
+            // Ignores intentions, never subscribes, never completes.
+            val observer = Feature.FlowFeature<RegState> { _ -> flow<Outcome<RegState>> { awaitCancellation() } }
+            val runtime = MviRuntime(setOf(typed, observer), RegState(), realDispatcherConfig())
+
+            runtime.dispatch(RegIntention.Load) // immediate — no settle
+
+            awaitState(runtime) { it.applied }
+            assertThat(runtime.state.value.applied).isTrue()
+            runtime.clear()
+        }
+
+    @Test
+    fun `typed feature still receives dispatch after a settle when store has an infinite observer`() =
+        runBlocking {
+            val typed = functionTypedFeature<RegState, RegIntention> {
+                StateOutcome<RegState> { state -> state.copy(applied = true) }
+            }
+            val observer = Feature.FlowFeature<RegState> { _ -> flow<Outcome<RegState>> { awaitCancellation() } }
+            val runtime = MviRuntime(setOf(typed, observer), RegState(), realDispatcherConfig())
+
+            // Even after settling, the gate never opens on the buggy code — proves a permanent hang,
+            // not just an init race.
+            delay(SETTLE_MS)
+            runtime.dispatch(RegIntention.Load)
+
+            awaitState(runtime) { it.applied }
+            assertThat(runtime.state.value.applied).isTrue()
+            runtime.clear()
+        }
+
+    @Test
+    fun `typed feature still receives immediate dispatch when store has an infinite FlowUnitFeature observer`() =
+        runBlocking {
+            val received = AtomicBoolean(false)
+            val typed = ActionTypedFeature<RegState, RegIntention> { received.set(true) }.wrap()
+            val observer = Feature.FlowUnitFeature<RegState> { _ -> flow<Unit> { awaitCancellation() } }
+            val runtime = MviRuntime(setOf(typed, observer), RegState(), realDispatcherConfig())
+
+            runtime.dispatch(RegIntention.Load) // immediate — no settle
+
+            awaitTrue { received.get() }
+            assertThat(received.get()).isTrue()
+            runtime.clear()
+        }
+
     private companion object {
         const val AWAIT_TIMEOUT_MS = 5_000L
         const val POLL_INTERVAL_MS = 20L
         const val LATE_SUBSCRIBE_MS = 500L
+        const val SETTLE_MS = 300L
         const val REPEATS = 20
     }
 }
