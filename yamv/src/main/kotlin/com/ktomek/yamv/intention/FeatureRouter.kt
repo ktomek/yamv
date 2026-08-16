@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 
 /**
@@ -85,8 +85,16 @@ internal class FeatureRouter<S : State>(
             val dispatcher = (f as? HasFeatureDispatcher)?.featureDispatcher
                 ?: dispatcherConfig.provideFeatureDispatcher(f)
             scope.launch(dispatcher) {
+                // Mark this feature toward the readiness gate exactly once, via whichever happens
+                // first: it subscribes to intentionFlow, or its flow completes without subscribing.
+                val marked: AtomicBoolean = atomic(false)
+                val markOnce = { if (!marked.getAndSet(true)) markSubscribed() }
                 try {
-                    processFeature(feature)
+                    processFeature(feature, markOnce)
+                    // Reached only if the feature flow completed normally without ever subscribing
+                    // to intentionFlow (e.g. an eager `flowOf(...)` feature). Mark it so the gate
+                    // does not wait forever on a feature that will never subscribe.
+                    markOnce()
                 } catch (e: CancellationException) {
                     throw e
                 } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
@@ -105,15 +113,27 @@ internal class FeatureRouter<S : State>(
         return outcomeFlow.asSharedFlow()
     }
 
-    private suspend fun processFeature(feature: Feature<S>) {
+    /**
+     * Collects [feature], invoking [markOnce] the moment it actually subscribes to [intentionFlow]
+     * (via [onSubscription] on the gated flow handed to it). This is what fixes the
+     * dropped-first-intention race (#69): the typed-feature wrappers subscribe to [intentionFlow]
+     * inside a `channelFlow`, strictly after the outer flow starts, so the previous
+     * `onStart`-on-the-outer-flow signal opened the readiness gate before the feature was actually
+     * collecting — and an intention emitted in that window was dropped by the `replay = 0`
+     * SharedFlow.
+     *
+     * The signal must ride on [intentionFlow] itself (not on an operator wrapped around the
+     * feature's returned flow, e.g. `onCompletion`, which perturbs the collector and reintroduces
+     * the race). Features that never subscribe are marked by the caller once this function returns.
+     */
+    private suspend fun processFeature(feature: Feature<S>, markOnce: () -> Unit) {
+        val gated = intentionFlow.onSubscription { markOnce() }
         when (feature) {
-            is FlowFeature<S> -> feature(intentionFlow)
-                .onStart { markSubscribed() }
+            is FlowFeature<S> -> feature(gated)
                 .filterNotNull()
                 .collect(outcomeFlow::emit)
 
-            is FlowUnitFeature<S> -> feature(intentionFlow)
-                .onStart { markSubscribed() }
+            is FlowUnitFeature<S> -> feature(gated)
                 .collect { }
         }
     }

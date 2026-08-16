@@ -79,8 +79,6 @@ class MviRuntimeStressTest {
             dispatcherConfig = realDispatcherConfig(),
         )
 
-        delay(100) // wait for feature subscriptions
-
         coroutineScope {
             repeat(8) {
                 launch(Dispatchers.Default) {
