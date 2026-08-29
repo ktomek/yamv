@@ -18,6 +18,10 @@ flowchart LR
 
 **The cycle:** UI dispatches an intention → Store routes it to matching features → features emit outcomes → outcomes update state → UI observes new state.
 
+> The UI observes the full `StateFlow<S>` by default. To project state down to a
+> UI-only type and skip recompositions on internal changes, see
+> [UI State Projection](features.md#ui-state-projection).
+
 Outcomes come in three kinds:
 
 - **`StateOutcome`** — pure `(S) → S` reducer, applied via `scan()`
