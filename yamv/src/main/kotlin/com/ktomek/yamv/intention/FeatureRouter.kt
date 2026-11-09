@@ -5,9 +5,9 @@ import com.ktomek.yamv.core.State
 import com.ktomek.yamv.feature.Feature
 import com.ktomek.yamv.feature.Feature.FlowFeature
 import com.ktomek.yamv.feature.Feature.FlowUnitFeature
+import com.ktomek.yamv.feature.FeatureHolder
 import com.ktomek.yamv.feature.HasFeatureDispatcher
 import com.ktomek.yamv.feature.HasFeatureScope
-import com.ktomek.yamv.feature.TypedFeatureHolder
 import com.ktomek.yamv.feature.WrappedFeature
 import com.ktomek.yamv.logging.Yamv
 import com.ktomek.yamv.logging.YamvLogLevel
@@ -76,14 +76,11 @@ internal class FeatureRouter<S : State>(
         }
 
         scope.coroutineContext[Job]?.invokeOnCompletion {
-            features.forEach { feature ->
-                val f = (feature as? TypedFeatureHolder)?.feature ?: feature
-                (f as? HasFeatureScope)?.featureScope?.cancel()
-            }
+            cancelFeatureScopes()
         }
 
         featureJobs = features.map { feature ->
-            val f = (feature as? TypedFeatureHolder)?.feature ?: feature
+            val f = feature.unwrapped()
             val dispatcher = (f as? HasFeatureDispatcher)?.featureDispatcher
                 ?: dispatcherConfig.provideFeatureDispatcher(f)
             scope.launch(dispatcher) {
@@ -101,7 +98,7 @@ internal class FeatureRouter<S : State>(
                 } catch (e: CancellationException) {
                     throw e
                 } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
-                    Yamv.log(YamvLogLevel.ERROR, TAG, "Feature $feature failed: $e")
+                    Yamv.log(YamvLogLevel.ERROR, TAG, "Feature $f failed: $e")
                     exceptionHandler.handle(
                         MviErrorContext(source = ErrorSource.FEATURE, feature = feature),
                         e,
@@ -163,15 +160,26 @@ internal class FeatureRouter<S : State>(
         if (isDisposed.getAndSet(true)) return
         Yamv.log(YamvLogLevel.INFO, TAG, "Shutting down FeatureRouter")
 
-        features.forEach { feature ->
-            val f = (feature as? TypedFeatureHolder)?.feature ?: feature
-            (f as? HasFeatureScope)?.featureScope?.cancel()
-        }
+        cancelFeatureScopes()
 
         featureJobs.forEach(Job::cancel)
     }
 
     fun isDisposed(): Boolean = isDisposed.value
+
+    private fun cancelFeatureScopes() {
+        features.forEach { feature ->
+            (feature.unwrapped() as? HasFeatureScope)?.featureScope?.cancel()
+        }
+    }
+
+    /**
+     * The user's original feature behind a framework `wrap()` builder ([FeatureHolder]), or the
+     * feature itself when it is not wrapped. Opt-in capabilities ([HasFeatureDispatcher],
+     * [HasFeatureScope]) and [CoroutineDispatcherConfig.provideFeatureDispatcher] must see this
+     * instance, not the anonymous wrapper (#73).
+     */
+    private fun Feature<S>.unwrapped(): Any = (this as? FeatureHolder)?.feature ?: this
 
     companion object {
         private const val TAG = "FeatureRouter"

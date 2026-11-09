@@ -1,6 +1,7 @@
 package com.ktomek.yamv.state
 
 import com.ktomek.yamv.feature.Feature
+import com.ktomek.yamv.feature.FeatureHolder
 
 /**
  * Handler for exceptions thrown during MVI pipeline execution.
@@ -30,12 +31,22 @@ fun interface MviExceptionHandler {
 
 /**
  * Context describing where in the MVI pipeline an exception occurred.
+ *
+ * @property feature the feature as registered with the runtime — for typed features this is the
+ * framework wrapper produced by `wrap()`. Use [originalFeature] to identify the user's own class.
  */
 data class MviErrorContext(
     val source: ErrorSource,
     val intention: Any? = null,
     val feature: Feature<*>? = null,
-)
+) {
+    /**
+     * The user's original feature behind a framework `wrap()` builder ([FeatureHolder]), or
+     * [feature] itself when it is not wrapped; `null` when no feature is involved.
+     */
+    val originalFeature: Any?
+        get() = (feature as? FeatureHolder)?.feature ?: feature
+}
 
 /**
  * The phase of the MVI pipeline where the error occurred.

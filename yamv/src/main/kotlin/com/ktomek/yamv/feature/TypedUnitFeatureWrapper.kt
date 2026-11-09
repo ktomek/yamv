@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.filterIsInstance
 
 inline fun <S : State, reified INTENTION> TypedUnitFeature<S, INTENTION>.wrap(): Feature<S> =
-    object : Feature.FlowUnitFeature<S>, WrappedFeature {
+    object : Feature.FlowUnitFeature<S>, WrappedFeature, FeatureHolder {
+        override val feature: Any = this@wrap
+
         override fun invoke(intentions: Flow<Any>): Flow<Unit> =
             channelFlow {
                 val typedIntentions = intentions.filterIsInstance<INTENTION>()

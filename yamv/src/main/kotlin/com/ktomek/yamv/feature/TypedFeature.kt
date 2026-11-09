@@ -21,13 +21,11 @@ fun interface TypedFeature<S : State, INTENTION> {
     operator fun invoke(intention: Flow<INTENTION>): Flow<Outcome<S>>
 }
 
-interface TypedFeatureHolder<S : State> : Feature.FlowFeature<S>, WrappedFeature {
-    val feature: Any
-}
+/** [FeatureHolder] wrapper whose underlying feature produces outcomes ([Feature.FlowFeature]). */
+interface TypedFeatureHolder<S : State> : Feature.FlowFeature<S>, WrappedFeature, FeatureHolder
 
-interface TypedUnitFeatureHolder<S : State> : Feature.FlowFeature<S>, WrappedFeature {
-    val feature: Any
-}
+/** [FeatureHolder] wrapper for a fire-and-forget [ActionTypedFeature] (emits no outcomes). */
+interface TypedUnitFeatureHolder<S : State> : Feature.FlowFeature<S>, WrappedFeature, FeatureHolder
 
 /**
  * Typed counterpart of [Feature.FlowUnitFeature]: receives a strongly-typed [Flow] of intentions
